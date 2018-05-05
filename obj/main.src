@@ -1,0 +1,1572 @@
+; Zilog eZ80 ANSI C Compiler Release 3.4
+; -debug -optsize -noreduceopt -nomodsect -peephole -globalopt
+; -localcse -const=ROM 
+	FILE	"..\SRC\MAIN.C"
+	.assume ADL=1
+.DEBUG "C"
+	SEGMENT CODE
+.BEGREC "NONAME0",9
+.DEFINE "sign"
+.VALUE 0
+.CLASS 8
+.TYPE 2
+.ENDEF
+.DEFINE "exp"
+.VALUE 1
+.CLASS 8
+.TYPE 2
+.ENDEF
+.DEFINE "mant"
+.VALUE 2
+.CLASS 8
+.DIM 7
+.TYPE 108
+.ENDEF
+.ENDREC "NONAME0"
+.BEGREC "NONAME1",18
+.DEFINE "real"
+.VALUE 0
+.CLASS 8
+.TAG "NONAME0"
+.TYPE 8
+.ENDEF
+.DEFINE "imag"
+.VALUE 9
+.CLASS 8
+.TAG "NONAME0"
+.TYPE 8
+.ENDEF
+.ENDREC "NONAME1"
+.BEGREC "NONAME2",11
+.DEFINE "dim"
+.VALUE 0
+.CLASS 8
+.TYPE 13
+.ENDEF
+.DEFINE "items"
+.VALUE 2
+.CLASS 8
+.DIM 1
+.TAG "NONAME0"
+.TYPE 104
+.ENDEF
+.ENDREC "NONAME2"
+.BEGREC "NONAME3",20
+.DEFINE "dim"
+.VALUE 0
+.CLASS 8
+.TYPE 13
+.ENDEF
+.DEFINE "items"
+.VALUE 2
+.CLASS 8
+.DIM 1
+.TAG "NONAME1"
+.TYPE 104
+.ENDEF
+.ENDREC "NONAME3"
+.BEGREC "NONAME4",11
+.DEFINE "cols"
+.VALUE 0
+.CLASS 8
+.TYPE 12
+.ENDEF
+.DEFINE "rows"
+.VALUE 1
+.CLASS 8
+.TYPE 12
+.ENDEF
+.DEFINE "items"
+.VALUE 2
+.CLASS 8
+.DIM 1
+.TAG "NONAME0"
+.TYPE 104
+.ENDEF
+.ENDREC "NONAME4"
+.BEGREC "NONAME5",3
+.DEFINE "len"
+.VALUE 0
+.CLASS 8
+.TYPE 13
+.ENDEF
+.DEFINE "data"
+.VALUE 2
+.CLASS 8
+.DIM 1
+.TYPE 98
+.ENDEF
+.ENDREC "NONAME5"
+.BEGREC "NONAME6",3
+.DEFINE "len"
+.VALUE 0
+.CLASS 8
+.TYPE 13
+.ENDEF
+.DEFINE "data"
+.VALUE 2
+.CLASS 8
+.DIM 1
+.TYPE 98
+.ENDEF
+.ENDREC "NONAME6"
+.BEGREC "NONAME7",3
+.DEFINE "size"
+.VALUE 0
+.CLASS 8
+.TYPE 13
+.ENDEF
+.DEFINE "data"
+.VALUE 2
+.CLASS 8
+.DIM 1
+.TYPE 108
+.ENDEF
+.ENDREC "NONAME7"
+.BEGREC "fmt_type",19
+.DEFINE "status"
+.VALUE 0
+.CLASS 8
+.TYPE 12
+.ENDEF
+.DEFINE "flags"
+.VALUE 1
+.CLASS 8
+.TYPE 12
+.ENDEF
+.DEFINE "size"
+.VALUE 2
+.CLASS 8
+.TYPE 2
+.ENDEF
+.DEFINE "chr"
+.VALUE 3
+.CLASS 8
+.TYPE 2
+.ENDEF
+.DEFINE "type"
+.VALUE 4
+.CLASS 8
+.TYPE 2
+.ENDEF
+.DEFINE "field_width"
+.VALUE 5
+.CLASS 8
+.TYPE 2
+.ENDEF
+.DEFINE "precision"
+.VALUE 6
+.CLASS 8
+.TYPE 2
+.ENDEF
+.DEFINE "set_begin"
+.VALUE 7
+.CLASS 8
+.TYPE 34
+.ENDEF
+.DEFINE "set_end"
+.VALUE 10
+.CLASS 8
+.TYPE 34
+.ENDEF
+.DEFINE "pad_whole"
+.VALUE 13
+.CLASS 8
+.TYPE 12
+.ENDEF
+.DEFINE "pad_pre_fract"
+.VALUE 14
+.CLASS 8
+.TYPE 12
+.ENDEF
+.DEFINE "pad_post_fract"
+.VALUE 15
+.CLASS 8
+.TYPE 12
+.ENDEF
+.DEFINE "pad_at"
+.VALUE 16
+.CLASS 8
+.TYPE 34
+.ENDEF
+.ENDREC "fmt_type"
+.BEGREC "flt_info",12
+.DEFINE "flags"
+.VALUE 0
+.CLASS 8
+.TYPE 12
+.ENDEF
+.DEFINE "exp"
+.VALUE 1
+.CLASS 8
+.TYPE 2
+.ENDEF
+.DEFINE "digits"
+.VALUE 2
+.CLASS 8
+.DIM 10
+.TYPE 108
+.ENDEF
+.ENDREC "flt_info"
+.BEGREC "NONAME8",6
+.DEFINE "quot"
+.VALUE 0
+.CLASS 8
+.TYPE 4
+.ENDEF
+.DEFINE "rem"
+.VALUE 3
+.CLASS 8
+.TYPE 4
+.ENDEF
+.ENDREC "NONAME8"
+.BEGREC "NONAME9",8
+.DEFINE "quot"
+.VALUE 0
+.CLASS 8
+.TYPE 5
+.ENDEF
+.DEFINE "rem"
+.VALUE 4
+.CLASS 8
+.TYPE 5
+.ENDEF
+.ENDREC "NONAME9"
+.BEGREC "header",6
+.DEFINE "s"
+.VALUE 0
+.CLASS 11
+.TAG "NONAME10"
+.TYPE 8
+.ENDEF
+.DEFINE "x"
+.VALUE 0
+.CLASS 11
+.TYPE 2
+.ENDEF
+.ENDREC "header"
+.BEGREC "NONAME10",6
+.DEFINE "ptr"
+.VALUE 0
+.CLASS 8
+.TAG "header"
+.TYPE 40
+.ENDEF
+.DEFINE "size"
+.VALUE 3
+.CLASS 8
+.TYPE 14
+.ENDEF
+.ENDREC "NONAME10"
+.BEGREC "__stdio_file",1
+.DEFINE "slot"
+.VALUE 0
+.CLASS 8
+.TYPE 12
+.ENDEF
+.ENDREC "__stdio_file"
+.BEGREC "NONAME11",3
+.DEFINE "width"
+.VALUE 0
+.CLASS 8
+.TYPE 12
+.ENDEF
+.DEFINE "height"
+.VALUE 1
+.CLASS 8
+.TYPE 12
+.ENDEF
+.DEFINE "data"
+.VALUE 2
+.CLASS 8
+.DIM 1
+.TYPE 108
+.ENDEF
+.ENDREC "NONAME11"
+.BEGREC "NONAME12",3
+.DEFINE "width"
+.VALUE 0
+.CLASS 8
+.TYPE 12
+.ENDEF
+.DEFINE "height"
+.VALUE 1
+.CLASS 8
+.TYPE 12
+.ENDEF
+.DEFINE "data"
+.VALUE 2
+.CLASS 8
+.DIM 1
+.TYPE 108
+.ENDEF
+.ENDREC "NONAME12"
+.BEGREC "NONAME13",6
+.DEFINE "x"
+.VALUE 0
+.CLASS 8
+.TYPE 4
+.ENDEF
+.DEFINE "y"
+.VALUE 3
+.CLASS 8
+.TYPE 4
+.ENDEF
+.ENDREC "NONAME13"
+.BEGREC "NONAME14",12
+.DEFINE "xmin"
+.VALUE 0
+.CLASS 8
+.TYPE 4
+.ENDEF
+.DEFINE "ymin"
+.VALUE 3
+.CLASS 8
+.TYPE 4
+.ENDEF
+.DEFINE "xmax"
+.VALUE 6
+.CLASS 8
+.TYPE 4
+.ENDEF
+.DEFINE "ymax"
+.VALUE 9
+.CLASS 8
+.TYPE 4
+.ENDEF
+.ENDREC "NONAME14"
+.BEGREC "NONAME15",18
+.DEFINE "map"
+.VALUE 0
+.CLASS 8
+.TYPE 44
+.ENDEF
+.DEFINE "tiles"
+.VALUE 3
+.CLASS 8
+.TAG "NONAME11"
+.TYPE 296
+.ENDEF
+.DEFINE "tile_height"
+.VALUE 6
+.CLASS 8
+.TYPE 12
+.ENDEF
+.DEFINE "tile_width"
+.VALUE 7
+.CLASS 8
+.TYPE 12
+.ENDEF
+.DEFINE "draw_height"
+.VALUE 8
+.CLASS 8
+.TYPE 12
+.ENDEF
+.DEFINE "draw_width"
+.VALUE 9
+.CLASS 8
+.TYPE 12
+.ENDEF
+.DEFINE "type_width"
+.VALUE 10
+.CLASS 8
+.TYPE 12
+.ENDEF
+.DEFINE "type_height"
+.VALUE 11
+.CLASS 8
+.TYPE 12
+.ENDEF
+.DEFINE "height"
+.VALUE 12
+.CLASS 8
+.TYPE 12
+.ENDEF
+.DEFINE "width"
+.VALUE 13
+.CLASS 8
+.TYPE 12
+.ENDEF
+.DEFINE "y_loc"
+.VALUE 14
+.CLASS 8
+.TYPE 12
+.ENDEF
+.DEFINE "x_loc"
+.VALUE 15
+.CLASS 8
+.TYPE 14
+.ENDEF
+.ENDREC "NONAME15"
+	SEGMENT BSS
+_scaled_sprite_data:
+	DS	32642
+.DEFINE "scaled_sprite_data"
+.ALIAS "_scaled_sprite_data"
+.CLASS 83
+.VALUE _scaled_sprite_data
+.DIM 32642
+.TYPE 108
+.ENDEF
+	SEGMENT DATA
+_scaled_sprite:
+	DW24	_scaled_sprite_data
+.DEFINE "scaled_sprite"
+.ALIAS "_scaled_sprite"
+.CLASS 69
+.VALUE _scaled_sprite
+.TAG "NONAME11"
+.TYPE 40
+.ENDEF
+	SEGMENT BSS
+_curFile:
+	DS	1
+.DEFINE "curFile"
+.ALIAS "_curFile"
+.CLASS 83
+.VALUE _curFile
+.TYPE 12
+.ENDEF
+_files:
+	DS	2295
+.DEFINE "files"
+.ALIAS "_files"
+.CLASS 83
+.VALUE _files
+.DIM 255
+.DIM 9
+.TYPE 866
+.ENDEF
+_count:
+	DS	1
+.DEFINE "count"
+.ALIAS "_count"
+.CLASS 83
+.VALUE _count
+.TYPE 12
+.ENDEF
+;    1	#include <stdbool.h>
+;    2	#include <stddef.h>
+;    3	#include <stdint.h>
+;    4	#include <tice.h>
+;    5	#include <debug.h>
+;    6	
+;    7	#include <math.h>
+;    8	#include <stdio.h>
+;    9	#include <stdlib.h>
+;   10	#include <string.h>
+;   11	
+;   12	#include <graphx.h>
+;   13	#include <keypadc.h>
+;   14	#include <fileioc.h>
+;   15	
+;   16	#include "chip8.h"
+;   17	#include "sprites_gfx.h"
+;   18	
+;   19	void drawGraphics(void);
+;   20	void startEmulation(char *fileName);
+;   21	void drawMenu(uint8_t start);
+;   22	
+;   23	gfx_UninitedSprite(scaled_sprite, 255, 128);
+;   24	
+;   25	ti_var_t curFile;
+;   26	
+;   27	char files[255][9];
+;   28	uint8_t count;
+	SEGMENT CODE
+;   29	
+;   30	uint8_t concatenate(uint8_t x, uint8_t y) {
+_concatenate:
+.DEFINE "_concatenate"
+
+.VALUE _concatenate
+
+.CLASS 2
+
+.TYPE 76
+
+.ENDEF
+
+.BEGFUNC "concatenate",30,"_concatenate"
+
+.LINE 30
+
+.DEFINE "x"
+
+.CLASS 65
+
+.VALUE 6
+
+.TYPE 12
+
+.ENDEF
+
+.DEFINE "y"
+
+.CLASS 65
+
+.VALUE 9
+
+.TYPE 12
+
+.ENDEF
+
+.DEFINE "pow"
+
+.CLASS 65
+
+.VALUE -1
+
+.TYPE 12
+
+.ENDEF
+
+	PUSH	IX
+	LD	IX,0
+	ADD	IX,SP
+	DEC	SP
+;   31		uint8_t pow = 10;
+.LINE 31
+
+	LD	(IX+-1),10
+;   32		while (y >= pow)
+.LINE 32
+
+	JR	L_0
+L_1:
+;   33			pow *= 10;
+.LINE 33
+
+	LD	B,10
+	LD	C,(IX+-1)
+	MLT	BC
+	LD	(IX+-1),C
+L_0:
+	LD	A,(IX+9)
+	CP	A,(IX+-1)
+	JR	NC,L_1
+;   34		return x * pow + y;
+.LINE 34
+
+	LD	B,(IX+6)
+	LD	C,(IX+-1)
+	MLT	BC
+	LD	A,C
+	ADD	A,(IX+9)
+;   35	}
+.LINE 35
+
+	LD	SP,IX
+	POP	IX
+	RET	
+
+
+;**************************** _concatenate ***************************
+;Name                         Addr/Register   Size   Type
+;pow                                   IX-1      1   variable
+;y                                     IX+9      1   parameter
+;x                                     IX+6      1   parameter
+
+
+; Stack Frame Size: 13 (bytes)
+;       Spill Code: 0 (instruction)
+
+
+.ENDFUNC "concatenate",35,"_concatenate"
+;   36	
+;   37	void main(void) {
+_main:
+.DEFINE "_main"
+
+.VALUE _main
+
+.CLASS 2
+
+.TYPE 65
+
+.ENDEF
+
+.BEGFUNC "main",37,"_main"
+
+.LINE 37
+
+.DEFINE "startPos"
+
+.CLASS 65
+
+.VALUE -1
+
+.TYPE 12
+
+.ENDEF
+
+.DEFINE "varName"
+
+.CLASS 65
+
+.VALUE -4
+
+.TYPE 34
+
+.ENDEF
+
+.DEFINE "search_pos"
+
+.CLASS 65
+
+.VALUE -7
+
+.TYPE 44
+
+.ENDEF
+
+	PUSH	IX
+	LD	IX,0
+	ADD	IX,SP
+	PUSH	BC
+	PUSH	BC
+	DEC	SP
+;   38		uint8_t i;
+;   39		char *varName;
+;   40		uint8_t *search_pos = NULL;
+.LINE 40
+
+	LD	BC,0
+	LD	(IX+-7),BC
+;   41		uint8_t startPos = 0;
+.LINE 41
+
+	LD	(IX+-1),0
+;   42		
+;   43		boot_Set48MHzMode();
+.LINE 43
+
+	CALL	_boot_Set48MHzMode
+;   44		
+;   45		count = 0;
+.LINE 45
+
+	XOR	A,A
+	LD	(_count),A
+;   46		
+;   47		ti_CloseAll();
+.LINE 47
+
+	CALL	_ti_CloseAll
+;   48		
+;   49		gfx_Begin(gfx_8bpp);
+.LINE 49
+
+	LD	BC,39
+	PUSH	BC
+	CALL	_gfx_Begin
+	POP	BC
+;   50		gfx_Blit(gfx_screen);
+.LINE 50
+
+	LD	BC,0
+	PUSH	BC
+	CALL	_gfx_Blit
+	POP	BC
+;   51	    gfx_SetDrawBuffer();
+.LINE 51
+
+	LD	BC,1
+	PUSH	BC
+	CALL	_gfx_SetDraw
+	POP	BC
+;   52		gfx_SetPalette(sprites_gfx_pal, sizeof_sprites_gfx_pal, 0);
+.LINE 52
+
+	LD	BC,0
+	PUSH	BC
+	LD	BC,4
+	PUSH	BC
+	LD	BC,_sprites_gfx_pal
+	PUSH	BC
+	CALL	_gfx_SetPalette
+	POP	BC
+	POP	BC
+	POP	BC
+;   53		gfx_SetColor(0xff);
+.LINE 53
+
+	LD	BC,255
+	PUSH	BC
+	CALL	_gfx_SetColor
+	POP	BC
+;   54		
+;   55		gfx_SetTextFGColor(0x00);
+.LINE 55
+
+	LD	BC,0
+	PUSH	BC
+	CALL	_gfx_SetTextFGColor
+	POP	BC
+;   56		gfx_PrintStringXY("Chip-84", 128, 100);
+.LINE 56
+
+	LD	BC,100
+	PUSH	BC
+	LD	BC,128
+	PUSH	BC
+	LD	BC,L__2
+	PUSH	BC
+	CALL	_gfx_PrintStringXY
+	POP	BC
+	POP	BC
+	POP	BC
+;   57		gfx_PrintStringXY("2018 Christian Kosman", 80, 120);
+.LINE 57
+
+	LD	BC,120
+	PUSH	BC
+	LD	BC,80
+	PUSH	BC
+	LD	BC,L__3
+	PUSH	BC
+	CALL	_gfx_PrintStringXY
+	POP	BC
+	POP	BC
+	POP	BC
+;   58		gfx_PrintStringXY("version 1.0", LCD_WIDTH-100, LCD_HEIGHT-30);
+.LINE 58
+
+	LD	BC,210
+	PUSH	BC
+	LD	BC,220
+	PUSH	BC
+	LD	BC,L__4
+	PUSH	BC
+	CALL	_gfx_PrintStringXY
+	POP	BC
+	POP	BC
+	POP	BC
+;   59		gfx_BlitBuffer();
+.LINE 59
+
+	LD	BC,1
+	PUSH	BC
+	CALL	_gfx_Blit
+	POP	BC
+;   60		
+;   61		delay(1000);
+.LINE 61
+
+	LD	BC,1000
+	PUSH	BC
+	CALL	_delay
+	POP	BC
+;   62		
+;   63		while((varName = ti_Detect(&search_pos, "Chip84")) != NULL) {
+.LINE 63
+
+	JR	L_4
+L_5:
+;   64			dbg_sprintf(dbgout, "%s\n", varName);
+.LINE 64
+
+	LD	BC,(IX+-4)
+	PUSH	BC
+	LD	BC,L__5
+	PUSH	BC
+	LD	BC,16449536
+	PUSH	BC
+	CALL	_sprintf
+	POP	BC
+	POP	BC
+	POP	BC
+;   65			
+;   66			strcpy(files[count], varName);
+.LINE 66
+
+	LD	BC,(IX+-4)
+	PUSH	BC
+	LD	A,(_count)
+	UEXT	HL
+	LD	L,A
+	LD	A,9
+	CALL	__imul_b
+	LD	BC,_files
+	ADD	HL,BC
+	PUSH	HL
+	CALL	_strcpy
+	POP	BC
+	POP	BC
+;   67			
+;   68			++count;
+.LINE 68
+
+	LD	A,(_count)
+	INC	A
+	LD	(_count),A
+;   69		}
+L_4:
+.LINE 69
+
+	LD	BC,L__6
+	PUSH	BC
+	PEA	IX+-7
+	CALL	_ti_Detect
+	POP	BC
+	POP	BC
+	LD	(IX+-4),HL
+	CALL	__icmpzero
+	JR	NZ,L_5
+;   70		
+;   71		drawMenu(0);
+.LINE 71
+
+	LD	BC,0
+	PUSH	BC
+	CALL	_drawMenu
+	POP	BC
+;   72		
+;   73		do {
+L_25:
+.LINE 73
+
+;   74			kb_Scan();
+.LINE 74
+
+	CALL	_kb_Scan
+;   75			
+;   76			if(kb_Data[7] & kb_Up) {
+.LINE 76
+
+	LD	A,(16056350)
+	AND	A,8
+	JR	Z,L_23
+;   77				if(startPos == 0)
+.LINE 77
+
+	LD	A,(IX+-1)
+	OR	A,A
+	JR	NZ,L_9
+;   78					startPos = count-1;
+.LINE 78
+
+	LD	A,(_count)
+	DEC	A
+	LD	(IX+-1),A
+;   79				else
+.LINE 79
+
+	JR	L_10
+L_9:
+;   80					startPos--;
+.LINE 80
+
+	DEC	(IX+-1)
+L_10:
+;   81				drawMenu(startPos);
+.LINE 81
+
+	LD	C,(IX+-1)
+	LD	B,0
+	PUSH	BC
+	CALL	_drawMenu
+	POP	BC
+;   82				while(kb_Data[7] & kb_Up) {
+.LINE 82
+
+	JR	L_11
+L_12:
+;   83					kb_Scan();
+.LINE 83
+
+	CALL	_kb_Scan
+;   84				}
+L_11:
+.LINE 84
+
+	LD	A,(16056350)
+	AND	A,8
+	JR	NZ,L_12
+	JR	L_24
+;   85			} else if(kb_Data[7] & kb_Down) {
+L_23:
+.LINE 85
+
+	LD	A,(16056350)
+	AND	A,1
+	JR	Z,L_21
+;   86				if(startPos == count-1)
+.LINE 86
+
+	LD	A,(_count)
+	UEXT	HL
+	LD	L,A
+	LD	BC,HL
+	DEC	BC
+	LD	A,(IX+-1)
+	UEXT	HL
+	LD	L,A
+	LD	DE,HL
+	LD	HL,BC
+	OR	A,A
+	SBC	HL,DE
+	JR	NZ,L_15
+;   87					startPos = 0;
+.LINE 87
+
+	LD	(IX+-1),0
+;   88				else
+.LINE 88
+
+	JR	L_16
+L_15:
+;   89					startPos++;
+.LINE 89
+
+	INC	(IX+-1)
+L_16:
+;   90				drawMenu(startPos);
+.LINE 90
+
+	LD	C,(IX+-1)
+	LD	B,0
+	PUSH	BC
+	CALL	_drawMenu
+	POP	BC
+;   91				while(kb_Data[7] & kb_Down) {
+.LINE 91
+
+	JR	L_17
+L_18:
+;   92					kb_Scan();
+.LINE 92
+
+	CALL	_kb_Scan
+;   93				}
+L_17:
+.LINE 93
+
+	LD	A,(16056350)
+	AND	A,1
+	JR	NZ,L_18
+	JR	L_24
+;   94			} else if(kb_Data[6] & kb_Enter) {
+L_21:
+.LINE 94
+
+	LD	A,(16056348)
+	AND	A,1
+	JR	Z,L_24
+;   95				gfx_FillScreen(0xFF);
+.LINE 95
+
+	LD	BC,255
+	PUSH	BC
+	CALL	_gfx_FillScreen
+	POP	BC
+;   96				startEmulation(files[startPos]);
+.LINE 96
+
+	LD	A,(IX+-1)
+	UEXT	HL
+	LD	L,A
+	LD	A,9
+	CALL	__imul_b
+	LD	BC,_files
+	ADD	HL,BC
+	PUSH	HL
+	CALL	_startEmulation
+	POP	BC
+;   97				break;
+.LINE 97
+
+	JR	L_27
+;   98			}
+L_24:
+.LINE 98
+
+;   99			
+;  100			gfx_BlitBuffer();
+.LINE 100
+
+	LD	BC,1
+	PUSH	BC
+	CALL	_gfx_Blit
+	POP	BC
+;  101		} while (kb_Data[1] != kb_2nd);
+.LINE 101
+
+	LD	A,(16056338)
+	CP	A,32
+	JR	NZ,L_25
+L_27:
+;  102		
+;  103		gfx_End();
+.LINE 103
+
+	CALL	_gfx_End
+;  104	}
+.LINE 104
+
+	LD	SP,IX
+	POP	IX
+	RET	
+
+
+;**************************** _main ***************************
+;Name                         Addr/Register   Size   Type
+;_gfx_End                            IMPORT  -----   function
+;_startEmulation                     IMPORT  -----   function
+;_gfx_FillScreen                     IMPORT  -----   function
+;_kb_Scan                            IMPORT  -----   function
+;_drawMenu                           IMPORT  -----   function
+;_ti_Detect                          IMPORT  -----   function
+;_files                              STATIC   2295   variable
+;_strcpy                             IMPORT  -----   function
+;_sprintf                            IMPORT  -----   function
+;_delay                              IMPORT  -----   function
+;_gfx_PrintStringXY                  IMPORT  -----   function
+;_gfx_SetTextFGColor                 IMPORT  -----   function
+;_gfx_SetColor                       IMPORT  -----   function
+;_sprites_gfx_pal                    IMPORT      4   variable
+;_gfx_SetPalette                     IMPORT  -----   function
+;_gfx_SetDraw                        IMPORT  -----   function
+;_gfx_Blit                           IMPORT  -----   function
+;_gfx_Begin                          IMPORT  -----   function
+;_ti_CloseAll                        IMPORT  -----   function
+;_count                              STATIC      1   variable
+;_boot_Set48MHzMode                  IMPORT  -----   function
+;search_pos                            IX-7      3   variable
+;varName                               IX-4      3   variable
+;startPos                              IX-1      1   variable
+
+
+; Stack Frame Size: 13 (bytes)
+;       Spill Code: 0 (instruction)
+
+
+.ENDFUNC "main",104,"_main"
+	SEGMENT STRSECT
+L__2:
+	DB	"Chip-84"
+	DB	0
+L__3:
+	DB	"2018 Christian Kosman"
+	DB	0
+L__4:
+	DB	"version 1.0"
+	DB	0
+L__5:
+	DB	"%s"
+	DB	10,0
+L__6:
+	DB	"Chip84"
+	DB	0
+	SEGMENT CODE
+;  105	
+;  106	void drawMenu(uint8_t start) {
+_drawMenu:
+.DEFINE "_drawMenu"
+
+.VALUE _drawMenu
+
+.CLASS 2
+
+.TYPE 65
+
+.ENDEF
+
+.BEGFUNC "drawMenu",106,"_drawMenu"
+
+.LINE 106
+
+.DEFINE "start"
+
+.CLASS 65
+
+.VALUE 6
+
+.TYPE 12
+
+.ENDEF
+
+.DEFINE "i"
+
+.CLASS 65
+
+.VALUE -1
+
+.TYPE 12
+
+.ENDEF
+
+	PUSH	IX
+	LD	IX,0
+	ADD	IX,SP
+	DEC	SP
+;  107		uint8_t i;
+;  108		gfx_FillScreen(0xff);
+.LINE 108
+
+	LD	BC,255
+	PUSH	BC
+	CALL	_gfx_FillScreen
+	POP	BC
+;  109		gfx_SetTextFGColor(0x00);
+.LINE 109
+
+	LD	BC,0
+	PUSH	BC
+	CALL	_gfx_SetTextFGColor
+	POP	BC
+;  110		for(i = 0; i < 16; i++) {
+.LINE 110
+
+	LD	(IX+-1),0
+	JR	L_33
+L_31:
+;  111			if(i + start <= count-1) {
+.LINE 111
+
+	LD	A,(_count)
+	UEXT	HL
+	LD	L,A
+	LD	BC,HL
+	DEC	BC
+	LD	A,(IX+-1)
+	UEXT	HL
+	LD	L,A
+	LD	DE,HL
+	LD	A,(IX+6)
+	UEXT	HL
+	LD	L,A
+	ADD	HL,DE
+	LD	DE,HL
+	LD	HL,BC
+	OR	A,A
+	SBC	HL,DE
+	JP	M,L_32
+;  112				gfx_SetTextXY(20, 10*i+10);
+.LINE 112
+
+	LD	A,(IX+-1)
+	UEXT	HL
+	LD	L,A
+	LD	A,10
+	CALL	__imul_b
+	LD	IY,HL
+	LEA	BC,IY+10
+	PUSH	BC
+	LD	BC,20
+	PUSH	BC
+	CALL	_gfx_SetTextXY
+	POP	BC
+	POP	BC
+;  113				gfx_PrintUInt(i+start, 3);
+.LINE 113
+
+	LD	BC,3
+	PUSH	BC
+	LD	A,(IX+-1)
+	UEXT	HL
+	LD	L,A
+	LD	BC,HL
+	LD	A,(IX+6)
+	UEXT	HL
+	LD	L,A
+	ADD	HL,BC
+	PUSH	HL
+	CALL	_gfx_PrintUInt
+	POP	BC
+	POP	BC
+;  114				gfx_PrintStringXY(files[i+start], 50, 10*i+10);
+.LINE 114
+
+	LD	A,(IX+-1)
+	UEXT	HL
+	LD	L,A
+	LD	A,10
+	CALL	__imul_b
+	LD	IY,HL
+	LEA	BC,IY+10
+	PUSH	BC
+	LD	BC,50
+	PUSH	BC
+	LD	A,(IX+-1)
+	UEXT	HL
+	LD	L,A
+	LD	BC,HL
+	LD	A,(IX+6)
+	UEXT	HL
+	LD	L,A
+	ADD	HL,BC
+	LD	A,9
+	CALL	__imul_b
+	LD	BC,_files
+	ADD	HL,BC
+	PUSH	HL
+	CALL	_gfx_PrintStringXY
+	POP	BC
+	POP	BC
+	POP	BC
+;  115			}
+;  116		}
+L_32:
+.LINE 116
+
+	INC	(IX+-1)
+L_33:
+	LD	A,(IX+-1)
+	CP	A,16
+	JR	C,L_31
+;  117		gfx_SetColor(0x00);
+.LINE 117
+
+	LD	BC,0
+	PUSH	BC
+	CALL	_gfx_SetColor
+	POP	BC
+;  118		gfx_FillRectangle(10, 10, 6, 6);
+.LINE 118
+
+	LD	BC,6
+	PUSH	BC
+	PUSH	BC
+	LD	BC,10
+	PUSH	BC
+	PUSH	BC
+	CALL	_gfx_FillRectangle
+	POP	BC
+	POP	BC
+	POP	BC
+	POP	BC
+;  119		
+;  120		gfx_PrintStringXY("Use the arrows and enter to select a ROM.", 20, 190);
+.LINE 120
+
+	LD	BC,190
+	PUSH	BC
+	LD	BC,20
+	PUSH	BC
+	LD	BC,L__19
+	PUSH	BC
+	CALL	_gfx_PrintStringXY
+	POP	BC
+	POP	BC
+	POP	BC
+;  121		gfx_PrintStringXY("Then use 1, 2, 3, PLUS, 4, 5, 6, MINUS, 7, 8, 9,", 20, 205);
+.LINE 121
+
+	LD	BC,205
+	PUSH	BC
+	LD	BC,20
+	PUSH	BC
+	LD	BC,L__20
+	PUSH	BC
+	CALL	_gfx_PrintStringXY
+	POP	BC
+	POP	BC
+	POP	BC
+;  122		gfx_PrintStringXY("TIMES, COMMA, (, ), and DIVIDE for controls.", 20, 215);
+.LINE 122
+
+	LD	BC,215
+	PUSH	BC
+	LD	BC,20
+	PUSH	BC
+	LD	BC,L__21
+	PUSH	BC
+	CALL	_gfx_PrintStringXY
+	POP	BC
+	POP	BC
+	POP	BC
+;  123		
+;  124	}
+.LINE 124
+
+	LD	SP,IX
+	POP	IX
+	RET	
+
+
+;**************************** _drawMenu ***************************
+;Name                         Addr/Register   Size   Type
+;_gfx_FillRectangle                  IMPORT  -----   function
+;_gfx_SetColor                       IMPORT  -----   function
+;_files                              STATIC   2295   variable
+;_gfx_PrintStringXY                  IMPORT  -----   function
+;_gfx_PrintUInt                      IMPORT  -----   function
+;_gfx_SetTextXY                      IMPORT  -----   function
+;_count                              STATIC      1   variable
+;_gfx_SetTextFGColor                 IMPORT  -----   function
+;_gfx_FillScreen                     IMPORT  -----   function
+;i                                     IX-1      1   variable
+;start                                 IX+6      1   parameter
+
+
+; Stack Frame Size: 10 (bytes)
+;       Spill Code: 0 (instruction)
+
+
+.ENDFUNC "drawMenu",124,"_drawMenu"
+	SEGMENT STRSECT
+L__19:
+	DB	"Use the arrows and enter to select a ROM."
+	DB	0
+L__20:
+	DB	"Then use 1, 2, 3, PLUS, 4, 5, 6, MINUS, 7, 8, 9,"
+	DB	0
+L__21:
+	DB	"TIMES, COMMA, (, ), and DIVIDE for controls."
+	DB	0
+	SEGMENT CODE
+;  125	
+;  126	void startEmulation(char *fileName) {
+_startEmulation:
+.DEFINE "_startEmulation"
+
+.VALUE _startEmulation
+
+.CLASS 2
+
+.TYPE 65
+
+.ENDEF
+
+.BEGFUNC "startEmulation",126,"_startEmulation"
+
+.LINE 126
+
+.DEFINE "fileName"
+
+.CLASS 65
+
+.VALUE 6
+
+.TYPE 34
+
+.ENDEF
+
+	PUSH	IX
+	LD	IX,0
+	ADD	IX,SP
+;  127		scaled_sprite->width = 255;
+.LINE 127
+
+	LD	IY,(_scaled_sprite)
+	LD	(IY+0),255
+;  128		scaled_sprite->height = 128;
+.LINE 128
+
+	LD	IY,(_scaled_sprite)
+	LD	(IY+1),128
+;  129		
+;  130		loadProgram(fileName);
+.LINE 130
+
+	LD	BC,(IX+6)
+	PUSH	BC
+	CALL	_loadProgram
+	POP	BC
+;  131		
+;  132		gfx_FillScreen(0x88);
+.LINE 132
+
+	LD	BC,136
+	PUSH	BC
+	CALL	_gfx_FillScreen
+	POP	BC
+;  133		gfx_SetTextFGColor(0x01);
+.LINE 133
+
+	LD	BC,1
+	PUSH	BC
+	CALL	_gfx_SetTextFGColor
+	POP	BC
+;  134		gfx_PrintStringXY("[2nd] - Quit", 10, LCD_HEIGHT-20);
+.LINE 134
+
+	LD	BC,220
+	PUSH	BC
+	LD	BC,10
+	PUSH	BC
+	LD	BC,L__23
+	PUSH	BC
+	CALL	_gfx_PrintStringXY
+	POP	BC
+	POP	BC
+	POP	BC
+;  135		
+;  136		do {
+L_38:
+.LINE 136
+
+;  137			
+;  138			emulateCycle(10);
+.LINE 138
+
+	LD	BC,10
+	PUSH	BC
+	CALL	_emulateCycle
+	POP	BC
+;  139			
+;  140			if(drawFlag)
+.LINE 140
+
+	LD	A,(_drawFlag)
+	OR	A,A
+	JR	Z,L_37
+;  141				drawGraphics();
+.LINE 141
+
+	CALL	_drawGraphics
+L_37:
+;  142			
+;  143			gfx_BlitBuffer();
+.LINE 143
+
+	LD	BC,1
+	PUSH	BC
+	CALL	_gfx_Blit
+	POP	BC
+;  144		} while (kb_Data[1] != kb_2nd);
+.LINE 144
+
+	LD	A,(16056338)
+	CP	A,32
+	JR	NZ,L_38
+;  145	}
+.LINE 145
+
+	LD	SP,IX
+	POP	IX
+	RET	
+
+
+;**************************** _startEmulation ***************************
+;Name                         Addr/Register   Size   Type
+;_gfx_Blit                           IMPORT  -----   function
+;_drawGraphics                       IMPORT  -----   function
+;_drawFlag                           IMPORT      1   variable
+;_emulateCycle                       IMPORT  -----   function
+;_gfx_PrintStringXY                  IMPORT  -----   function
+;_gfx_SetTextFGColor                 IMPORT  -----   function
+;_gfx_FillScreen                     IMPORT  -----   function
+;_loadProgram                        IMPORT  -----   function
+;_scaled_sprite                      STATIC      3   variable
+;fileName                              IX+6      3   parameter
+
+
+; Stack Frame Size: 9 (bytes)
+;       Spill Code: 0 (instruction)
+
+
+.ENDFUNC "startEmulation",145,"_startEmulation"
+	SEGMENT STRSECT
+L__23:
+	DB	"[2nd] - Quit"
+	DB	0
+	SEGMENT CODE
+;  146	
+;  147	void drawGraphics() {
+_drawGraphics:
+.DEFINE "_drawGraphics"
+
+.VALUE _drawGraphics
+
+.CLASS 2
+
+.TYPE 65
+
+.ENDEF
+
+.BEGFUNC "drawGraphics",147,"_drawGraphics"
+
+	PUSH	IX
+	LD	IX,0
+	ADD	IX,SP
+;  148		drawFlag = false;
+.LINE 148
+
+	XOR	A,A
+	LD	(_drawFlag),A
+;  149		
+;  150		gfx_ScaleSprite(canvas, scaled_sprite);
+.LINE 150
+
+	LD	BC,(_scaled_sprite)
+	PUSH	BC
+	LD	BC,_canvas_data
+	PUSH	BC
+	CALL	_gfx_ScaleSprite
+	POP	BC
+	POP	BC
+;  151		gfx_Sprite(scaled_sprite, 30, 55);
+.LINE 151
+
+	LD	BC,55
+	PUSH	BC
+	LD	BC,30
+	PUSH	BC
+	LD	BC,(_scaled_sprite)
+	PUSH	BC
+	CALL	_gfx_Sprite
+	POP	BC
+	POP	BC
+	POP	BC
+.LINE 152
+
+	LD	SP,IX
+	POP	IX
+	RET	
+
+
+;**************************** _drawGraphics ***************************
+;Name                         Addr/Register   Size   Type
+;_gfx_Sprite                         IMPORT  -----   function
+;_canvas_data                        IMPORT   2050   variable
+;_scaled_sprite                      STATIC      3   variable
+;_gfx_ScaleSprite                    IMPORT  -----   function
+;_drawFlag                           IMPORT      1   variable
+
+
+; Stack Frame Size: 6 (bytes)
+;       Spill Code: 0 (instruction)
+
+
+.ENDFUNC "drawGraphics",152,"_drawGraphics"
+	XREF _sprites_gfx_pal:ROM
+	XREF _canvas_data:ROM
+	XREF _emulateCycle:ROM
+	XREF _loadProgram:ROM
+	XREF _drawFlag:ROM
+	XREF _kb_Scan:ROM
+	XREF _gfx_ScaleSprite:ROM
+	XREF _gfx_Sprite:ROM
+	XREF _gfx_SetTextFGColor:ROM
+	XREF _gfx_SetTextXY:ROM
+	XREF _gfx_PrintStringXY:ROM
+	XREF _gfx_PrintUInt:ROM
+	XREF _gfx_Blit:ROM
+	XREF _gfx_SetDraw:ROM
+	XREF _gfx_FillRectangle:ROM
+	XREF _gfx_FillScreen:ROM
+	XREF _gfx_SetPalette:ROM
+	XREF _gfx_SetColor:ROM
+	XREF _gfx_End:ROM
+	XREF _gfx_Begin:ROM
+	XREF _strcpy:ROM
+	XREF _sprintf:ROM
+	XREF _ti_Detect:ROM
+	XREF _ti_CloseAll:ROM
+	XREF _boot_Set48MHzMode:ROM
+	XREF _delay:ROM
+	XREF __icmpzero:ROM
+	XREF __imul_b:ROM
+	XDEF _drawGraphics
+	XDEF _startEmulation
+	XDEF _drawMenu
+	XDEF _main
+	XDEF _concatenate
+	XDEF _count
+	XDEF _files
+	XDEF _curFile
+	XDEF _scaled_sprite
+	XDEF _scaled_sprite_data
+	END

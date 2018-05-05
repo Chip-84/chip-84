@@ -1,0 +1,3378 @@
+; Zilog eZ80 ANSI C Compiler Release 3.4
+; -debug -optsize -noreduceopt -nomodsect -peephole -globalopt
+; -localcse -const=ROM 
+	FILE	"..\SRC\CHIP8.C"
+	.assume ADL=1
+.DEBUG "C"
+	SEGMENT CODE
+.BEGREC "NONAME0",9
+.DEFINE "sign"
+.VALUE 0
+.CLASS 8
+.TYPE 2
+.ENDEF
+.DEFINE "exp"
+.VALUE 1
+.CLASS 8
+.TYPE 2
+.ENDEF
+.DEFINE "mant"
+.VALUE 2
+.CLASS 8
+.DIM 7
+.TYPE 108
+.ENDEF
+.ENDREC "NONAME0"
+.BEGREC "NONAME1",18
+.DEFINE "real"
+.VALUE 0
+.CLASS 8
+.TAG "NONAME0"
+.TYPE 8
+.ENDEF
+.DEFINE "imag"
+.VALUE 9
+.CLASS 8
+.TAG "NONAME0"
+.TYPE 8
+.ENDEF
+.ENDREC "NONAME1"
+.BEGREC "NONAME2",11
+.DEFINE "dim"
+.VALUE 0
+.CLASS 8
+.TYPE 13
+.ENDEF
+.DEFINE "items"
+.VALUE 2
+.CLASS 8
+.DIM 1
+.TAG "NONAME0"
+.TYPE 104
+.ENDEF
+.ENDREC "NONAME2"
+.BEGREC "NONAME3",20
+.DEFINE "dim"
+.VALUE 0
+.CLASS 8
+.TYPE 13
+.ENDEF
+.DEFINE "items"
+.VALUE 2
+.CLASS 8
+.DIM 1
+.TAG "NONAME1"
+.TYPE 104
+.ENDEF
+.ENDREC "NONAME3"
+.BEGREC "NONAME4",11
+.DEFINE "cols"
+.VALUE 0
+.CLASS 8
+.TYPE 12
+.ENDEF
+.DEFINE "rows"
+.VALUE 1
+.CLASS 8
+.TYPE 12
+.ENDEF
+.DEFINE "items"
+.VALUE 2
+.CLASS 8
+.DIM 1
+.TAG "NONAME0"
+.TYPE 104
+.ENDEF
+.ENDREC "NONAME4"
+.BEGREC "NONAME5",3
+.DEFINE "len"
+.VALUE 0
+.CLASS 8
+.TYPE 13
+.ENDEF
+.DEFINE "data"
+.VALUE 2
+.CLASS 8
+.DIM 1
+.TYPE 98
+.ENDEF
+.ENDREC "NONAME5"
+.BEGREC "NONAME6",3
+.DEFINE "len"
+.VALUE 0
+.CLASS 8
+.TYPE 13
+.ENDEF
+.DEFINE "data"
+.VALUE 2
+.CLASS 8
+.DIM 1
+.TYPE 98
+.ENDEF
+.ENDREC "NONAME6"
+.BEGREC "NONAME7",3
+.DEFINE "size"
+.VALUE 0
+.CLASS 8
+.TYPE 13
+.ENDEF
+.DEFINE "data"
+.VALUE 2
+.CLASS 8
+.DIM 1
+.TYPE 108
+.ENDEF
+.ENDREC "NONAME7"
+.BEGREC "fmt_type",19
+.DEFINE "status"
+.VALUE 0
+.CLASS 8
+.TYPE 12
+.ENDEF
+.DEFINE "flags"
+.VALUE 1
+.CLASS 8
+.TYPE 12
+.ENDEF
+.DEFINE "size"
+.VALUE 2
+.CLASS 8
+.TYPE 2
+.ENDEF
+.DEFINE "chr"
+.VALUE 3
+.CLASS 8
+.TYPE 2
+.ENDEF
+.DEFINE "type"
+.VALUE 4
+.CLASS 8
+.TYPE 2
+.ENDEF
+.DEFINE "field_width"
+.VALUE 5
+.CLASS 8
+.TYPE 2
+.ENDEF
+.DEFINE "precision"
+.VALUE 6
+.CLASS 8
+.TYPE 2
+.ENDEF
+.DEFINE "set_begin"
+.VALUE 7
+.CLASS 8
+.TYPE 34
+.ENDEF
+.DEFINE "set_end"
+.VALUE 10
+.CLASS 8
+.TYPE 34
+.ENDEF
+.DEFINE "pad_whole"
+.VALUE 13
+.CLASS 8
+.TYPE 12
+.ENDEF
+.DEFINE "pad_pre_fract"
+.VALUE 14
+.CLASS 8
+.TYPE 12
+.ENDEF
+.DEFINE "pad_post_fract"
+.VALUE 15
+.CLASS 8
+.TYPE 12
+.ENDEF
+.DEFINE "pad_at"
+.VALUE 16
+.CLASS 8
+.TYPE 34
+.ENDEF
+.ENDREC "fmt_type"
+.BEGREC "flt_info",12
+.DEFINE "flags"
+.VALUE 0
+.CLASS 8
+.TYPE 12
+.ENDEF
+.DEFINE "exp"
+.VALUE 1
+.CLASS 8
+.TYPE 2
+.ENDEF
+.DEFINE "digits"
+.VALUE 2
+.CLASS 8
+.DIM 10
+.TYPE 108
+.ENDEF
+.ENDREC "flt_info"
+.BEGREC "NONAME8",6
+.DEFINE "quot"
+.VALUE 0
+.CLASS 8
+.TYPE 4
+.ENDEF
+.DEFINE "rem"
+.VALUE 3
+.CLASS 8
+.TYPE 4
+.ENDEF
+.ENDREC "NONAME8"
+.BEGREC "NONAME9",8
+.DEFINE "quot"
+.VALUE 0
+.CLASS 8
+.TYPE 5
+.ENDEF
+.DEFINE "rem"
+.VALUE 4
+.CLASS 8
+.TYPE 5
+.ENDEF
+.ENDREC "NONAME9"
+.BEGREC "header",6
+.DEFINE "s"
+.VALUE 0
+.CLASS 11
+.TAG "NONAME10"
+.TYPE 8
+.ENDEF
+.DEFINE "x"
+.VALUE 0
+.CLASS 11
+.TYPE 2
+.ENDEF
+.ENDREC "header"
+.BEGREC "NONAME10",6
+.DEFINE "ptr"
+.VALUE 0
+.CLASS 8
+.TAG "header"
+.TYPE 40
+.ENDEF
+.DEFINE "size"
+.VALUE 3
+.CLASS 8
+.TYPE 14
+.ENDEF
+.ENDREC "NONAME10"
+.BEGREC "__stdio_file",1
+.DEFINE "slot"
+.VALUE 0
+.CLASS 8
+.TYPE 12
+.ENDEF
+.ENDREC "__stdio_file"
+	SEGMENT DATA
+_opcode:
+	DW	0
+.DEFINE "opcode"
+.ALIAS "_opcode"
+.CLASS 69
+.VALUE _opcode
+.TYPE 13
+.ENDEF
+	SEGMENT BSS
+_memory:
+	DS	4096
+.DEFINE "memory"
+.ALIAS "_memory"
+.CLASS 83
+.VALUE _memory
+.DIM 4096
+.TYPE 108
+.ENDEF
+_V:
+	DS	16
+.DEFINE "V"
+.ALIAS "_V"
+.CLASS 83
+.VALUE _V
+.DIM 16
+.TYPE 108
+.ENDEF
+	SEGMENT DATA
+_I:
+	DW	0
+.DEFINE "I"
+.ALIAS "_I"
+.CLASS 69
+.VALUE _I
+.TYPE 13
+.ENDEF
+_pc:
+	DW	0
+.DEFINE "pc"
+.ALIAS "_pc"
+.CLASS 69
+.VALUE _pc
+.TYPE 13
+.ENDEF
+_delay_timer:
+	DW	0
+.DEFINE "delay_timer"
+.ALIAS "_delay_timer"
+.CLASS 69
+.VALUE _delay_timer
+.TYPE 3
+.ENDEF
+_sound_timer:
+	DW	0
+.DEFINE "sound_timer"
+.ALIAS "_sound_timer"
+.CLASS 69
+.VALUE _sound_timer
+.TYPE 3
+.ENDEF
+	SEGMENT BSS
+_stack:
+	DS	32
+.DEFINE "stack"
+.ALIAS "_stack"
+.CLASS 83
+.VALUE _stack
+.DIM 16
+.TYPE 109
+.ENDEF
+	SEGMENT DATA
+_sp:
+	DB	0
+.DEFINE "sp"
+.ALIAS "_sp"
+.CLASS 69
+.VALUE _sp
+.TYPE 12
+.ENDEF
+_keys:
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+.DEFINE "keys"
+.ALIAS "_keys"
+.CLASS 69
+.VALUE _keys
+.DIM 16
+.TYPE 108
+.ENDEF
+_drawFlag:
+	DB	0
+.DEFINE "drawFlag"
+.ALIAS "_drawFlag"
+.CLASS 69
+.VALUE _drawFlag
+.TYPE 12
+.ENDEF
+	SEGMENT BSS
+_game_data:
+	DS	3584
+.DEFINE "game_data"
+.ALIAS "_game_data"
+.CLASS 83
+.VALUE _game_data
+.DIM 3584
+.TYPE 108
+.ENDEF
+_file:
+	DS	1
+.DEFINE "file"
+.ALIAS "_file"
+.CLASS 83
+.VALUE _file
+.TYPE 12
+.ENDEF
+	SEGMENT DATA
+_fontset:
+	DB	240
+	DB	144
+	DB	144
+	DB	144
+	DB	240
+	DB	32
+	DB	96
+	DB	32
+	DB	32
+	DB	112
+	DB	240
+	DB	16
+	DB	240
+	DB	128
+	DB	240
+	DB	240
+	DB	16
+	DB	240
+	DB	16
+	DB	240
+	DB	144
+	DB	144
+	DB	240
+	DB	16
+	DB	16
+	DB	240
+	DB	128
+	DB	240
+	DB	16
+	DB	240
+	DB	240
+	DB	128
+	DB	240
+	DB	144
+	DB	240
+	DB	240
+	DB	16
+	DB	32
+	DB	64
+	DB	64
+	DB	240
+	DB	144
+	DB	240
+	DB	144
+	DB	240
+	DB	240
+	DB	144
+	DB	240
+	DB	16
+	DB	240
+	DB	240
+	DB	144
+	DB	240
+	DB	144
+	DB	144
+	DB	224
+	DB	144
+	DB	224
+	DB	144
+	DB	224
+	DB	240
+	DB	128
+	DB	128
+	DB	128
+	DB	240
+	DB	224
+	DB	144
+	DB	144
+	DB	144
+	DB	224
+	DB	240
+	DB	128
+	DB	240
+	DB	128
+	DB	240
+	DB	240
+	DB	128
+	DB	240
+	DB	128
+	DB	128
+.DEFINE "fontset"
+.ALIAS "_fontset"
+.CLASS 69
+.VALUE _fontset
+.DIM 80
+.TYPE 108
+.ENDEF
+;    1	#include <stdbool.h>
+;    2	#include <stddef.h>
+;    3	#include <stdint.h>
+;    4	#include <tice.h>
+;    5	#include <debug.h>
+;    6	
+;    7	#include <math.h>
+;    8	#include <stdio.h>
+;    9	#include <stdlib.h>
+;   10	#include <string.h>
+;   11	
+;   12	#include <fileioc.h>
+;   13	#include <keypadc.h>
+;   14	
+;   15	#include "chip8.h"
+;   16	#include "sprites_gfx.h"
+;   17	
+;   18	uint16_t opcode = 0;
+;   19	uint8_t memory[4096];
+;   20	uint8_t V[16];
+;   21	uint16_t I = 0;
+;   22	uint16_t pc = 0;
+;   23	int16_t delay_timer = 0;
+;   24	int16_t sound_timer = 0;
+;   25	uint16_t stack[16];
+;   26	uint8_t sp = 0;
+;   27	uint8_t keys[16] = {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0};
+;   28	bool drawFlag = false;
+;   29	
+;   30	uint8_t game_data[3584];
+;   31	
+;   32	ti_var_t file;
+;   33	
+;   34	unsigned char fontset[80] = {
+	SEGMENT CODE
+;   35	    0xF0, 0x90, 0x90, 0x90, 0xF0, //0
+;   36	    0x20, 0x60, 0x20, 0x20, 0x70, //1
+;   37	    0xF0, 0x10, 0xF0, 0x80, 0xF0, //2
+;   38	    0xF0, 0x10, 0xF0, 0x10, 0xF0, //3
+;   39	    0x90, 0x90, 0xF0, 0x10, 0x10, //4
+;   40	    0xF0, 0x80, 0xF0, 0x10, 0xF0, //5
+;   41	    0xF0, 0x80, 0xF0, 0x90, 0xF0, //6
+;   42	    0xF0, 0x10, 0x20, 0x40, 0x40, //7
+;   43	    0xF0, 0x90, 0xF0, 0x90, 0xF0, //8
+;   44	    0xF0, 0x90, 0xF0, 0x10, 0xF0, //9
+;   45	    0xF0, 0x90, 0xF0, 0x90, 0x90, //A
+;   46	    0xE0, 0x90, 0xE0, 0x90, 0xE0, //B
+;   47	    0xF0, 0x80, 0x80, 0x80, 0xF0, //C
+;   48	    0xE0, 0x90, 0x90, 0x90, 0xE0, //D
+;   49	    0xF0, 0x80, 0xF0, 0x80, 0xF0, //E
+;   50	    0xF0, 0x80, 0xF0, 0x80, 0x80  //F
+;   51	};
+;   52	
+;   53	void initialize() {
+_initialize:
+.DEFINE "_initialize"
+
+.VALUE _initialize
+
+.CLASS 2
+
+.TYPE 65
+
+.ENDEF
+
+.BEGFUNC "initialize",53,"_initialize"
+
+	PUSH	IX
+	LD	IX,0
+	ADD	IX,SP
+;   54		opcode = I = sp = delay_timer = sound_timer = 0;
+.LINE 54
+
+	LD	HL,_sound_timer
+	LD	(HL),0
+	INC	HL
+	LD	(HL),0
+	LD	HL,_delay_timer
+	LD	(HL),0
+	INC	HL
+	LD	(HL),0
+	XOR	A,A
+	LD	(_sp),A
+	LD	HL,_I
+	LD	(HL),0
+	INC	HL
+	LD	(HL),0
+	LD	HL,_opcode
+	LD	(HL),0
+	INC	HL
+	LD	(HL),0
+;   55		pc = 0x200;
+.LINE 55
+
+	LD	HL,_pc
+	LD	(HL),0
+	INC	HL
+	LD	(HL),2
+;   56		
+;   57		memset(canvas_data + 2, 0, 2048);
+.LINE 57
+
+	LD	BC,2048
+	PUSH	BC
+	LD	BC,0
+	PUSH	BC
+	LD	BC,_canvas_data+2
+	PUSH	BC
+	CALL	_memset
+	POP	BC
+	POP	BC
+	POP	BC
+;   58		memset(keys, 0, 16);
+.LINE 58
+
+	LD	BC,16
+	PUSH	BC
+	LD	BC,0
+	PUSH	BC
+	LD	BC,_keys
+	PUSH	BC
+	CALL	_memset
+	POP	BC
+	POP	BC
+	POP	BC
+;   59		memset(stack, 0, 16);
+.LINE 59
+
+	LD	BC,16
+	PUSH	BC
+	LD	BC,0
+	PUSH	BC
+	LD	BC,_stack
+	PUSH	BC
+	CALL	_memset
+	POP	BC
+	POP	BC
+	POP	BC
+;   60		memset(V, 0, 16);
+.LINE 60
+
+	LD	BC,16
+	PUSH	BC
+	LD	BC,0
+	PUSH	BC
+	LD	BC,_V
+	PUSH	BC
+	CALL	_memset
+	POP	BC
+	POP	BC
+	POP	BC
+;   61		memset(memory, 0, 4096);
+.LINE 61
+
+	LD	BC,4096
+	PUSH	BC
+	LD	BC,0
+	PUSH	BC
+	LD	BC,_memory
+	PUSH	BC
+	CALL	_memset
+	POP	BC
+	POP	BC
+	POP	BC
+;   62		
+;   63		memcpy(memory, fontset, 80);
+.LINE 63
+
+	LD	BC,80
+	PUSH	BC
+	LD	BC,_fontset
+	PUSH	BC
+	LD	BC,_memory
+	PUSH	BC
+	CALL	_memcpy
+	POP	BC
+	POP	BC
+	POP	BC
+;   64		
+;   65		srand(rtc_Time());
+.LINE 65
+
+	LD	BC,(15925316)
+	PUSH	BC
+	CALL	_srand
+	POP	BC
+;   66	}
+.LINE 66
+
+	LD	SP,IX
+	POP	IX
+	RET	
+
+
+;**************************** _initialize ***************************
+;Name                         Addr/Register   Size   Type
+;_srand                              IMPORT  -----   function
+;_fontset                            STATIC     80   variable
+;_memcpy                             IMPORT  -----   function
+;_memory                             STATIC   4096   variable
+;_V                                  STATIC     16   variable
+;_stack                              STATIC     32   variable
+;_keys                               STATIC     16   variable
+;_canvas_data                        IMPORT   2050   variable
+;_memset                             IMPORT  -----   function
+;_pc                                 STATIC      2   variable
+;_opcode                             STATIC      2   variable
+;_I                                  STATIC      2   variable
+;_sp                                 STATIC      1   variable
+;_delay_timer                        STATIC      2   variable
+;_sound_timer                        STATIC      2   variable
+
+
+; Stack Frame Size: 6 (bytes)
+;       Spill Code: 0 (instruction)
+
+
+.ENDFUNC "initialize",66,"_initialize"
+;   67	
+;   68	void loadProgram(char *fileName) {
+_loadProgram:
+.DEFINE "_loadProgram"
+
+.VALUE _loadProgram
+
+.CLASS 2
+
+.TYPE 65
+
+.ENDEF
+
+.BEGFUNC "loadProgram",68,"_loadProgram"
+
+.LINE 68
+
+.DEFINE "fileName"
+
+.CLASS 65
+
+.VALUE 6
+
+.TYPE 34
+
+.ENDEF
+
+.DEFINE "i"
+
+.CLASS 65
+
+.VALUE -3
+
+.TYPE 4
+
+.ENDEF
+
+.DEFINE "romSize"
+
+.CLASS 65
+
+.VALUE -6
+
+.TYPE 4
+
+.ENDEF
+
+	PUSH	IX
+	LD	IX,0
+	ADD	IX,SP
+	PUSH	BC
+	PUSH	BC
+;   69		int i;
+;   70		int romSize;
+;   71		
+;   72		file = ti_Open(fileName, "r");
+.LINE 72
+
+	LD	BC,L__1
+	PUSH	BC
+	LD	BC,(IX+6)
+	PUSH	BC
+	CALL	_ti_Open
+	POP	BC
+	POP	BC
+	LD	(_file),A
+;   73		ti_Read(&game_data, ti_GetSize(file), 1, file);
+.LINE 73
+
+	LD	C,A
+	LD	B,0
+	PUSH	BC
+	LD	BC,1
+	PUSH	BC
+	LD	C,A
+	LD	B,0
+	PUSH	BC
+	CALL	_ti_GetSize
+	POP	BC
+	LD	BC,HL
+	CALL	__stoiu
+	PUSH	HL
+	LD	BC,_game_data
+	PUSH	BC
+	CALL	_ti_Read
+	POP	BC
+	POP	BC
+	POP	BC
+	POP	BC
+;   74		
+;   75		romSize = ti_GetSize(file);
+.LINE 75
+
+	LD	A,(_file)
+	LD	C,A
+	LD	B,0
+	PUSH	BC
+	CALL	_ti_GetSize
+	POP	BC
+	LD	BC,HL
+	CALL	__stoiu
+	LD	(IX+-6),HL
+;   76		dbg_sprintf(dbgout, "%d ", romSize);
+.LINE 76
+
+	LD	BC,HL
+	PUSH	BC
+	LD	BC,L__2
+	PUSH	BC
+	LD	BC,16449536
+	PUSH	BC
+	CALL	_sprintf
+	POP	BC
+	POP	BC
+	POP	BC
+;   77		
+;   78		initialize();
+.LINE 78
+
+	CALL	_initialize
+;   79		
+;   80		if((4096-512) > romSize) {
+.LINE 80
+
+	LD	BC,3584
+	LD	HL,(IX+-6)
+	OR	A,A
+	SBC	HL,BC
+	CALL	__setflag
+	JP	P,L_5
+;   81			for(i = 0; i < romSize; ++i) {
+.LINE 81
+
+	LD	BC,0
+	LD	(IX+-3),BC
+	JR	L_3
+L_1:
+;   82				memory[i + 512] = (uint8_t)game_data[i+6];
+.LINE 82
+
+	LD	IY,(IX+-3)
+	LEA	HL,IY+6
+	LD	BC,_game_data
+	ADD	HL,BC
+	LD	IY,HL
+	LD	BC,512
+	LD	HL,(IX+-3)
+	ADD	HL,BC
+	LD	BC,_memory
+	ADD	HL,BC
+	LD	A,(IY)
+	LD	(HL),A
+	LD	BC,(IX+-3)
+	INC	BC
+	LD	(IX+-3),BC
+;   83			}
+L_3:
+.LINE 83
+
+	LD	BC,(IX+-6)
+	LD	HL,(IX+-3)
+	OR	A,A
+	SBC	HL,BC
+	CALL	__setflag
+	JP	M,L_1
+;   84		}
+;   85	}
+L_5:
+.LINE 85
+
+	LD	SP,IX
+	POP	IX
+	RET	
+
+
+;**************************** _loadProgram ***************************
+;Name                         Addr/Register   Size   Type
+;_memory                             STATIC   4096   variable
+;_initialize                         IMPORT  -----   function
+;_sprintf                            IMPORT  -----   function
+;_game_data                          STATIC   3584   variable
+;_ti_GetSize                         IMPORT  -----   function
+;_ti_Read                            IMPORT  -----   function
+;_file                               STATIC      1   variable
+;_ti_Open                            IMPORT  -----   function
+;romSize                               IX-6      3   variable
+;i                                     IX-3      3   variable
+;fileName                              IX+6      3   parameter
+
+
+; Stack Frame Size: 15 (bytes)
+;       Spill Code: 0 (instruction)
+
+
+.ENDFUNC "loadProgram",85,"_loadProgram"
+	SEGMENT STRSECT
+L__1:
+	DB	"r"
+	DB	0
+L__2:
+	DB	"%d "
+	DB	0
+	SEGMENT CODE
+;   86	
+;   87	void setKeys() {
+_setKeys:
+.DEFINE "_setKeys"
+
+.VALUE _setKeys
+
+.CLASS 2
+
+.TYPE 65
+
+.ENDEF
+
+.BEGFUNC "setKeys",87,"_setKeys"
+
+	PUSH	IX
+	LD	IX,0
+	ADD	IX,SP
+;   88		keys[0] = kb_Data[4] & kb_DecPnt;
+.LINE 88
+
+	LD	A,(16056344)
+	AND	A,1
+	LD	(_keys),A
+;   89		keys[1] = kb_Data[3] & kb_7;
+.LINE 89
+
+	LD	A,(16056342)
+	AND	A,8
+	LD	HL,_keys
+	INC	HL
+	LD	(HL),A
+;   90		keys[2] = kb_Data[4] & kb_8;
+.LINE 90
+
+	LD	A,(16056344)
+	AND	A,8
+	LD	IY,_keys
+	LEA	HL,IY+2
+	LD	(HL),A
+;   91		keys[3] = kb_Data[5] & kb_9;
+.LINE 91
+
+	LD	A,(16056346)
+	AND	A,8
+	LEA	HL,IY+3
+	LD	(HL),A
+;   92		
+;   93		keys[4] = kb_Data[3] & kb_4;
+.LINE 93
+
+	LD	A,(16056342)
+	AND	A,4
+	LEA	HL,IY+4
+	LD	(HL),A
+;   94		keys[5] = kb_Data[4] & kb_5;
+.LINE 94
+
+	LD	A,(16056344)
+	AND	A,4
+	LEA	HL,IY+5
+	LD	(HL),A
+;   95		keys[6] = kb_Data[5] & kb_6;
+.LINE 95
+
+	LD	A,(16056346)
+	AND	A,4
+	LEA	HL,IY+6
+	LD	(HL),A
+;   96		keys[7] = kb_Data[3] & kb_1;
+.LINE 96
+
+	LD	A,(16056342)
+	AND	A,2
+	LEA	HL,IY+7
+	LD	(HL),A
+;   97		
+;   98		keys[8] = kb_Data[4] & kb_2;
+.LINE 98
+
+	LD	A,(16056344)
+	AND	A,2
+	LEA	HL,IY+8
+	LD	(HL),A
+;   99		keys[9] = kb_Data[5] & kb_3;
+.LINE 99
+
+	LD	A,(16056346)
+	AND	A,2
+	LEA	HL,IY+9
+	LD	(HL),A
+;  100		keys[0xA] = kb_Data[3] & kb_0;
+.LINE 100
+
+	LD	A,(16056342)
+	AND	A,1
+	LEA	HL,IY+10
+	LD	(HL),A
+;  101		keys[0xB] = kb_Data[5] & kb_Chs;
+.LINE 101
+
+	LD	A,(16056346)
+	AND	A,1
+	LEA	HL,IY+11
+	LD	(HL),A
+;  102		
+;  103		keys[0xC] = kb_Data[6] & kb_Mul;
+.LINE 103
+
+	LD	A,(16056348)
+	AND	A,8
+	LEA	HL,IY+12
+	LD	(HL),A
+;  104		keys[0xD] = kb_Data[6] & kb_Sub;
+.LINE 104
+
+	LD	A,(16056348)
+	AND	A,4
+	LEA	HL,IY+13
+	LD	(HL),A
+;  105		keys[0xE] = kb_Data[6] & kb_Add;
+.LINE 105
+
+	LD	A,(16056348)
+	AND	A,2
+	LEA	HL,IY+14
+	LD	(HL),A
+;  106		keys[0xF] = kb_Data[6] & kb_Enter;
+.LINE 106
+
+	LD	A,(16056348)
+	AND	A,1
+	LEA	HL,IY+15
+	LD	(HL),A
+;  107	}
+.LINE 107
+
+	LD	SP,IX
+	POP	IX
+	RET	
+
+
+;**************************** _setKeys ***************************
+;Name                         Addr/Register   Size   Type
+;_keys                               STATIC     16   variable
+
+
+; Stack Frame Size: 6 (bytes)
+;       Spill Code: 0 (instruction)
+
+
+.ENDFUNC "setKeys",107,"_setKeys"
+;  108	
+;  109	void emulateCycle(uint8_t steps) {
+_emulateCycle:
+.DEFINE "_emulateCycle"
+
+.VALUE _emulateCycle
+
+.CLASS 2
+
+.TYPE 65
+
+.ENDEF
+
+.BEGFUNC "emulateCycle",109,"_emulateCycle"
+
+.LINE 109
+
+.DEFINE "steps"
+
+.CLASS 65
+
+.VALUE 6
+
+.TYPE 12
+
+.ENDEF
+
+.DEFINE "i"
+
+.CLASS 65
+
+.VALUE -3
+
+.TYPE 4
+
+.ENDEF
+
+.DEFINE "_y"
+
+.CLASS 65
+
+.VALUE -4
+
+.TYPE 12
+
+.ENDEF
+
+.DEFINE "_x"
+
+.CLASS 65
+
+.VALUE -5
+
+.TYPE 12
+
+.ENDEF
+
+.DEFINE "y"
+
+.CLASS 65
+
+.VALUE -6
+
+.TYPE 12
+
+.ENDEF
+
+.DEFINE "y"
+
+.CLASS 65
+
+.VALUE -7
+
+.TYPE 12
+
+.ENDEF
+
+.DEFINE "y"
+
+.CLASS 65
+
+.VALUE -8
+
+.TYPE 12
+
+.ENDEF
+
+.DEFINE "step"
+
+.CLASS 65
+
+.VALUE -9
+
+.TYPE 12
+
+.ENDEF
+
+.DEFINE "key_pressed"
+
+.CLASS 65
+
+.VALUE -10
+
+.TYPE 12
+
+.ENDEF
+
+.DEFINE "x"
+
+.CLASS 65
+
+.VALUE -11
+
+.TYPE 12
+
+.ENDEF
+
+.DEFINE "x"
+
+.CLASS 65
+
+.VALUE -12
+
+.TYPE 12
+
+.ENDEF
+
+.DEFINE "y"
+
+.CLASS 65
+
+.VALUE -13
+
+.TYPE 12
+
+.ENDEF
+
+.DEFINE "height"
+
+.CLASS 65
+
+.VALUE -14
+
+.TYPE 12
+
+.ENDEF
+
+.DEFINE "pixel"
+
+.CLASS 65
+
+.VALUE -15
+
+.TYPE 12
+
+.ENDEF
+
+.DEFINE "x"
+
+.CLASS 65
+
+.VALUE -16
+
+.TYPE 12
+
+.ENDEF
+
+.DEFINE "x"
+
+.CLASS 65
+
+.VALUE -17
+
+.TYPE 12
+
+.ENDEF
+
+.DEFINE "x"
+
+.CLASS 65
+
+.VALUE -18
+
+.TYPE 12
+
+.ENDEF
+
+.DEFINE "x"
+
+.CLASS 65
+
+.VALUE -19
+
+.TYPE 12
+
+.ENDEF
+
+.DEFINE "x"
+
+.CLASS 65
+
+.VALUE -20
+
+.TYPE 12
+
+.ENDEF
+
+.DEFINE "x"
+
+.CLASS 65
+
+.VALUE -21
+
+.TYPE 12
+
+.ENDEF
+
+.DEFINE "x"
+
+.CLASS 65
+
+.VALUE -22
+
+.TYPE 12
+
+.ENDEF
+
+.DEFINE "x"
+
+.CLASS 65
+
+.VALUE -23
+
+.TYPE 12
+
+.ENDEF
+
+.DEFINE "index"
+
+.CLASS 65
+
+.VALUE -25
+
+.TYPE 13
+
+.ENDEF
+
+	PUSH	IX
+	LD	IX,0
+	ADD	IX,SP
+	LEA	HL,IX+-77
+	LD	SP,HL
+;  110		uint8_t step;
+;  111		
+;  112		kb_Scan();
+.LINE 112
+
+	CALL	_kb_Scan
+;  113		setKeys();
+.LINE 113
+
+	CALL	_setKeys
+;  114		
+;  115		for(step = 0; step < steps; ++step) {
+.LINE 115
+
+	LD	(IX+-9),0
+	JR	L_95
+L_93:
+;  116			int i;
+;  117			opcode = (memory[pc] << 8) | memory[pc+1];
+.LINE 117
+
+	LD	BC,(_pc)
+	CALL	__stoiu
+	LD	BC,_memory
+	ADD	HL,BC
+	LD	C,(HL)
+	LD	B,0
+	LD	HL,BC
+	LD	H,L
+	LD	L,0
+	LD	DE,HL
+	LD	BC,(_pc)
+	CALL	__stoiu
+	INC	HL
+	LD	BC,_memory
+	ADD	HL,BC
+	LD	C,(HL)
+	LD	B,0
+	LD	HL,DE
+	CALL	__sor
+	LD	BC,HL
+	LD	HL,_opcode
+	LD	(HL),C
+	INC	HL
+	LD	(HL),B
+;  118			
+;  119			pc += 2;
+.LINE 119
+
+	LD	BC,(_pc)
+	INC	BC
+	INC	BC
+	LD	HL,_pc
+	LD	(HL),C
+	INC	HL
+	LD	(HL),B
+;  120			
+;  121			switch(opcode & 0xf000) {
+.LINE 121
+
+	LD	BC,(_opcode)
+	CALL	__stoiu
+	LD	BC,61440
+	CALL	__iand
+	CALL	__case16D
+	JP	(HL)
+L__7:
+	DW	16
+	DW	0
+	DW24	L_7	
+
+	DW	4096
+	DW24	L_12	
+
+	DW	8192
+	DW24	L_13	
+
+	DW	12288
+	DW24	L_15	
+
+	DW	16384
+	DW24	L_18	
+
+	DW	20480
+	DW24	L_21	
+
+	DW	24576
+	DW24	L_25	
+
+	DW	28672
+	DW24	L_26	
+
+	DW	32768
+	DW24	L_27	
+
+	DW	36864
+	DW24	L_37	
+
+	DW	40960
+	DW24	L_42	
+
+	DW	45056
+	DW24	L_43	
+
+	DW	49152
+	DW24	L_44	
+
+	DW	53248
+	DW24	L_45	
+
+	DW	57344
+	DW24	L_54	
+
+	DW	61440
+	DW24	L_62	
+
+	DW24	L_90	
+
+;  122				case 0x0000: {
+L_7:
+.LINE 122
+
+;  123					switch(opcode & 0x000f) {
+.LINE 123
+
+	LD	BC,(_opcode)
+	CALL	__stoiu
+	LD	A,L
+	AND	A,15
+	UEXT	HL
+	LD	L,A
+	CALL	__case8D
+	JP	(HL)
+L__8:
+	DW	2
+	DB	0
+	DW24	L_8	
+
+	DB	14
+	DW24	L_9	
+
+	DW24	L_10	
+
+;  124						case 0x0000:
+L_8:
+.LINE 124
+
+;  125							memset(canvas_data + 2, 0, 2048);
+.LINE 125
+
+	LD	BC,2048
+	PUSH	BC
+	LD	BC,0
+	PUSH	BC
+	LD	BC,_canvas_data+2
+	PUSH	BC
+	CALL	_memset
+	POP	BC
+	POP	BC
+	POP	BC
+;  126							drawFlag = true;
+.LINE 126
+
+	LD	A,1
+	LD	(_drawFlag),A
+;  127							break;
+.LINE 127
+
+	JR	L_90
+;  128						case 0x000e:
+L_9:
+.LINE 128
+
+;  129							pc = stack[(--sp)&0xf];
+.LINE 129
+
+	LD	A,(_sp)
+	DEC	A
+	LD	(_sp),A
+	AND	A,15
+	UEXT	HL
+	LD	L,A
+	ADD	HL,HL
+	LD	BC,_stack
+	ADD	HL,BC
+	LD	BC,(HL)
+	LD	HL,_pc
+	LD	(HL),C
+	INC	HL
+	LD	(HL),B
+;  130							break;
+.LINE 130
+
+	JR	L_90
+;  131						default:
+L_10:
+.LINE 131
+
+;  132							pc = (pc & 0x0fff);
+.LINE 132
+
+	LD	HL,(_pc)
+	LD.LIS	BC,4095
+	CALL	__sand
+	LD	BC,HL
+	LD	HL,_pc
+	LD	(HL),C
+	INC	HL
+	LD	(HL),B
+;  133							break;
+.LINE 133
+
+	JR	L_90
+;  134					}
+;  135					break;
+;  136				}
+;  137				case 0x1000: {
+L_12:
+.LINE 137
+
+;  138					pc = (opcode & 0x0fff);
+.LINE 138
+
+	LD	HL,(_opcode)
+	LD.LIS	BC,4095
+	CALL	__sand
+	LD	BC,HL
+	LD	HL,_pc
+	LD	(HL),C
+	INC	HL
+	LD	(HL),B
+;  139					break;
+.LINE 139
+
+	JR	L_90
+;  140				}
+;  141				case 0x2000: {
+L_13:
+.LINE 141
+
+;  142					stack[sp++] = pc;
+.LINE 142
+
+	LD	A,(_sp)
+	UEXT	HL
+	LD	L,A
+	ADD	HL,HL
+	LD	BC,_stack
+	ADD	HL,BC
+	LD	A,(_pc)
+	LD	(HL),A
+	INC	HL
+	LD	A,(_pc+1)
+	LD	(HL),A
+	LD	A,(_sp)
+	INC	A
+	LD	(_sp),A
+;  143					pc = (opcode & 0x0fff);
+.LINE 143
+
+	LD	HL,(_opcode)
+	LD.LIS	BC,4095
+	CALL	__sand
+	LD	BC,HL
+	LD	HL,_pc
+	LD	(HL),C
+	INC	HL
+	LD	(HL),B
+;  144					break;
+.LINE 144
+
+	JR	L_90
+;  145				}
+;  146				case 0x3000: {
+L_15:
+.LINE 146
+
+;  147					if(V[(opcode & 0x0f00) >> 8] == (opcode & 0x00ff))
+.LINE 147
+
+	LD	HL,(_opcode)
+	LD	A,8
+	CALL	__sshru_b
+	LD	BC,HL
+	CALL	__stoiu
+	LD	A,L
+	AND	A,15
+	UEXT	HL
+	LD	L,A
+	LD	BC,_V
+	ADD	HL,BC
+	LD	A,(HL)
+	UEXT	HL
+	LD	L,A
+	LD	DE,HL
+	LD	A,(_opcode)
+	LD	C,A
+	LD	B,0
+	CALL	__stoiu
+	LD	BC,HL
+	LD	HL,DE
+	OR	A,A
+	SBC	HL,BC
+	JR	NZ,L_90
+;  148						pc += 2;
+.LINE 148
+
+	LD	BC,(_pc)
+	INC	BC
+	INC	BC
+	LD	HL,_pc
+	LD	(HL),C
+	INC	HL
+	LD	(HL),B
+;  149					break;
+.LINE 149
+
+	JR	L_90
+;  150				}
+;  151				case 0x4000: {
+L_18:
+.LINE 151
+
+;  152					if(V[(opcode & 0x0f00) >> 8] != (opcode & 0x00ff))
+.LINE 152
+
+	LD	HL,(_opcode)
+	LD	A,8
+	CALL	__sshru_b
+	LD	BC,HL
+	CALL	__stoiu
+	LD	A,L
+	AND	A,15
+	UEXT	HL
+	LD	L,A
+	LD	BC,_V
+	ADD	HL,BC
+	LD	A,(HL)
+	UEXT	HL
+	LD	L,A
+	LD	DE,HL
+	LD	A,(_opcode)
+	LD	C,A
+	LD	B,0
+	CALL	__stoiu
+	LD	BC,HL
+	LD	HL,DE
+	OR	A,A
+	SBC	HL,BC
+	JR	Z,L_90
+;  153						pc += 2;
+.LINE 153
+
+	LD	BC,(_pc)
+	INC	BC
+	INC	BC
+	LD	HL,_pc
+	LD	(HL),C
+	INC	HL
+	LD	(HL),B
+;  154					break;
+.LINE 154
+
+	JR	L_90
+;  155				}
+;  156				case 0x5000: {
+L_21:
+.LINE 156
+
+;  157					if(V[(opcode & 0x0f00) >> 8] == V[(opcode & 0x00f0) >> 4] && (opcode & 0x000f) == 0)
+.LINE 157
+
+	LD	HL,(_opcode)
+	LD	A,8
+	CALL	__sshru_b
+	LD	BC,HL
+	CALL	__stoiu
+	LD	A,L
+	AND	A,15
+	UEXT	HL
+	LD	L,A
+	LD	BC,_V
+	ADD	HL,BC
+	LD	IY,HL
+	LD	HL,(_opcode)
+	LD	A,4
+	CALL	__sshru_b
+	LD	BC,HL
+	CALL	__stoiu
+	LD	A,L
+	AND	A,15
+	UEXT	HL
+	LD	L,A
+	LD	BC,_V
+	ADD	HL,BC
+	LD	A,(IY)
+	CP	A,(HL)
+	JR	NZ,L_90
+	LD	A,(_opcode)
+	AND	A,15
+	LD	C,A
+	LD	B,0
+	LD	HL,BC
+	CALL	__scmpzero
+	JR	NZ,L_90
+;  158						pc += 2;
+.LINE 158
+
+	LD	BC,(_pc)
+	INC	BC
+	INC	BC
+	LD	HL,_pc
+	LD	(HL),C
+	INC	HL
+	LD	(HL),B
+;  159					break;
+.LINE 159
+
+	JR	L_90
+;  160				}
+;  161				case 0x6000: {
+L_25:
+.LINE 161
+
+;  162					V[(opcode & 0x0f00) >> 8] = (opcode & 0x00ff);
+.LINE 162
+
+	LD	A,(_opcode)
+	LD	D,A
+	LD	HL,(_opcode)
+	LD	A,8
+	CALL	__sshru_b
+	LD	BC,HL
+	CALL	__stoiu
+	LD	A,L
+	AND	A,15
+	UEXT	HL
+	LD	L,A
+	LD	BC,_V
+	ADD	HL,BC
+	LD	(HL),D
+;  163					break;
+.LINE 163
+
+	JR	L_90
+;  164				}
+;  165				case 0x7000: {
+L_26:
+.LINE 165
+
+;  166					V[(opcode & 0x0f00) >> 8] += (opcode & 0x00ff);
+.LINE 166
+
+	LD	HL,(_opcode)
+	LD	A,8
+	CALL	__sshru_b
+	LD	BC,HL
+	CALL	__stoiu
+	LD	A,L
+	AND	A,15
+	LD	C,A
+	LD	B,0
+	CALL	__stoiu
+	LD	BC,_V
+	ADD	HL,BC
+	LD	(IX+-28),HL
+	LD	A,(_opcode)
+	LD	HL,(IX+-28)
+	LD	IY,(IX+-28)
+	ADD	A,(HL)
+	LD	(IY),A
+;  167					break;
+.LINE 167
+
+	JR	L_90
+;  168				}
+;  169				case 0x8000: {
+L_27:
+.LINE 169
+
+;  170					switch(opcode & 0x000f) {
+.LINE 170
+
+	LD	BC,(_opcode)
+	CALL	__stoiu
+	LD	A,L
+	AND	A,15
+	UEXT	HL
+	LD	L,A
+	CALL	__case8D
+	JP	(HL)
+L__13:
+	DW	9
+	DB	0
+	DW24	L_28	
+
+	DB	1
+	DW24	L_29	
+
+	DB	2
+	DW24	L_30	
+
+	DB	3
+	DW24	L_31	
+
+	DB	4
+	DW24	L_32	
+
+	DB	5
+	DW24	L_33	
+
+	DB	6
+	DW24	L_34	
+
+	DB	7
+	DW24	L_35	
+
+	DB	14
+	DW24	L_36	
+
+	DW24	L_41	
+
+;  171						case 0x0000: {
+L_28:
+.LINE 171
+
+;  172							V[(opcode & 0x0f00) >> 8]  = V[(opcode & 0x00f0) >> 4];
+.LINE 172
+
+	LD	HL,(_opcode)
+	LD	A,4
+	CALL	__sshru_b
+	LD	BC,HL
+	CALL	__stoiu
+	LD	A,L
+	AND	A,15
+	UEXT	HL
+	LD	L,A
+	LD	BC,_V
+	ADD	HL,BC
+	LD	IY,HL
+	LD	HL,(_opcode)
+	LD	A,8
+	CALL	__sshru_b
+	LD	BC,HL
+	CALL	__stoiu
+	LD	A,L
+	AND	A,15
+	UEXT	HL
+	LD	L,A
+	LD	BC,_V
+	ADD	HL,BC
+	LD	A,(IY)
+	LD	(HL),A
+;  173							break;
+.LINE 173
+
+	JR	L_41
+;  174						}
+;  175						case 0x0001: {
+L_29:
+.LINE 175
+
+;  176							V[(opcode & 0x0f00) >> 8] |= V[(opcode & 0x00f0) >> 4];
+.LINE 176
+
+	LD	HL,(_opcode)
+	LD	A,8
+	CALL	__sshru_b
+	LD	BC,HL
+	CALL	__stoiu
+	LD	A,L
+	AND	A,15
+	LD	C,A
+	LD	B,0
+	CALL	__stoiu
+	LD	BC,_V
+	ADD	HL,BC
+	LD	(IX+-31),HL
+	LD	HL,(_opcode)
+	LD	A,4
+	CALL	__sshru_b
+	LD	BC,HL
+	CALL	__stoiu
+	LD	A,L
+	AND	A,15
+	UEXT	HL
+	LD	L,A
+	LD	BC,_V
+	ADD	HL,BC
+	LD	IY,(IX+-31)
+	LD	A,(HL)
+	OR	A,(IY)
+	LD	HL,(IX+-31)
+	LD	(HL),A
+;  177							break;
+.LINE 177
+
+	JR	L_41
+;  178						}
+;  179						case 0x0002: {
+L_30:
+.LINE 179
+
+;  180							V[(opcode & 0x0f00) >> 8] &= V[(opcode & 0x00f0) >> 4];
+.LINE 180
+
+	LD	HL,(_opcode)
+	LD	A,8
+	CALL	__sshru_b
+	LD	BC,HL
+	CALL	__stoiu
+	LD	A,L
+	AND	A,15
+	LD	C,A
+	LD	B,0
+	CALL	__stoiu
+	LD	BC,_V
+	ADD	HL,BC
+	LD	(IX+-34),HL
+	LD	HL,(_opcode)
+	LD	A,4
+	CALL	__sshru_b
+	LD	BC,HL
+	CALL	__stoiu
+	LD	A,L
+	AND	A,15
+	UEXT	HL
+	LD	L,A
+	LD	BC,_V
+	ADD	HL,BC
+	LD	IY,(IX+-34)
+	LD	A,(HL)
+	AND	A,(IY)
+	LD	HL,(IX+-34)
+	LD	(HL),A
+;  181							break;
+.LINE 181
+
+	JR	L_41
+;  182						}
+;  183						case 0x0003: {
+L_31:
+.LINE 183
+
+;  184							V[(opcode & 0x0f00) >> 8] ^= V[(opcode & 0x00f0) >> 4];
+.LINE 184
+
+	LD	HL,(_opcode)
+	LD	A,8
+	CALL	__sshru_b
+	LD	BC,HL
+	CALL	__stoiu
+	LD	A,L
+	AND	A,15
+	LD	C,A
+	LD	B,0
+	CALL	__stoiu
+	LD	BC,_V
+	ADD	HL,BC
+	LD	(IX+-37),HL
+	LD	HL,(_opcode)
+	LD	A,4
+	CALL	__sshru_b
+	LD	BC,HL
+	CALL	__stoiu
+	LD	A,L
+	AND	A,15
+	UEXT	HL
+	LD	L,A
+	LD	BC,_V
+	ADD	HL,BC
+	LD	IY,(IX+-37)
+	LD	A,(HL)
+	XOR	A,(IY)
+	LD	HL,(IX+-37)
+	LD	(HL),A
+;  185							break;
+.LINE 185
+
+	JR	L_41
+;  186						}
+;  187						case 0x0004: {
+L_32:
+.LINE 187
+
+;  188							uint8_t x = (opcode & 0x0f00) >> 8;
+.LINE 188
+
+	LD	HL,(_opcode)
+	LD	A,8
+	CALL	__sshru_b
+	LD	BC,HL
+	CALL	__stoiu
+	LD	A,L
+	AND	A,15
+	LD	(IX+-16),A
+;  189							uint8_t y = (opcode & 0x00f0) >> 4;
+.LINE 189
+
+	LD	HL,(_opcode)
+	LD	A,4
+	CALL	__sshru_b
+	LD	BC,HL
+	CALL	__stoiu
+	LD	A,L
+	AND	A,15
+	LD	(IX+-7),A
+;  190							V[0xf] = (V[x] + V[y] > 0xff);
+.LINE 190
+
+	LD	A,(IX+-16)
+	UEXT	HL
+	LD	L,A
+	LD	BC,_V
+	ADD	HL,BC
+	LD	(IX+-40),HL
+	LD	A,(IX+-7)
+	UEXT	HL
+	LD	L,A
+	ADD	HL,BC
+	LD	A,(HL)
+	UEXT	HL
+	LD	L,A
+	LD	BC,HL
+	LD	HL,(IX+-40)
+	LD	A,(HL)
+	UEXT	HL
+	LD	L,A
+	ADD	HL,BC
+	LD	BC,HL
+	LD	HL,255
+	OR	A,A
+	SBC	HL,BC
+	CALL	__setflag
+	JP	P,L__15
+	LD	A,1
+	JR	L__16
+L__15:
+	XOR	A,A
+L__16:
+	LD	HL,_V+15
+	LD	(HL),A
+;  191							V[x] += V[y];
+.LINE 191
+
+	LD	A,(IX+-7)
+	UEXT	HL
+	LD	L,A
+	LD	BC,_V
+	ADD	HL,BC
+	LD	IY,(IX+-40)
+	LD	(IX+-64),HL	; spill
+	LD	HL,(IX+-40)
+	LD	(IX+-73),HL	; spill
+	LD	HL,(IX+-64)	; unspill
+	LD	A,(HL)
+	ADD	A,(IY)
+	LD	HL,(IX+-73)	; unspill
+	LD	(HL),A
+;  192							break;
+.LINE 192
+
+	JR	L_41
+;  193						}
+;  194						case 0x0005: {
+L_33:
+.LINE 194
+
+;  195							uint8_t x = (opcode & 0x0f00) >> 8;
+.LINE 195
+
+	LD	HL,(_opcode)
+	LD	A,8
+	CALL	__sshru_b
+	LD	BC,HL
+	CALL	__stoiu
+	LD	A,L
+	AND	A,15
+	LD	(IX+-23),A
+;  196							uint8_t y = (opcode & 0x00f0) >> 4;
+.LINE 196
+
+	LD	HL,(_opcode)
+	LD	A,4
+	CALL	__sshru_b
+	LD	BC,HL
+	CALL	__stoiu
+	LD	A,L
+	AND	A,15
+	LD	(IX+-8),A
+;  197							V[0xf] = V[x] > V[y];
+.LINE 197
+
+	LD	A,(IX+-23)
+	UEXT	HL
+	LD	L,A
+	LD	BC,_V
+	ADD	HL,BC
+	LD	(IX+-43),HL
+	LD	A,(IX+-8)
+	UEXT	HL
+	LD	L,A
+	ADD	HL,BC
+	LD	IY,(IX+-43)
+	LD	A,(HL)
+	CP	A,(IY)
+	JR	NC,L__18
+	LD	A,1
+	JR	L__19
+L__18:
+	XOR	A,A
+L__19:
+	LD	HL,_V+15
+	LD	(HL),A
+;  198							V[x] -= V[y];
+.LINE 198
+
+	LD	IY,(IX+-43)
+	LD	A,(IX+-8)
+	UEXT	HL
+	LD	L,A
+	ADD	HL,BC
+	LD	(IX+-64),HL	; spill
+	LD	HL,(IX+-43)
+	LD	(IX+-70),HL	; spill
+	LD	HL,(IX+-64)	; unspill
+	LD	A,(IY)
+	SUB	A,(HL)
+	LD	HL,(IX+-70)	; unspill
+	LD	(HL),A
+;  199							break;
+.LINE 199
+
+	JR	L_41
+;  200						}
+;  201						case 0x0006: {
+L_34:
+.LINE 201
+
+;  202							uint8_t x = (opcode & 0x0f00) >> 8;
+.LINE 202
+
+	LD	HL,(_opcode)
+	LD	A,8
+	CALL	__sshru_b
+	LD	BC,HL
+	CALL	__stoiu
+	LD	A,L
+	AND	A,15
+	LD	(IX+-17),A
+;  203							uint8_t y = (opcode & 0x00f0) >> 4;
+;  204							V[0xf] = V[x] & 1;
+.LINE 204
+
+	UEXT	HL
+	LD	L,A
+	LD	BC,_V
+	ADD	HL,BC
+	LD	(IX+-46),HL
+	LD	A,(HL)
+	AND	A,1
+	LD	HL,_V+15
+	LD	(HL),A
+;  205							V[x] >>= 1;
+.LINE 205
+
+	LD	HL,(IX+-46)
+	LD	A,(HL)
+	UEXT	HL
+	LD	L,A
+	LD	A,1
+	CALL	__ishrs_b
+	LD	IY,(IX+-46)
+	LD	(IY),L
+;  206							break;
+.LINE 206
+
+	JR	L_41
+;  207						}
+;  208						case 0x0007: {
+L_35:
+.LINE 208
+
+;  209							uint8_t x = (opcode & 0x0f00) >> 8;
+.LINE 209
+
+	LD	HL,(_opcode)
+	LD	A,8
+	CALL	__sshru_b
+	LD	BC,HL
+	CALL	__stoiu
+	LD	A,L
+	AND	A,15
+	LD	(IX+-18),A
+;  210							uint8_t y = (opcode & 0x00f0) >> 4;
+.LINE 210
+
+	LD	HL,(_opcode)
+	LD	A,4
+	CALL	__sshru_b
+	LD	BC,HL
+	CALL	__stoiu
+	LD	A,L
+	AND	A,15
+	LD	(IX+-6),A
+;  211							V[0xf] = V[y] > V[x];
+.LINE 211
+
+	LD	A,(IX+-18)
+	UEXT	HL
+	LD	L,A
+	LD	BC,_V
+	ADD	HL,BC
+	LD	(IX+-49),HL
+	LD	A,(IX+-6)
+	UEXT	HL
+	LD	L,A
+	ADD	HL,BC
+	LD	IY,(IX+-49)
+	LD	A,(IY)
+	CP	A,(HL)
+	JR	NC,L__21
+	LD	A,1
+	JR	L__22
+L__21:
+	XOR	A,A
+L__22:
+	LD	HL,_V+15
+	LD	(HL),A
+;  212							V[x] = V[y] - V[x];
+.LINE 212
+
+	LD	A,(IX+-6)
+	UEXT	HL
+	LD	L,A
+	ADD	HL,BC
+	LD	IY,(IX+-49)
+	LD	(IX+-64),HL	; spill
+	LD	HL,(IX+-49)
+	LD	(IX+-67),HL	; spill
+	LD	HL,(IX+-64)	; unspill
+	LD	A,(HL)
+	SUB	A,(IY)
+	LD	HL,(IX+-67)	; unspill
+	LD	(HL),A
+;  213							break;
+.LINE 213
+
+	JR	L_41
+;  214						}
+;  215						case 0x000E: {
+L_36:
+.LINE 215
+
+;  216							uint8_t x = (opcode & 0x0f00) >> 8;
+.LINE 216
+
+	LD	HL,(_opcode)
+	LD	A,8
+	CALL	__sshru_b
+	LD	BC,HL
+	CALL	__stoiu
+	LD	A,L
+	AND	A,15
+	LD	(IX+-11),A
+;  217							uint8_t y = (opcode & 0x00f0) >> 4;
+;  218							V[0xf] = V[x] >> 7;
+.LINE 218
+
+	UEXT	HL
+	LD	L,A
+	LD	BC,_V
+	ADD	HL,BC
+	LD	(IX+-52),HL
+	LD	A,(HL)
+	UEXT	HL
+	LD	L,A
+	LD	A,7
+	CALL	__ishrs_b
+	LD	IY,_V
+	LD	(IY+15),L
+;  219							V[x] <<= 1;
+.LINE 219
+
+	LD	HL,(IX+-52)
+	LD	A,(HL)
+	ADD	A,A
+	LD	HL,(IX+-52)
+	LD	(HL),A
+;  220							break;
+.LINE 220
+
+;  221						}
+;  222						break;
+;  223					}
+;  224				}
+L_41:
+.LINE 224
+
+;  225				case 0x9000: {
+L_37:
+.LINE 225
+
+;  226					if(V[(opcode & 0x0f00) >> 8] != V[(opcode & 0x00f0) >> 4] && (opcode & 0x000f) == 0)
+.LINE 226
+
+	LD	HL,(_opcode)
+	LD	A,8
+	CALL	__sshru_b
+	LD	BC,HL
+	CALL	__stoiu
+	LD	A,L
+	AND	A,15
+	UEXT	HL
+	LD	L,A
+	LD	BC,_V
+	ADD	HL,BC
+	LD	IY,HL
+	LD	HL,(_opcode)
+	LD	A,4
+	CALL	__sshru_b
+	LD	BC,HL
+	CALL	__stoiu
+	LD	A,L
+	AND	A,15
+	UEXT	HL
+	LD	L,A
+	LD	BC,_V
+	ADD	HL,BC
+	LD	A,(IY)
+	CP	A,(HL)
+	JR	Z,L_90
+	LD	A,(_opcode)
+	AND	A,15
+	LD	C,A
+	LD	B,0
+	LD	HL,BC
+	CALL	__scmpzero
+	JR	NZ,L_90
+;  227						pc += 2;
+.LINE 227
+
+	LD	BC,(_pc)
+	INC	BC
+	INC	BC
+	LD	HL,_pc
+	LD	(HL),C
+	INC	HL
+	LD	(HL),B
+;  228					break;
+.LINE 228
+
+	JR	L_90
+;  229				}
+;  230				case 0xa000: {
+L_42:
+.LINE 230
+
+;  231					I = (opcode & 0x0fff);
+.LINE 231
+
+	LD	HL,(_opcode)
+	LD.LIS	BC,4095
+	CALL	__sand
+	LD	BC,HL
+	LD	HL,_I
+	LD	(HL),C
+	INC	HL
+	LD	(HL),B
+;  232					break;
+.LINE 232
+
+	JR	L_90
+;  233				}
+;  234				case 0xb000: {
+L_43:
+.LINE 234
+
+;  235					pc = V[0] + (opcode & 0x0fff);
+.LINE 235
+
+	LD	A,(_V)
+	LD	C,A
+	LD	B,0
+	LD	DE,BC
+	LD	HL,(_opcode)
+	LD.LIS	BC,4095
+	CALL	__sand
+	LD	BC,HL
+	LD	HL,DE
+	ADD.SIS	HL,BC
+	LD	BC,HL
+	LD	HL,_pc
+	LD	(HL),C
+	INC	HL
+	LD	(HL),B
+;  236					break;
+.LINE 236
+
+	JR	L_90
+;  237				}
+;  238				case 0xc000: {
+L_44:
+.LINE 238
+
+;  239					V[(opcode & 0x0f00) >> 8] = (rand() % 256) & (opcode & 0x00FF);
+.LINE 239
+
+	LD	A,(_opcode)
+	LD	D,A
+	LD	(IX+-76),DE
+	LD	(IX+-77),D
+	CALL	_rand
+	LD	DE,(IX+-76)
+	LD	D,(IX+-77)
+	LD	BC,256
+	CALL	__irems
+	LD	A,D
+	AND	A,L
+	LD	D,A
+	LD	HL,(_opcode)
+	LD	A,8
+	CALL	__sshru_b
+	LD	BC,HL
+	CALL	__stoiu
+	LD	A,L
+	AND	A,15
+	UEXT	HL
+	LD	L,A
+	LD	BC,_V
+	ADD	HL,BC
+	LD	(HL),D
+;  240					break;
+.LINE 240
+
+	JR	L_90
+;  241				}
+;  242				case 0xd000: {
+L_45:
+.LINE 242
+
+;  243					uint8_t x = V[(opcode & 0x0f00) >> 8];
+.LINE 243
+
+	LD	HL,(_opcode)
+	LD	A,8
+	CALL	__sshru_b
+	LD	BC,HL
+	CALL	__stoiu
+	LD	A,L
+	AND	A,15
+	UEXT	HL
+	LD	L,A
+	LD	BC,_V
+	ADD	HL,BC
+	LD	A,(HL)
+	LD	(IX+-12),A
+;  244					uint8_t y = V[(opcode & 0x00f0) >> 4];
+.LINE 244
+
+	LD	HL,(_opcode)
+	LD	A,4
+	CALL	__sshru_b
+	LD	BC,HL
+	CALL	__stoiu
+	LD	A,L
+	AND	A,15
+	UEXT	HL
+	LD	L,A
+	LD	BC,_V
+	ADD	HL,BC
+	LD	A,(HL)
+	LD	(IX+-13),A
+;  245					uint8_t height = (opcode & 0x000f);
+.LINE 245
+
+	LD	A,(_opcode)
+	AND	A,15
+	LD	(IX+-14),A
+;  246					uint8_t pixel;
+;  247					uint16_t index;
+;  248					
+;  249					uint8_t _y;
+;  250					uint8_t _x;
+;  251					
+;  252					V[0xf] = 0;
+.LINE 252
+
+	LD	HL,_V+15
+	LD	(HL),0
+;  253					
+;  254					for(_y = 0; _y < height; ++_y) {
+.LINE 254
+
+	LD	(IX+-4),0
+	JR	L_52
+L_50:
+;  255						pixel = memory[I + _y];
+.LINE 255
+
+	LD	BC,(_I)
+	CALL	__stoiu
+	LD	BC,HL
+	LD	A,(IX+-4)
+	UEXT	HL
+	LD	L,A
+	ADD	HL,BC
+	LD	BC,_memory
+	ADD	HL,BC
+	LD	A,(HL)
+	LD	(IX+-15),A
+;  256						for(_x = 0; _x < 8; ++_x) {
+.LINE 256
+
+	LD	(IX+-5),0
+	JR	L_49
+L_47:
+;  257							if((pixel & (0x80 >> _x)) != 0) {
+.LINE 257
+
+	LD	A,(IX+-5)
+	UEXT	HL
+	LD	L,A
+	LD	BC,HL
+	LD	HL,128
+	CALL	__ishrs
+	LD	A,L
+	AND	A,(IX+-15)
+	JR	Z,L_48
+;  258								index = (((x + _x) + ((y + _y) << 6)) % 2048) + 2;
+.LINE 258
+
+	LD	A,(IX+-13)
+	UEXT	HL
+	LD	L,A
+	LD	BC,HL
+	LD	A,(IX+-4)
+	UEXT	HL
+	LD	L,A
+	ADD	HL,BC
+	ADD	HL,HL
+	ADD	HL,HL
+	ADD	HL,HL
+	ADD	HL,HL
+	ADD	HL,HL
+	ADD	HL,HL
+	LD	BC,HL
+	LD	A,(IX+-12)
+	UEXT	HL
+	LD	L,A
+	LD	DE,HL
+	LD	A,(IX+-5)
+	UEXT	HL
+	LD	L,A
+	ADD	HL,DE
+	ADD	HL,BC
+	LD	BC,2048
+	CALL	__irems
+	INC	HL
+	INC	HL
+	LD	(IX+-25),L
+	LD	(IX+-24),H
+;  259								V[0xf] |= canvas_data[index] & 1;
+.LINE 259
+
+	LD	IY,_V
+	LEA	IY,IY+15
+	LD	(IX+-58),IY
+	LD	BC,(IX+-25)
+	CALL	__stoiu
+	LD	BC,_canvas_data
+	ADD	HL,BC
+	LD	(IX+-55),HL
+	LD	A,(HL)
+	AND	A,1
+	LD	HL,(IX+-58)
+	OR	A,(HL)
+	LD	HL,(IX+-58)
+	LD	(HL),A
+;  260								canvas_data[index] = ~canvas_data[index];
+.LINE 260
+
+	LD	HL,(IX+-55)
+	LD	A,(HL)
+	CPL	
+	LD	HL,(IX+-55)
+	LD	(HL),A
+;  261							}
+;  262						}
+L_48:
+.LINE 262
+
+	INC	(IX+-5)
+L_49:
+	LD	A,(IX+-5)
+	CP	A,8
+	JR	C,L_47
+	INC	(IX+-4)
+;  263					}
+L_52:
+.LINE 263
+
+	LD	A,(IX+-4)
+	CP	A,(IX+-14)
+	JR	C,L_50
+;  264					
+;  265					drawFlag = true;
+.LINE 265
+
+	LD	A,1
+	LD	(_drawFlag),A
+;  266					
+;  267					break;
+.LINE 267
+
+	JR	L_90
+;  268				}
+;  269				case 0xe000: {
+L_54:
+.LINE 269
+
+;  270					switch(opcode & 0x00ff) {
+.LINE 270
+
+	LD	BC,(_opcode)
+	CALL	__stoiu
+	LD	A,L
+	UEXT	HL
+	LD	L,A
+	CALL	__case8D
+	JP	(HL)
+L__28:
+	DW	2
+	DB	158
+	DW24	L_55	
+
+	DB	161
+	DW24	L_58	
+
+	DW24	L_90	
+
+;  271						case 0x009e: {
+L_55:
+.LINE 271
+
+;  272							if(keys[V[(opcode & 0x0f00) >> 8]])
+.LINE 272
+
+	LD	HL,(_opcode)
+	LD	A,8
+	CALL	__sshru_b
+	LD	BC,HL
+	CALL	__stoiu
+	LD	A,L
+	AND	A,15
+	UEXT	HL
+	LD	L,A
+	LD	BC,_V
+	ADD	HL,BC
+	LD	A,(HL)
+	UEXT	HL
+	LD	L,A
+	LD	BC,_keys
+	ADD	HL,BC
+	LD	A,(HL)
+	OR	A,A
+	JR	Z,L_90
+;  273								pc += 2;
+.LINE 273
+
+	LD	BC,(_pc)
+	INC	BC
+	INC	BC
+	LD	HL,_pc
+	LD	(HL),C
+	INC	HL
+	LD	(HL),B
+;  274							break;
+.LINE 274
+
+	JR	L_90
+;  275						}
+;  276						case 0x00a1: {
+L_58:
+.LINE 276
+
+;  277							if(!keys[V[(opcode & 0x0f00) >> 8]])
+.LINE 277
+
+	LD	HL,(_opcode)
+	LD	A,8
+	CALL	__sshru_b
+	LD	BC,HL
+	CALL	__stoiu
+	LD	A,L
+	AND	A,15
+	UEXT	HL
+	LD	L,A
+	LD	BC,_V
+	ADD	HL,BC
+	LD	A,(HL)
+	UEXT	HL
+	LD	L,A
+	LD	BC,_keys
+	ADD	HL,BC
+	LD	A,(HL)
+	OR	A,A
+	JR	NZ,L_90
+;  278								pc += 2;
+.LINE 278
+
+	LD	BC,(_pc)
+	INC	BC
+	INC	BC
+	LD	HL,_pc
+	LD	(HL),C
+	INC	HL
+	LD	(HL),B
+;  279							break;
+.LINE 279
+
+	JR	L_90
+;  280						}
+;  281					}
+;  282					break;
+;  283				}
+;  284				case 0xf000: {
+L_62:
+.LINE 284
+
+;  285					switch(opcode & 0x00ff) {
+.LINE 285
+
+	LD	BC,(_opcode)
+	CALL	__stoiu
+	LD	A,L
+	UEXT	HL
+	LD	L,A
+	CALL	__case8D
+	JP	(HL)
+L__31:
+	DW	9
+	DB	7
+	DW24	L_63	
+
+	DB	10
+	DW24	L_64	
+
+	DB	21
+	DW24	L_71	
+
+	DB	24
+	DW24	L_73	
+
+	DB	30
+	DW24	L_74	
+
+	DB	41
+	DW24	L_75	
+
+	DB	51
+	DW24	L_76	
+
+	DB	85
+	DW24	L_77	
+
+	DB	101
+	DW24	L_82	
+
+	DW24	L_90	
+
+;  286						case 0x0007: {
+L_63:
+.LINE 286
+
+;  287							V[(opcode & 0x0f00) >> 8] = delay_timer;
+.LINE 287
+
+	LD	A,(_delay_timer)
+	LD	D,A
+	LD	HL,(_opcode)
+	LD	A,8
+	CALL	__sshru_b
+	LD	BC,HL
+	CALL	__stoiu
+	LD	A,L
+	AND	A,15
+	UEXT	HL
+	LD	L,A
+	LD	BC,_V
+	ADD	HL,BC
+	LD	(HL),D
+;  288							break;
+.LINE 288
+
+	JR	L_90
+;  289						}
+;  290						case 0x000A: {
+L_64:
+.LINE 290
+
+;  291							bool key_pressed = false;
+.LINE 291
+
+	LD	(IX+-10),0
+;  292							pc -= 2;
+.LINE 292
+
+	LD	IY,(_pc)
+	LEA	BC,IY+-2
+	LD	HL,_pc
+	LD	(HL),C
+	INC	HL
+	LD	(HL),B
+;  293							
+;  294							for(i = 0; i < 16; ++i) {
+.LINE 294
+
+	LD	BC,0
+	LD	(IX+-3),BC
+	JR	L_68
+L_66:
+;  295								if(keys[i]) {
+.LINE 295
+
+	LD	BC,_keys
+	LD	HL,(IX+-3)
+	ADD	HL,BC
+	LD	A,(HL)
+	OR	A,A
+	JR	Z,L_67
+;  296									V[(opcode & 0x0f00) >> 8] = i;
+.LINE 296
+
+	LD	D,(IX+-3)
+	LD	HL,(_opcode)
+	LD	A,8
+	CALL	__sshru_b
+	LD	BC,HL
+	CALL	__stoiu
+	LD	A,L
+	AND	A,15
+	UEXT	HL
+	LD	L,A
+	LD	BC,_V
+	ADD	HL,BC
+	LD	(HL),D
+;  297									pc += 2;
+.LINE 297
+
+	LD	BC,(_pc)
+	INC	BC
+	INC	BC
+	LD	HL,_pc
+	LD	(HL),C
+	INC	HL
+	LD	(HL),B
+;  298									key_pressed = true;
+.LINE 298
+
+	LD	(IX+-10),1
+;  299									break;
+.LINE 299
+
+	JR	L_70
+;  300								}
+;  301							}
+L_67:
+.LINE 301
+
+	LD	BC,(IX+-3)
+	INC	BC
+	LD	(IX+-3),BC
+L_68:
+	LD	BC,16
+	LD	HL,(IX+-3)
+	OR	A,A
+	SBC	HL,BC
+	JP	M,L_66
+L_70:
+;  302							
+;  303							if(!key_pressed)
+.LINE 303
+
+	LD	A,(IX+-10)
+	OR	A,A
+	JR	Z,L_96
+;  304								return;
+.LINE 304
+
+;  305						}
+.LINE 305
+
+;  306						case 0x0015: {
+L_71:
+.LINE 306
+
+;  307							delay_timer = V[(opcode & 0x0f00) >> 8];
+.LINE 307
+
+	LD	HL,(_opcode)
+	LD	A,8
+	CALL	__sshru_b
+	LD	BC,HL
+	CALL	__stoiu
+	LD	A,L
+	AND	A,15
+	UEXT	HL
+	LD	L,A
+	LD	BC,_V
+	ADD	HL,BC
+	LD	C,(HL)
+	LD	HL,_delay_timer
+	LD	(HL),C
+	INC	HL
+	LD	(HL),0
+;  308							break;
+.LINE 308
+
+	JR	L_90
+;  309						}
+;  310						case 0x0018: {
+L_73:
+.LINE 310
+
+;  311							sound_timer = V[(opcode & 0x0f00) >> 8];
+.LINE 311
+
+	LD	HL,(_opcode)
+	LD	A,8
+	CALL	__sshru_b
+	LD	BC,HL
+	CALL	__stoiu
+	LD	A,L
+	AND	A,15
+	UEXT	HL
+	LD	L,A
+	LD	BC,_V
+	ADD	HL,BC
+	LD	C,(HL)
+	LD	HL,_sound_timer
+	LD	(HL),C
+	INC	HL
+	LD	(HL),0
+;  312							break;
+.LINE 312
+
+	JR	L_90
+;  313						}
+;  314						case 0x001E: {
+L_74:
+.LINE 314
+
+;  315							uint8_t x = (opcode & 0x0f00) >> 8;
+.LINE 315
+
+	LD	HL,(_opcode)
+	LD	A,8
+	CALL	__sshru_b
+	LD	BC,HL
+	CALL	__stoiu
+	LD	A,L
+	AND	A,15
+	LD	(IX+-19),A
+;  316							//V[0xf] = (I > 0xfff - V[x]);
+;  317							I += V[x];
+.LINE 317
+
+	UEXT	HL
+	LD	L,A
+	LD	BC,_V
+	ADD	HL,BC
+	LD	C,(HL)
+	LD	B,0
+	LD	DE,(_I)
+	LD	HL,BC
+	ADD.SIS	HL,DE
+	LD	BC,HL
+	LD	HL,_I
+	LD	(HL),C
+	INC	HL
+	LD	(HL),B
+;  318							break;
+.LINE 318
+
+	JR	L_90
+;  319						}
+;  320						case 0x0029: {
+L_75:
+.LINE 320
+
+;  321							I = V[(opcode & 0x0f00) >> 8] * 5;
+.LINE 321
+
+	LD	HL,(_opcode)
+	LD	A,8
+	CALL	__sshru_b
+	LD	BC,HL
+	CALL	__stoiu
+	LD	A,L
+	AND	A,15
+	UEXT	HL
+	LD	L,A
+	LD	BC,_V
+	ADD	HL,BC
+	LD	C,(HL)
+	LD	B,0
+	LD.LIS	HL,5
+	CALL	__smulu
+	LD	BC,HL
+	LD	HL,_I
+	LD	(HL),C
+	INC	HL
+	LD	(HL),B
+;  322							break;
+.LINE 322
+
+	JR	L_90
+;  323						}
+;  324						case 0x0033: {
+L_76:
+.LINE 324
+
+;  325							uint8_t x = (opcode & 0x0f00) >> 8;
+.LINE 325
+
+	LD	HL,(_opcode)
+	LD	A,8
+	CALL	__sshru_b
+	LD	BC,HL
+	CALL	__stoiu
+	LD	A,L
+	AND	A,15
+	LD	(IX+-20),A
+;  326							memory[ I ] =  V[x] / 100;
+.LINE 326
+
+	UEXT	HL
+	LD	L,A
+	LD	BC,_V
+	ADD	HL,BC
+	LD	(IX+-61),HL
+	LD	A,(HL)
+	UEXT	HL
+	LD	L,A
+	LD	BC,100
+	CALL	__idivs
+	LD	A,L
+	LD	BC,(_I)
+	CALL	__stoiu
+	LD	BC,_memory
+	ADD	HL,BC
+	LD	(HL),A
+;  327							memory[I+1] = (V[x] / 10) % 10;
+.LINE 327
+
+	LD	HL,(IX+-61)
+	LD	A,(HL)
+	UEXT	HL
+	LD	L,A
+	LD	BC,10
+	CALL	__idivs
+	LD	BC,10
+	CALL	__irems
+	LD	A,L
+	LD	BC,(_I)
+	CALL	__stoiu
+	INC	HL
+	LD	BC,_memory
+	ADD	HL,BC
+	LD	(HL),A
+;  328							memory[I+2] = V[x] % 10;
+.LINE 328
+
+	LD	HL,(IX+-61)
+	LD	A,(HL)
+	UEXT	HL
+	LD	L,A
+	LD	BC,10
+	CALL	__irems
+	LD	A,L
+	LD	BC,(_I)
+	CALL	__stoiu
+	INC	HL
+	INC	HL
+	LD	BC,_memory
+	ADD	HL,BC
+	LD	(HL),A
+;  329							break;
+.LINE 329
+
+	JR	L_90
+;  330						}
+;  331						case 0x0055: {
+L_77:
+.LINE 331
+
+;  332							uint8_t x = (opcode & 0x0f00) >> 8;
+.LINE 332
+
+	LD	HL,(_opcode)
+	LD	A,8
+	CALL	__sshru_b
+	LD	BC,HL
+	CALL	__stoiu
+	LD	A,L
+	AND	A,15
+	LD	(IX+-21),A
+;  333							for(i = 0; i <= x; ++i) {
+.LINE 333
+
+	LD	BC,0
+	LD	(IX+-3),BC
+	JR	L_80
+L_78:
+;  334								memory[I + i] = V[i];
+.LINE 334
+
+	LD	BC,_V
+	LD	HL,(IX+-3)
+	ADD	HL,BC
+	LD	IY,HL
+	LD	BC,(_I)
+	CALL	__stoiu
+	LD	BC,(IX+-3)
+	ADD	HL,BC
+	LD	BC,_memory
+	ADD	HL,BC
+	LD	A,(IY)
+	LD	(HL),A
+	LD	BC,(IX+-3)
+	INC	BC
+	LD	(IX+-3),BC
+;  335							}
+L_80:
+.LINE 335
+
+	LD	A,(IX+-21)
+	UEXT	HL
+	LD	L,A
+	LD	BC,(IX+-3)
+	OR	A,A
+	SBC	HL,BC
+	JP	P,L_78
+;  336							//I += x + 1;
+;  337							break;
+.LINE 337
+
+	JR	L_90
+;  338						}
+;  339						case 0x0065: {
+L_82:
+.LINE 339
+
+;  340							uint8_t x = (opcode & 0x0f00) >> 8;
+.LINE 340
+
+	LD	HL,(_opcode)
+	LD	A,8
+	CALL	__sshru_b
+	LD	BC,HL
+	CALL	__stoiu
+	LD	A,L
+	AND	A,15
+	LD	(IX+-22),A
+;  341							for(i = 0; i <= x; ++i) {
+.LINE 341
+
+	LD	BC,0
+	LD	(IX+-3),BC
+	JR	L_85
+L_83:
+;  342								V[i] = memory[I + i];
+.LINE 342
+
+	LD	BC,(_I)
+	CALL	__stoiu
+	LD	BC,(IX+-3)
+	ADD	HL,BC
+	LD	BC,_memory
+	ADD	HL,BC
+	LD	IY,HL
+	LD	BC,_V
+	LD	HL,(IX+-3)
+	ADD	HL,BC
+	LD	A,(IY)
+	LD	(HL),A
+	LD	BC,(IX+-3)
+	INC	BC
+	LD	(IX+-3),BC
+;  343							}
+L_85:
+.LINE 343
+
+	LD	A,(IX+-22)
+	UEXT	HL
+	LD	L,A
+	LD	BC,(IX+-3)
+	OR	A,A
+	SBC	HL,BC
+	CALL	__setflag
+	JP	P,L_83
+;  344							//I += x + 1;
+;  345							break;
+;  346						}
+;  347					}
+;  348					break;
+;  349				}
+;  350				default:
+;  351					break;
+;  352			}
+L_90:
+.LINE 352
+
+;  353			if(sound_timer > 0) {
+.LINE 353
+
+	LD	BC,(_sound_timer)
+	OR	A,A
+	SBC	HL,HL
+	OR	A,A
+	SBC.SIS	HL,BC
+	CALL	__setflag
+	JP	P,L_92
+;  354				--sound_timer;
+.LINE 354
+
+	LD	BC,(_sound_timer)
+	DEC	BC
+	LD	HL,_sound_timer
+	LD	(HL),C
+	INC	HL
+	LD	(HL),B
+;  355			}
+L_92:
+.LINE 355
+
+;  356			if(delay_timer > 0) {
+.LINE 356
+
+	LD	BC,(_delay_timer)
+	OR	A,A
+	SBC	HL,HL
+	OR	A,A
+	SBC.SIS	HL,BC
+	CALL	__setflag
+	JP	P,L_94
+;  357				--delay_timer;
+.LINE 357
+
+	LD	BC,(_delay_timer)
+	DEC	BC
+	LD	HL,_delay_timer
+	LD	(HL),C
+	INC	HL
+	LD	(HL),B
+;  358			}
+;  359		}
+L_94:
+.LINE 359
+
+	INC	(IX+-9)
+L_95:
+	LD	A,(IX+-9)
+	CP	A,(IX+6)
+	JR	C,L_93
+;  360	}
+L_96:
+.LINE 360
+
+	LD	SP,IX
+	POP	IX
+	RET	
+
+
+;**************************** _emulateCycle ***************************
+;Name                         Addr/Register   Size   Type
+;_sound_timer                        STATIC      2   variable
+;_delay_timer                        STATIC      2   variable
+;_keys                               STATIC     16   variable
+;_rand                               IMPORT  -----   function
+;_I                                  STATIC      2   variable
+;_V                                  STATIC     16   variable
+;_stack                              STATIC     32   variable
+;_sp                                 STATIC      1   variable
+;_drawFlag                           STATIC      1   variable
+;_canvas_data                        IMPORT   2050   variable
+;_memset                             IMPORT  -----   function
+;_opcode                             STATIC      2   variable
+;_pc                                 STATIC      2   variable
+;_memory                             STATIC   4096   variable
+;_setKeys                            IMPORT  -----   function
+;_kb_Scan                            IMPORT  -----   function
+;index                                IX-25      2   variable
+;x                                    IX-23      1   variable
+;x                                    IX-22      1   variable
+;x                                    IX-21      1   variable
+;x                                    IX-20      1   variable
+;x                                    IX-19      1   variable
+;x                                    IX-18      1   variable
+;x                                    IX-17      1   variable
+;x                                    IX-16      1   variable
+;pixel                                IX-15      1   variable
+;height                               IX-14      1   variable
+;y                                    IX-13      1   variable
+;x                                    IX-12      1   variable
+;x                                    IX-11      1   variable
+;key_pressed                          IX-10      1   variable
+;step                                  IX-9      1   variable
+;y                                     IX-8      1   variable
+;y                                     IX-7      1   variable
+;y                                     IX-6      1   variable
+;_x                                    IX-5      1   variable
+;_y                                    IX-4      1   variable
+;i                                     IX-3      3   variable
+;steps                                 IX+6      1   parameter
+
+
+; Stack Frame Size: 86 (bytes)
+;       Spill Code: 0 (instruction)
+
+
+.ENDFUNC "emulateCycle",360,"_emulateCycle"
+	XREF _canvas_data:ROM
+	XREF _kb_Scan:ROM
+	XREF _memset:ROM
+	XREF _memcpy:ROM
+	XREF _sprintf:ROM
+	XREF _ti_GetSize:ROM
+	XREF _ti_Read:ROM
+	XREF _ti_Open:ROM
+	XREF _rand:ROM
+	XREF _srand:ROM
+	XREF __idivs:ROM
+	XREF __sor:ROM
+	XREF __sand:ROM
+	XREF __iand:ROM
+	XREF __smulu:ROM
+	XREF __irems:ROM
+	XREF __ishrs:ROM
+	XREF __stoiu:ROM
+	XREF __setflag:ROM
+	XREF __scmpzero:ROM
+	XREF __case8D:ROM
+	XREF __case16D:ROM
+	XREF __ishrs_b:ROM
+	XREF __sshru_b:ROM
+	XDEF _emulateCycle
+	XDEF _setKeys
+	XDEF _loadProgram
+	XDEF _initialize
+	XDEF _fontset
+	XDEF _file
+	XDEF _game_data
+	XDEF _drawFlag
+	XDEF _keys
+	XDEF _sp
+	XDEF _stack
+	XDEF _sound_timer
+	XDEF _delay_timer
+	XDEF _pc
+	XDEF _I
+	XDEF _V
+	XDEF _memory
+	XDEF _opcode
+	END
