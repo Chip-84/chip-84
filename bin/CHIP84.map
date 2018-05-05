@@ -1,6 +1,6 @@
 Segment  Base   Top    High   Length
 -------- ------ ------ ------ -------
-bss      D031F6 D0D8A2 D13FD6   A6ACh
+bss      D031F6 D0E0AA D13FD6   AEB4h
 header   D1A87F D1A882             3h
 icon     D1A882 D1A993           111h
 launcher D1A993 D1A9E3            50h
@@ -8,10 +8,10 @@ libs     D1A9E3 D1AA50            6Dh
 startup  D1AA50 D1AA8B            3Bh
 cleanup  D1AA8B D1AA9F            14h
 exit     D1AA9F D1AAA5             6h
-code     D1AAA5 D1BE1E          1379h
-data     D1BE1E D1C6C5           8A7h
-strsect  D1C6C5 D1C795            D0h
-text     D1C795 D1C795             0h
+code     D1AAA5 D1BE50          13ABh
+data     D1BE50 D1BEF5            A5h
+strsect  D1BEF5 D1BFC5            D0h
+text     D1BFC5 D1BFC5             0h
 
 Label                    Value
 ----------------------   ------
@@ -25,41 +25,46 @@ _exit                  = D1AAA1
 __exit                 = D1AA7D
 __exitsp               = D1AA7D
 __errsp                = D1AA7D
-_canvas_data           = D1BE40
-_emulateCycle          = D1ACF2
-_setKeys               = D1AC3D
-_loadProgram           = D1AB74
+_canvas_data           = D031F6
+_emulateCycle          = D1ACFF
+_setKeys               = D1AC4A
+_loadProgram           = D1AB81
 _initialize            = D1AAA5
-_fontset               = D1C65E
-_file                  = D05026
-_game_data             = D04226
-_drawFlag              = D1C65D
-_keys                  = D1C64D
-_sp                    = D1C64C
-_stack                 = D04206
-_sound_timer           = D1C64A
-_delay_timer           = D1C648
-_pc                    = D1C646
-_I                     = D1C644
-_V                     = D041F6
-_memory                = D031F6
-_opcode                = D1C642
-_drawGraphics          = D1BCFB
-_startEmulation        = D1BC81
-_drawMenu              = D1BB4A
-_main                  = D1B95F
-_concatenate           = D1B92C
-_count                 = D0D8A1
-_files                 = D0CFAA
-_curFile               = D0CFA9
-_scaled_sprite         = D1C6AE
-_scaled_sprite_data    = D05027
-_sprites_gfx_pal       = D1C6B1
+__x                    = D0582E
+__y                    = D0582D
+_index                 = D0582B
+_pixel                 = D0582A
+_step                  = D05829
+_fontset               = D1BE8E
+_file                  = D05828
+_game_data             = D04A28
+_drawFlag              = D1BE8D
+_keys                  = D1BE7D
+_sp                    = D1BE7C
+_stack                 = D04A08
+_sound_timer           = D1BE7A
+_delay_timer           = D1BE78
+_pc                    = D1BE76
+_I                     = D1BE74
+_V                     = D049F8
+_memory                = D039F8
+_opcode                = D1BE72
+_drawGraphics          = D1BD2D
+_startEmulation        = D1BCB3
+_drawMenu              = D1BB7C
+_main                  = D1B991
+_concatenate           = D1B95E
+_count                 = D0E0A9
+_files                 = D0D7B2
+_curFile               = D0D7B1
+_scaled_sprite         = D1BEDE
+_scaled_sprite_data    = D0582F
+_sprites_gfx_pal       = D1BEE1
 __case16D              = 000118
 __case8D               = 000128
-_delay                 = D1BD36
+_delay                 = D1BD68
 __iand                 = 000134
-__icmpzero             = D1BD7F
+__icmpzero             = D1BDB1
 __idivs                = 00013C
 __imul_b               = 000158
 __imul_b               = 000150
@@ -67,10 +72,10 @@ __irems                = 00016C
 __ishrs_b              = 00017C
 __ishrs_b              = 000180
 _memcpy                = 0000A4
-_memset                = D1BD84
-_rand                  = D1BD9B
-_random                = D1BDA8
-__state                = D1C6B5
+_memset                = D1BDB6
+_rand                  = D1BDCD
+_random                = D1BDDA
+__state                = D1BEE5
 __sand                 = 000200
 __scmpzero             = 000204
 __setflag              = 000218
@@ -78,9 +83,9 @@ __smuls                = 000228
 __smuls                = 000224
 __sor                  = 000234
 _sprintf               = 0000BC
-_srand                 = D1BDFF
-_srandom               = D1BE07
-__setstate             = D1BE0E
+_srand                 = D1BE31
+_srandom               = D1BE39
+__setstate             = D1BE40
 __sshru_b              = 000250
 __sshru_b              = 000254
 __stoiu                = 000264
