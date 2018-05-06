@@ -85,6 +85,7 @@ void loadProgram(char *fileName) {
 	uint16_t romSize;
 	
 	playing = true;
+	paused = false;
 	
 	ti_CloseAll();
 	file = ti_Open(fileName, "r");
