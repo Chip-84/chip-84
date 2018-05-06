@@ -21,9 +21,14 @@ extern uint8_t sp;
 extern uint8_t keys[16];
 extern bool drawFlag;
 
+extern bool paused;
+extern bool playing;
+
 extern ti_var_t file;
 
 extern uint8_t game_data[3584];
+extern uint8_t keypad[16];
+extern uint8_t controlMap[16];
 
 void loadFontset(void);
 void initialize(void);

@@ -27,7 +27,12 @@ uint8_t sp = 0;
 uint8_t keys[16] = {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0};
 bool drawFlag = false;
 
+bool paused = false;
+bool playing = false;
+
 uint8_t game_data[3584];
+uint8_t keypad[16];
+uint8_t controlMap[16];
 
 ti_var_t file;
 
@@ -58,6 +63,7 @@ uint8_t _y;
 uint8_t _x;
 
 void initialize() {
+	
 	opcode = I = sp = delay_timer = sound_timer = 0;
 	pc = 0x200;
 	
@@ -76,43 +82,73 @@ void initialize() {
 
 void loadProgram(char *fileName) {
 	int i;
-	int romSize;
+	uint16_t romSize;
 	
+	playing = true;
+	
+	ti_CloseAll();
 	file = ti_Open(fileName, "r");
 	ti_Read(&game_data, ti_GetSize(file), 1, file);
 	
-	romSize = ti_GetSize(file);
+	romSize = ti_GetSize(file)-(16+6);
 	dbg_sprintf(dbgout, "%d ", romSize);
 	
 	initialize();
 	
 	if((4096-512) > romSize) {
 		for(i = 0; i < romSize; ++i) {
-			memory[i + 512] = (uint8_t)game_data[i+6];
+			memory[i + 512] = (uint8_t)game_data[i+16+6];
 		}
+	}
+	for(i = 0; i < 16; i++) {
+		controlMap[i] = (uint8_t)game_data[i+6];
 	}
 }
 
 void setKeys() {
-	keys[0] = kb_Data[4] & kb_DecPnt;
-	keys[1] = kb_Data[3] & kb_7;
-	keys[2] = kb_Data[4] & kb_8;
-	keys[3] = kb_Data[5] & kb_9;
+	keypad[0x0] = kb_Data[4] & kb_DecPnt;
+	keypad[0x1] = kb_Data[3] & kb_7;
+	keypad[0x2] = kb_Data[4] & kb_8;
+	keypad[0x3] = kb_Data[5] & kb_9;
+	keypad[0x4] = kb_Data[3] & kb_4;
+	keypad[0x5] = kb_Data[4] & kb_5;
+	keypad[0x6] = kb_Data[5] & kb_6;
+	keypad[0x7] = kb_Data[3] & kb_1;
+	keypad[0x8] = kb_Data[4] & kb_2;
+	keypad[0x9] = kb_Data[5] & kb_3;
+	keypad[0xA] = kb_Data[3] & kb_0;
+	keypad[0xB] = kb_Data[5] & kb_Chs;
+	keypad[0xC] = kb_Data[6] & kb_Mul;
+	keypad[0xD] = kb_Data[6] & kb_Sub;
+	keypad[0xE] = kb_Data[6] & kb_Add;
+	keypad[0xF] = kb_Data[6] & kb_Enter;
 	
-	keys[4] = kb_Data[3] & kb_4;
-	keys[5] = kb_Data[4] & kb_5;
-	keys[6] = kb_Data[5] & kb_6;
-	keys[7] = kb_Data[3] & kb_1;
+	keys[0x0] = keypad[controlMap[0x0]];
+	keys[0x1] = keypad[controlMap[0x1]];
+	keys[0x2] = keypad[controlMap[0x2]];
+	keys[0x3] = keypad[controlMap[0x3]];
+	                              
+	keys[0x4] = keypad[controlMap[0x4]];
+	keys[0x5] = keypad[controlMap[0x5]];
+	keys[0x6] = keypad[controlMap[0x6]];
+	keys[0x7] = keypad[controlMap[0x7]];
+	                              
+	keys[0x8] = keypad[controlMap[0x8]];
+	keys[0x9] = keypad[controlMap[0x9]];
+	keys[0xA] = keypad[controlMap[0xA]];
+	keys[0xB] = keypad[controlMap[0xB]];
+	                              
+	keys[0xC] = keypad[controlMap[0xC]];
+	keys[0xD] = keypad[controlMap[0xD]];
+	keys[0xE] = keypad[controlMap[0xE]];
+	keys[0xF] = keypad[controlMap[0xF]];
 	
-	keys[8] = kb_Data[4] & kb_2;
-	keys[9] = kb_Data[5] & kb_3;
-	keys[0xA] = kb_Data[3] & kb_0;
-	keys[0xB] = kb_Data[5] & kb_Chs;
-	
-	keys[0xC] = kb_Data[6] & kb_Mul;
-	keys[0xD] = kb_Data[6] & kb_Sub;
-	keys[0xE] = kb_Data[6] & kb_Add;
-	keys[0xF] = kb_Data[6] & kb_Enter;
+	if(kb_Data[1] & kb_2nd) {
+		while(kb_Data[1] & kb_2nd) {
+			kb_Scan();
+		}
+		paused = 1;
+	}
 }
 
 void emulateCycle(uint8_t steps) {
