@@ -32,6 +32,24 @@ uint8_t bgColor = 0x88;
 uint8_t cpf = 10;
 
 const char *pauseText = "[2nd] - Pause";
+const char *keyNames[16] = {
+	"Decimal",
+	"Seven",
+	"Eight",
+	"Nine",
+	"Four",
+	"Five",
+	"Six",
+	"One",
+	"Two",
+	"Three",
+	"Zero",
+	"Negative",
+	"Times",
+	"Plus",
+	"Minus",
+	"Enter"
+};
 
 uint8_t concatenate(uint8_t x, uint8_t y) {
 	uint8_t pow = 10;
@@ -64,7 +82,7 @@ void main(void) {
 	gfx_SetTextFGColor(0x00);
 	gfx_PrintStringXY("Chip-84", 128, 100);
 	gfx_PrintStringXY("2018 Christian Kosman", 80, 120);
-	gfx_PrintStringXY("version 1.1.1", LCD_WIDTH-100, LCD_HEIGHT-30);
+	gfx_PrintStringXY("version 1.1.2", LCD_WIDTH-100, LCD_HEIGHT-30);
 	gfx_BlitBuffer();
 	
 	delay(1000);
@@ -246,6 +264,13 @@ void beginKeymapper(char *fileName) {
 				drawKeymappingMenu(selected+16);
 				awaiting = 1;
 			}
+			if(kb_Data[1] & kb_2nd) {
+				for(i = 0; i < 16; i++) {
+					game_data[i+6] = i;
+					controlMap[i] = i;
+				}
+				drawKeymappingMenu(selected);
+			}
 			delay(100);
 		} else {
 			keypad[0x0] = kb_Data[4] & kb_DecPnt;
@@ -290,21 +315,20 @@ void drawKeymappingMenu(uint8_t selected) {
 	gfx_FillScreen(bgColor);
 	
 	for(i = 0; i < 16; i++) {
-		gfx_PrintStringXY("Key", 10, i*10+10);
-		gfx_SetTextXY(40, i*10+10);
+		gfx_PrintStringXY("Key", 30, i*10+10);
+		gfx_SetTextXY(60, i*10+10);
 		gfx_PrintUInt(i, 2);
-		gfx_SetTextXY(70, i*10+10);
-		gfx_PrintUInt(game_data[i+6], 2);
+		gfx_PrintStringXY(keyNames[game_data[i+6]], 90, i*10+10);
 	}
 	
 	gfx_PrintStringXY("Select a key to remap, then press the new key.", 10, 200);
-	gfx_PrintStringXY("Press alpha to exit.", 10, 215);
+	gfx_PrintStringXY("Press 2nd to reset, alpha to exit.", 10, 215);
 	
 	gfx_SetColor(0x01);
 	if(selected > 16) {
-		gfx_Circle(103, (selected%16)*10+13, 3);
+		gfx_Circle(13, (selected%16)*10+13, 3);
 	} else {
-		gfx_FillRectangle(100, (selected%16)*10+10, 6, 6);
+		gfx_FillRectangle(10, (selected%16)*10+10, 6, 6);
 	}
 	
 	gfx_BlitBuffer();
