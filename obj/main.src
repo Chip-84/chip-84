@@ -583,106 +583,7 @@ _keyNames:
 ;   51		"Enter"
 ;   52	};
 ;   53	
-;   54	uint8_t concatenate(uint8_t x, uint8_t y) {
-_concatenate:
-.DEFINE "_concatenate"
-
-.VALUE _concatenate
-
-.CLASS 2
-
-.TYPE 76
-
-.ENDEF
-
-.BEGFUNC "concatenate",54,"_concatenate"
-
-.LINE 54
-
-.DEFINE "x"
-
-.CLASS 65
-
-.VALUE 6
-
-.TYPE 12
-
-.ENDEF
-
-.DEFINE "y"
-
-.CLASS 65
-
-.VALUE 9
-
-.TYPE 12
-
-.ENDEF
-
-.DEFINE "pow"
-
-.CLASS 65
-
-.VALUE -1
-
-.TYPE 12
-
-.ENDEF
-
-	PUSH	IX
-	LD	IX,0
-	ADD	IX,SP
-	DEC	SP
-;   55		uint8_t pow = 10;
-.LINE 55
-
-	LD	(IX+-1),10
-;   56		while (y >= pow)
-.LINE 56
-
-	JR	L_0
-L_1:
-;   57			pow *= 10;
-.LINE 57
-
-	LD	B,10
-	LD	C,(IX+-1)
-	MLT	BC
-	LD	(IX+-1),C
-L_0:
-	LD	A,(IX+9)
-	CP	A,(IX+-1)
-	JR	NC,L_1
-;   58		return x * pow + y;
-.LINE 58
-
-	LD	B,(IX+6)
-	LD	C,(IX+-1)
-	MLT	BC
-	LD	A,C
-	ADD	A,(IX+9)
-;   59	}
-.LINE 59
-
-	LD	SP,IX
-	POP	IX
-	RET	
-
-
-;**************************** _concatenate ***************************
-;Name                         Addr/Register   Size   Type
-;pow                                   IX-1      1   variable
-;y                                     IX+9      1   parameter
-;x                                     IX+6      1   parameter
-
-
-; Stack Frame Size: 13 (bytes)
-;       Spill Code: 0 (instruction)
-
-
-.ENDFUNC "concatenate",59,"_concatenate"
-;   60	
-;   61	void main(void) {
+;   54	void main(void) {
 _main:
 .DEFINE "_main"
 
@@ -694,9 +595,9 @@ _main:
 
 .ENDEF
 
-.BEGFUNC "main",61,"_main"
+.BEGFUNC "main",54,"_main"
 
-.LINE 61
+.LINE 54
 
 .DEFINE "startPos"
 
@@ -745,63 +646,59 @@ _main:
 	ADD	IX,SP
 	LEA	HL,IX+-23
 	LD	SP,HL
-;   62		uint8_t i;
-;   63		char *varName;
-;   64		uint8_t *search_pos = NULL;
-.LINE 64
+;   55		uint8_t i;
+;   56		char *varName;
+;   57		uint8_t *search_pos = NULL;
+.LINE 57
 
 	LD	BC,0
 	LD	(IX+-7),BC
-;   65		uint8_t startPos = 0;
-.LINE 65
+;   58		uint8_t startPos = 0;
+.LINE 58
 
 	LD	(IX+-1),0
-;   66		uint8_t test1[16] = {0x00,0x01,0x02,0x03,0x06,0x05,0x04,0x07,0x08,0x09,0x0a,0x0b,0x0c,0x0d,0x0e,0x0f};
-.LINE 66
+;   59		uint8_t test1[16] = {0x00,0x01,0x02,0x03,0x06,0x05,0x04,0x07,0x08,0x09,0x0a,0x0b,0x0c,0x0d,0x0e,0x0f};
+.LINE 59
 
 	LEA	DE,IX+-23
-	LD	HL,_0temp4
+	LD	HL,_0temp0
 	LD	BC,16
 	LDIR	
-;   67		
-;   68		boot_Set48MHzMode();
-.LINE 68
+;   60		
+;   61		boot_Set48MHzMode();
+.LINE 61
 
 	CALL	_boot_Set48MHzMode
-;   69		
-;   70		count = 0;
-.LINE 70
+;   62		
+;   63		count = 0;
+.LINE 63
 
 	XOR	A,A
 	LD	(_count),A
-;   71		
-;   72		//ti_CloseAll();
-;   73		//curFile = ti_Open("C84Cfg", "a");
-;   74		//ti_Write(&test1, 16, 1, curFile);
-;   75		
-;   76		gfx_Begin(gfx_8bpp);
-.LINE 76
+;   64		
+;   65		gfx_Begin(gfx_8bpp);
+.LINE 65
 
 	LD	BC,39
 	PUSH	BC
 	CALL	_gfx_Begin
 	POP	BC
-;   77		gfx_Blit(gfx_screen);
-.LINE 77
+;   66		gfx_Blit(gfx_screen);
+.LINE 66
 
 	LD	BC,0
 	PUSH	BC
 	CALL	_gfx_Blit
 	POP	BC
-;   78	    gfx_SetDrawBuffer();
-.LINE 78
+;   67	    gfx_SetDrawBuffer();
+.LINE 67
 
 	LD	BC,1
 	PUSH	BC
 	CALL	_gfx_SetDraw
 	POP	BC
-;   79		gfx_SetPalette(sprites_gfx_pal, sizeof_sprites_gfx_pal, 0);
-.LINE 79
+;   68		gfx_SetPalette(sprites_gfx_pal, sizeof_sprites_gfx_pal, 0);
+.LINE 68
 
 	LD	BC,0
 	PUSH	BC
@@ -813,27 +710,71 @@ _main:
 	POP	BC
 	POP	BC
 	POP	BC
-;   80		gfx_SetColor(0xff);
-.LINE 80
+;   69		gfx_SetColor(0xff);
+.LINE 69
 
 	LD	BC,255
 	PUSH	BC
 	CALL	_gfx_SetColor
 	POP	BC
-;   81		
-;   82		gfx_SetTextFGColor(0x00);
-.LINE 82
+;   70		
+;   71		gfx_SetTextFGColor(0x00);
+.LINE 71
 
 	LD	BC,0
 	PUSH	BC
 	CALL	_gfx_SetTextFGColor
 	POP	BC
-;   83		gfx_PrintStringXY("Chip-84", 128, 100);
-.LINE 83
+;   72		gfx_SetTextScale(2, 2);
+.LINE 72
 
-	LD	BC,100
+	LD	BC,2
 	PUSH	BC
-	LD	BC,128
+	PUSH	BC
+	CALL	_gfx_SetTextScale
+	POP	BC
+	POP	BC
+;   73		gfx_PrintStringXY("Chip-84", 103, 95);
+.LINE 73
+
+	LD	BC,95
+	PUSH	BC
+	LD	BC,103
+	PUSH	BC
+	LD	BC,L__17
+	PUSH	BC
+	CALL	_gfx_PrintStringXY
+	POP	BC
+	POP	BC
+	POP	BC
+;   74		gfx_SetTextScale(1, 1);
+.LINE 74
+
+	LD	BC,1
+	PUSH	BC
+	PUSH	BC
+	CALL	_gfx_SetTextScale
+	POP	BC
+	POP	BC
+;   75		gfx_PrintStringXY("2018 Christian Kosman", 80, 120);
+.LINE 75
+
+	LD	BC,120
+	PUSH	BC
+	LD	BC,80
+	PUSH	BC
+	LD	BC,L__18
+	PUSH	BC
+	CALL	_gfx_PrintStringXY
+	POP	BC
+	POP	BC
+	POP	BC
+;   76		gfx_PrintStringXY("version 2.0.0", LCD_WIDTH-100, LCD_HEIGHT-30);
+.LINE 76
+
+	LD	BC,210
+	PUSH	BC
+	LD	BC,220
 	PUSH	BC
 	LD	BC,L__19
 	PUSH	BC
@@ -841,57 +782,31 @@ _main:
 	POP	BC
 	POP	BC
 	POP	BC
-;   84		gfx_PrintStringXY("2018 Christian Kosman", 80, 120);
-.LINE 84
-
-	LD	BC,120
-	PUSH	BC
-	LD	BC,80
-	PUSH	BC
-	LD	BC,L__20
-	PUSH	BC
-	CALL	_gfx_PrintStringXY
-	POP	BC
-	POP	BC
-	POP	BC
-;   85		gfx_PrintStringXY("version 1.1.2", LCD_WIDTH-100, LCD_HEIGHT-30);
-.LINE 85
-
-	LD	BC,210
-	PUSH	BC
-	LD	BC,220
-	PUSH	BC
-	LD	BC,L__21
-	PUSH	BC
-	CALL	_gfx_PrintStringXY
-	POP	BC
-	POP	BC
-	POP	BC
-;   86		gfx_BlitBuffer();
-.LINE 86
+;   77		gfx_BlitBuffer();
+.LINE 77
 
 	LD	BC,1
 	PUSH	BC
 	CALL	_gfx_Blit
 	POP	BC
-;   87		
-;   88		delay(1000);
-.LINE 88
+;   78		
+;   79		delay(1000);
+.LINE 79
 
 	LD	BC,1000
 	PUSH	BC
 	CALL	_delay
 	POP	BC
-;   89		
-;   90		while((varName = ti_Detect(&search_pos, "Chip84")) != NULL) {
-.LINE 90
+;   80		
+;   81		while((varName = ti_Detect(&search_pos, "Chip84")) != NULL) {
+.LINE 81
 
-	JR	L_5
-L_6:
-;   91			//dbg_sprintf(dbgout, "%s\n", varName);
-;   92			
-;   93			strcpy(files[count], varName);
-.LINE 93
+	JR	L_1
+L_2:
+;   82			//dbg_sprintf(dbgout, "%s\n", varName);
+;   83			
+;   84			strcpy(files[count], varName);
+.LINE 84
 
 	LD	BC,(IX+-4)
 	PUSH	BC
@@ -906,18 +821,18 @@ L_6:
 	CALL	_strcpy
 	POP	BC
 	POP	BC
-;   94			
-;   95			++count;
-.LINE 95
+;   85			
+;   86			++count;
+.LINE 86
 
 	LD	A,(_count)
 	INC	A
 	LD	(_count),A
-;   96		}
-L_5:
-.LINE 96
+;   87		}
+L_1:
+.LINE 87
 
-	LD	BC,L__22
+	LD	BC,L__20
 	PUSH	BC
 	PEA	IX+-7
 	CALL	_ti_Detect
@@ -925,71 +840,71 @@ L_5:
 	POP	BC
 	LD	(IX+-4),HL
 	CALL	__icmpzero
-	JR	NZ,L_6
-;   97		
-;   98		drawMenu(0);
-.LINE 98
+	JR	NZ,L_2
+;   88		
+;   89		drawMenu(0);
+.LINE 89
 
 	LD	BC,0
 	PUSH	BC
 	CALL	_drawMenu
 	POP	BC
-;   99		
-;  100		do {
-L_22:
-.LINE 100
+;   90		
+;   91		do {
+L_18:
+.LINE 91
 
-;  101			kb_Scan();
-.LINE 101
+;   92			kb_Scan();
+.LINE 92
 
 	CALL	_kb_Scan
-;  102			
-;  103			if(kb_Data[7] & kb_Up) {
-.LINE 103
+;   93			
+;   94			if(kb_Data[7] & kb_Up) {
+.LINE 94
 
 	LD	A,(16056350)
 	AND	A,8
-	JR	Z,L_20
-;  104				if(startPos == 0)
-.LINE 104
+	JR	Z,L_16
+;   95				if(startPos == 0)
+.LINE 95
 
 	LD	A,(IX+-1)
 	OR	A,A
-	JR	NZ,L_10
-;  105					startPos = count-1;
-.LINE 105
+	JR	NZ,L_6
+;   96					startPos = count-1;
+.LINE 96
 
 	LD	A,(_count)
 	DEC	A
 	LD	(IX+-1),A
-;  106				else
-.LINE 106
+;   97				else
+.LINE 97
 
-	JR	L_11
-L_10:
-;  107					startPos--;
-.LINE 107
+	JR	L_7
+L_6:
+;   98					startPos--;
+.LINE 98
 
 	DEC	(IX+-1)
-L_11:
-;  108				drawMenu(startPos);
-.LINE 108
+L_7:
+;   99				drawMenu(startPos);
+.LINE 99
 
 	LD	C,(IX+-1)
 	LD	B,0
 	PUSH	BC
 	CALL	_drawMenu
 	POP	BC
-;  109			} else if(kb_Data[7] & kb_Down) {
-.LINE 109
+;  100			} else if(kb_Data[7] & kb_Down) {
+.LINE 100
 
-	JR	L_21
-L_20:
+	JR	L_17
+L_16:
 	LD	A,(16056350)
 	AND	A,1
-	JR	Z,L_18
-;  110				if(startPos == count-1)
-.LINE 110
+	JR	Z,L_14
+;  101				if(startPos == count-1)
+.LINE 101
 
 	LD	A,(_count)
 	UEXT	HL
@@ -1003,46 +918,46 @@ L_20:
 	LD	HL,BC
 	OR	A,A
 	SBC	HL,DE
-	JR	NZ,L_14
-;  111					startPos = 0;
-.LINE 111
+	JR	NZ,L_10
+;  102					startPos = 0;
+.LINE 102
 
 	LD	(IX+-1),0
-;  112				else
-.LINE 112
+;  103				else
+.LINE 103
 
-	JR	L_15
-L_14:
-;  113					startPos++;
-.LINE 113
+	JR	L_11
+L_10:
+;  104					startPos++;
+.LINE 104
 
 	INC	(IX+-1)
-L_15:
-;  114				drawMenu(startPos);
-.LINE 114
+L_11:
+;  105				drawMenu(startPos);
+.LINE 105
 
 	LD	C,(IX+-1)
 	LD	B,0
 	PUSH	BC
 	CALL	_drawMenu
 	POP	BC
-;  115			} else if(kb_Data[6] & kb_Enter) {
-.LINE 115
+;  106			} else if(kb_Data[6] & kb_Enter) {
+.LINE 106
 
-	JR	L_21
-L_18:
+	JR	L_17
+L_14:
 	LD	A,(16056348)
 	AND	A,1
-	JR	Z,L_21
-;  116				gfx_FillScreen(0xFF);
-.LINE 116
+	JR	Z,L_17
+;  107				gfx_FillScreen(0xFF);
+.LINE 107
 
 	LD	BC,255
 	PUSH	BC
 	CALL	_gfx_FillScreen
 	POP	BC
-;  117				startEmulation(files[startPos]);
-.LINE 117
+;  108				startEmulation(files[startPos]);
+.LINE 108
 
 	LD	A,(IX+-1)
 	UEXT	HL
@@ -1054,46 +969,46 @@ L_18:
 	PUSH	HL
 	CALL	_startEmulation
 	POP	BC
-;  118				drawMenu(startPos);
-.LINE 118
+;  109				drawMenu(startPos);
+.LINE 109
 
 	LD	C,(IX+-1)
 	LD	B,0
 	PUSH	BC
 	CALL	_drawMenu
 	POP	BC
-;  119			}
-L_21:
-.LINE 119
+;  110			}
+L_17:
+.LINE 110
 
-;  120			
-;  121			gfx_BlitBuffer();
-.LINE 121
+;  111			
+;  112			gfx_BlitBuffer();
+.LINE 112
 
 	LD	BC,1
 	PUSH	BC
 	CALL	_gfx_Blit
 	POP	BC
-;  122			delay(100);
-.LINE 122
+;  113			delay(100);
+.LINE 113
 
 	LD	BC,100
 	PUSH	BC
 	CALL	_delay
 	POP	BC
-;  123		} while (kb_Data[6] != kb_Clear);
-.LINE 123
+;  114		} while (kb_Data[6] != kb_Clear);
+.LINE 114
 
 	LD	A,(16056348)
 	CP	A,64
-	JR	NZ,L_22
-;  124		
-;  125		gfx_End();
-.LINE 125
+	JR	NZ,L_18
+;  115		
+;  116		gfx_End();
+.LINE 116
 
 	CALL	_gfx_End
-;  126	}
-.LINE 126
+;  117	}
+.LINE 117
 
 	LD	SP,IX
 	POP	IX
@@ -1112,6 +1027,7 @@ L_21:
 ;_strcpy                             IMPORT  -----   function
 ;_delay                              IMPORT  -----   function
 ;_gfx_PrintStringXY                  IMPORT  -----   function
+;_gfx_SetTextScale                   IMPORT  -----   function
 ;_gfx_SetTextFGColor                 IMPORT  -----   function
 ;_gfx_SetColor                       IMPORT  -----   function
 ;_sprites_gfx_pal                    IMPORT      4   variable
@@ -1121,7 +1037,7 @@ L_21:
 ;_gfx_Begin                          IMPORT  -----   function
 ;_count                              STATIC      1   variable
 ;_boot_Set48MHzMode                  IMPORT  -----   function
-;_0temp4                             STATIC     16   variable
+;_0temp0                             STATIC     16   variable
 ;test1                                IX-23     16   variable
 ;search_pos                            IX-7      3   variable
 ;varName                               IX-4      3   variable
@@ -1132,22 +1048,22 @@ L_21:
 ;       Spill Code: 0 (instruction)
 
 
-.ENDFUNC "main",126,"_main"
+.ENDFUNC "main",117,"_main"
 	SEGMENT STRSECT
-L__19:
+L__17:
 	DB	"Chip-84"
 	DB	0
-L__20:
+L__18:
 	DB	"2018 Christian Kosman"
 	DB	0
-L__21:
-	DB	"version 1.1.2"
+L__19:
+	DB	"version 2.0.0"
 	DB	0
-L__22:
+L__20:
 	DB	"Chip84"
 	DB	0
 	SEGMENT TEXT
-_0temp4:
+_0temp0:
 	DB	0
 	DB	1
 	DB	2
@@ -1165,8 +1081,8 @@ _0temp4:
 	DB	14
 	DB	15
 	SEGMENT CODE
-;  127	
-;  128	void drawMenu(uint8_t start) {
+;  118	
+;  119	void drawMenu(uint8_t start) {
 _drawMenu:
 .DEFINE "_drawMenu"
 
@@ -1178,9 +1094,9 @@ _drawMenu:
 
 .ENDEF
 
-.BEGFUNC "drawMenu",128,"_drawMenu"
+.BEGFUNC "drawMenu",119,"_drawMenu"
 
-.LINE 128
+.LINE 119
 
 .DEFINE "start"
 
@@ -1206,29 +1122,29 @@ _drawMenu:
 	LD	IX,0
 	ADD	IX,SP
 	DEC	SP
-;  129		uint8_t i;
-;  130		gfx_FillScreen(0xff);
-.LINE 130
+;  120		uint8_t i;
+;  121		gfx_FillScreen(0xff);
+.LINE 121
 
 	LD	BC,255
 	PUSH	BC
 	CALL	_gfx_FillScreen
 	POP	BC
-;  131		gfx_SetTextFGColor(0x00);
-.LINE 131
+;  122		gfx_SetTextFGColor(0x00);
+.LINE 122
 
 	LD	BC,0
 	PUSH	BC
 	CALL	_gfx_SetTextFGColor
 	POP	BC
-;  132		for(i = 0; i < 16; i++) {
-.LINE 132
+;  123		for(i = 0; i < 16; i++) {
+.LINE 123
 
 	LD	(IX+-1),0
-	JR	L_30
-L_28:
-;  133			if(i + start <= count-1) {
-.LINE 133
+	JR	L_26
+L_24:
+;  124			if(i + start <= count-1) {
+.LINE 124
 
 	LD	A,(_count)
 	UEXT	HL
@@ -1247,9 +1163,9 @@ L_28:
 	LD	HL,BC
 	OR	A,A
 	SBC	HL,DE
-	JP	M,L_29
-;  134				gfx_SetTextXY(20, 10*i+10);
-.LINE 134
+	JP	M,L_25
+;  125				gfx_SetTextXY(20, 10*i+10);
+.LINE 125
 
 	LD	A,(IX+-1)
 	UEXT	HL
@@ -1264,8 +1180,8 @@ L_28:
 	CALL	_gfx_SetTextXY
 	POP	BC
 	POP	BC
-;  135				gfx_PrintUInt(i+start, 3);
-.LINE 135
+;  126				gfx_PrintUInt(i+start, 3);
+.LINE 126
 
 	LD	BC,3
 	PUSH	BC
@@ -1281,8 +1197,8 @@ L_28:
 	CALL	_gfx_PrintUInt
 	POP	BC
 	POP	BC
-;  136				gfx_PrintStringXY(files[i+start], 50, 10*i+10);
-.LINE 136
+;  127				gfx_PrintStringXY(files[i+start], 50, 10*i+10);
+.LINE 127
 
 	LD	A,(IX+-1)
 	UEXT	HL
@@ -1311,44 +1227,48 @@ L_28:
 	POP	BC
 	POP	BC
 	POP	BC
-;  137			}
-;  138		}
-L_29:
-.LINE 138
+;  128			}
+;  129		}
+L_25:
+.LINE 129
 
 	INC	(IX+-1)
-L_30:
+L_26:
 	LD	A,(IX+-1)
 	CP	A,16
-	JR	C,L_28
-;  139		gfx_SetColor(0x00);
-.LINE 139
+	JR	C,L_24
+;  130		gfx_PrintStringXY(">",10,10);
+.LINE 130
 
-	LD	BC,0
-	PUSH	BC
-	CALL	_gfx_SetColor
-	POP	BC
-;  140		gfx_FillRectangle(10, 10, 6, 6);
-.LINE 140
-
-	LD	BC,6
-	PUSH	BC
-	PUSH	BC
 	LD	BC,10
 	PUSH	BC
 	PUSH	BC
-	CALL	_gfx_FillRectangle
+	LD	BC,L__31
+	PUSH	BC
+	CALL	_gfx_PrintStringXY
 	POP	BC
 	POP	BC
 	POP	BC
-	POP	BC
-;  141		
-;  142		gfx_PrintStringXY("Use the arrows and enter to select a ROM.", 20, 180);
-.LINE 142
+;  131		
+;  132		gfx_PrintStringXY("Use the arrows and enter to select a ROM.", 10, 180);
+.LINE 132
 
 	LD	BC,180
 	PUSH	BC
-	LD	BC,20
+	LD	BC,10
+	PUSH	BC
+	LD	BC,L__32
+	PUSH	BC
+	CALL	_gfx_PrintStringXY
+	POP	BC
+	POP	BC
+	POP	BC
+;  133		gfx_PrintStringXY("Then use 1, 2, 3, PLUS, 4, 5, 6, MINUS, 7, 8, 9,", 10, 195);
+.LINE 133
+
+	LD	BC,195
+	PUSH	BC
+	LD	BC,10
 	PUSH	BC
 	LD	BC,L__33
 	PUSH	BC
@@ -1356,12 +1276,12 @@ L_30:
 	POP	BC
 	POP	BC
 	POP	BC
-;  143		gfx_PrintStringXY("Then use 1, 2, 3, PLUS, 4, 5, 6, MINUS, 7, 8, 9,", 20, 195);
-.LINE 143
+;  134		gfx_PrintStringXY("TIMES, 0, DECIMAL, ( - ), and ENTER to control.", 10, 205);
+.LINE 134
 
-	LD	BC,195
+	LD	BC,205
 	PUSH	BC
-	LD	BC,20
+	LD	BC,10
 	PUSH	BC
 	LD	BC,L__34
 	PUSH	BC
@@ -1369,12 +1289,12 @@ L_30:
 	POP	BC
 	POP	BC
 	POP	BC
-;  144		gfx_PrintStringXY("TIMES, COMMA, (, ), and DIVIDE for controls.", 20, 205);
-.LINE 144
+;  135		gfx_PrintStringXY("Press clear to quit.", 10, 220);
+.LINE 135
 
-	LD	BC,205
+	LD	BC,220
 	PUSH	BC
-	LD	BC,20
+	LD	BC,10
 	PUSH	BC
 	LD	BC,L__35
 	PUSH	BC
@@ -1382,22 +1302,9 @@ L_30:
 	POP	BC
 	POP	BC
 	POP	BC
-;  145		gfx_PrintStringXY("Press clear to quit.", 20, 220);
-.LINE 145
-
-	LD	BC,220
-	PUSH	BC
-	LD	BC,20
-	PUSH	BC
-	LD	BC,L__36
-	PUSH	BC
-	CALL	_gfx_PrintStringXY
-	POP	BC
-	POP	BC
-	POP	BC
-;  146		
-;  147	}
-.LINE 147
+;  136		
+;  137	}
+.LINE 137
 
 	LD	SP,IX
 	POP	IX
@@ -1406,8 +1313,6 @@ L_30:
 
 ;**************************** _drawMenu ***************************
 ;Name                         Addr/Register   Size   Type
-;_gfx_FillRectangle                  IMPORT  -----   function
-;_gfx_SetColor                       IMPORT  -----   function
 ;_files                              STATIC   2295   variable
 ;_gfx_PrintStringXY                  IMPORT  -----   function
 ;_gfx_PrintUInt                      IMPORT  -----   function
@@ -1423,23 +1328,26 @@ L_30:
 ;       Spill Code: 0 (instruction)
 
 
-.ENDFUNC "drawMenu",147,"_drawMenu"
+.ENDFUNC "drawMenu",137,"_drawMenu"
 	SEGMENT STRSECT
-L__33:
+L__31:
+	DB	">"
+	DB	0
+L__32:
 	DB	"Use the arrows and enter to select a ROM."
 	DB	0
-L__34:
+L__33:
 	DB	"Then use 1, 2, 3, PLUS, 4, 5, 6, MINUS, 7, 8, 9,"
 	DB	0
-L__35:
-	DB	"TIMES, COMMA, (, ), and DIVIDE for controls."
+L__34:
+	DB	"TIMES, 0, DECIMAL, ( - ), and ENTER to control."
 	DB	0
-L__36:
+L__35:
 	DB	"Press clear to quit."
 	DB	0
 	SEGMENT CODE
-;  148	
-;  149	void startEmulation(char *fileName) {
+;  138	
+;  139	void startEmulation(char *fileName) {
 _startEmulation:
 .DEFINE "_startEmulation"
 
@@ -1451,9 +1359,9 @@ _startEmulation:
 
 .ENDEF
 
-.BEGFUNC "startEmulation",149,"_startEmulation"
+.BEGFUNC "startEmulation",139,"_startEmulation"
 
-.LINE 149
+.LINE 139
 
 .DEFINE "fileName"
 
@@ -1468,17 +1376,17 @@ _startEmulation:
 	PUSH	IX
 	LD	IX,0
 	ADD	IX,SP
-;  150		
-;  151		loadProgram(fileName);
-.LINE 151
+;  140		
+;  141		loadProgram(fileName);
+.LINE 141
 
 	LD	BC,(IX+6)
 	PUSH	BC
 	CALL	_loadProgram
 	POP	BC
-;  152		
-;  153		gfx_FillScreen(bgColor);
-.LINE 153
+;  142		
+;  143		gfx_FillScreen(bgColor);
+.LINE 143
 
 	LD	A,(_bgColor)
 	LD	C,A
@@ -1486,15 +1394,15 @@ _startEmulation:
 	PUSH	BC
 	CALL	_gfx_FillScreen
 	POP	BC
-;  154		gfx_SetTextFGColor(0x01);
-.LINE 154
+;  144		gfx_SetTextFGColor(0x01);
+.LINE 144
 
 	LD	BC,1
 	PUSH	BC
 	CALL	_gfx_SetTextFGColor
 	POP	BC
-;  155		gfx_PrintStringXY(pauseText, 10, LCD_HEIGHT-20);
-.LINE 155
+;  145		gfx_PrintStringXY(pauseText, 10, LCD_HEIGHT-20);
+.LINE 145
 
 	LD	BC,220
 	PUSH	BC
@@ -1506,13 +1414,13 @@ _startEmulation:
 	POP	BC
 	POP	BC
 	POP	BC
-;  156		
-;  157		do {
-L_57:
-.LINE 157
+;  146		
+;  147		do {
+L_53:
+.LINE 147
 
-;  158			emulateCycle(cpf);
-.LINE 158
+;  148			emulateCycle(cpf);
+.LINE 148
 
 	LD	A,(_cpf)
 	LD	C,A
@@ -1520,37 +1428,50 @@ L_57:
 	PUSH	BC
 	CALL	_emulateCycle
 	POP	BC
-;  159			
-;  160			if(drawFlag)
-.LINE 160
+;  149			
+;  150			if(drawFlag)
+.LINE 150
 
 	LD	A,(_drawFlag)
 	OR	A,A
-	JR	Z,L_34
-;  161				drawGraphics();
-.LINE 161
+	JR	Z,L_30
+;  151				drawGraphics();
+.LINE 151
 
 	CALL	_drawGraphics
-L_34:
-;  162			
-;  163			gfx_BlitBuffer();
-.LINE 163
+L_30:
+;  152			
+;  153			gfx_BlitBuffer();
+.LINE 153
 
 	LD	BC,1
 	PUSH	BC
 	CALL	_gfx_Blit
 	POP	BC
-;  164			if(paused) {
-.LINE 164
+;  154			if(paused) {
+.LINE 154
 
 	LD	A,(_paused)
 	OR	A,A
-	JR	Z,L_58
-;  165				gfx_PrintStringXY("Paused", 10, 10);
-.LINE 165
+	JR	Z,L_54
+;  155				gfx_PrintStringXY("Paused", 10, 10);
+.LINE 155
 
 	LD	BC,10
 	PUSH	BC
+	PUSH	BC
+	LD	BC,L__39
+	PUSH	BC
+	CALL	_gfx_PrintStringXY
+	POP	BC
+	POP	BC
+	POP	BC
+;  156				gfx_PrintStringXY("[clear] - Exit", 10, 20);
+.LINE 156
+
+	LD	BC,20
+	PUSH	BC
+	LD	BC,10
 	PUSH	BC
 	LD	BC,L__40
 	PUSH	BC
@@ -1558,10 +1479,10 @@ L_34:
 	POP	BC
 	POP	BC
 	POP	BC
-;  166				gfx_PrintStringXY("[clear] - Exit", 10, 20);
-.LINE 166
+;  157				gfx_PrintStringXY("[alpha] - Keymapping", 10, 30);
+.LINE 157
 
-	LD	BC,20
+	LD	BC,30
 	PUSH	BC
 	LD	BC,10
 	PUSH	BC
@@ -1571,10 +1492,10 @@ L_34:
 	POP	BC
 	POP	BC
 	POP	BC
-;  167				gfx_PrintStringXY("[alpha] - Keymapping", 10, 30);
-.LINE 167
+;  158				gfx_PrintStringXY("[mode] - CPF", 10, 40);
+.LINE 158
 
-	LD	BC,30
+	LD	BC,40
 	PUSH	BC
 	LD	BC,10
 	PUSH	BC
@@ -1584,102 +1505,89 @@ L_34:
 	POP	BC
 	POP	BC
 	POP	BC
-;  168				gfx_PrintStringXY("[mode] - CPF", 10, 40);
-.LINE 168
-
-	LD	BC,40
-	PUSH	BC
-	LD	BC,10
-	PUSH	BC
-	LD	BC,L__43
-	PUSH	BC
-	CALL	_gfx_PrintStringXY
-	POP	BC
-	POP	BC
-	POP	BC
-;  169				gfx_BlitBuffer();
-.LINE 169
+;  159				gfx_BlitBuffer();
+.LINE 159
 
 	LD	BC,1
 	PUSH	BC
 	CALL	_gfx_Blit
 	POP	BC
-;  170				while(paused) {
-.LINE 170
+;  160				while(paused) {
+.LINE 160
 
-	JR	L_54
-L_55:
-;  171					kb_Scan();
-.LINE 171
+	JR	L_50
+L_51:
+;  161					kb_Scan();
+.LINE 161
 
 	CALL	_kb_Scan
-;  172					if(kb_Data[6] & kb_Clear) {
-.LINE 172
+;  162					if(kb_Data[6] & kb_Clear) {
+.LINE 162
 
 	LD	A,(16056348)
 	AND	A,64
-	JR	NZ,L_35
-	JR	L_43
-;  173						while(kb_Data[6] & kb_Clear) {
-L_36:
-.LINE 173
+	JR	NZ,L_31
+	JR	L_39
+;  163						while(kb_Data[6] & kb_Clear) {
+L_32:
+.LINE 163
 
-;  174							kb_ScanGroup(6);
-.LINE 174
+;  164							kb_ScanGroup(6);
+.LINE 164
 
 	LD	BC,6
 	PUSH	BC
 	CALL	_kb_ScanGroup
 	POP	BC
-;  175						}
-L_35:
-.LINE 175
+;  165						}
+L_31:
+.LINE 165
 
 	LD	A,(16056348)
 	AND	A,64
-	JR	NZ,L_36
-;  176						playing = false;
-.LINE 176
+	JR	NZ,L_32
+;  166						playing = false;
+.LINE 166
 
 	XOR	A,A
 	LD	(_playing),A
-;  177						break;
-.LINE 177
+;  167						break;
+.LINE 167
 
-	JR	L_58
-;  178					}
-L_43:
-.LINE 178
+	JR	L_54
+;  168					}
+L_39:
+.LINE 168
 
-;  179					if(kb_Data[1] & kb_2nd) {
-.LINE 179
+;  169					if(kb_Data[1] & kb_2nd) {
+.LINE 169
 
 	LD	A,(16056338)
 	AND	A,32
-	JR	NZ,L_39
-	JR	L_48
-;  180						while(kb_Data[1] & kb_2nd) {
-L_40:
-.LINE 180
+	JR	NZ,L_35
+	JR	L_44
+;  170						while(kb_Data[1] & kb_2nd) {
+L_36:
+.LINE 170
 
-;  181							kb_Scan();
-.LINE 181
+;  171							kb_Scan();
+.LINE 171
 
 	CALL	_kb_Scan
-;  182						}
-L_39:
-.LINE 182
+;  172						}
+L_35:
+.LINE 172
 
 	LD	A,(16056338)
 	AND	A,32
-	JR	NZ,L_40
-;  183						paused = false;
-.LINE 183
+	JR	NZ,L_36
+;  173						paused = false;
+.LINE 173
 
 	XOR	A,A
 	LD	(_paused),A
-;  184						gfx_SetColor(bgColor);
-.LINE 184
+;  174						gfx_SetColor(bgColor);
+.LINE 174
 
 	LD	A,(_bgColor)
 	LD	C,A
@@ -1687,8 +1595,8 @@ L_39:
 	PUSH	BC
 	CALL	_gfx_SetColor
 	POP	BC
-;  185						gfx_FillRectangle(10, 10, 200, 50);
-.LINE 185
+;  175						gfx_FillRectangle(10, 10, 200, 50);
+.LINE 175
 
 	LD	BC,50
 	PUSH	BC
@@ -1702,41 +1610,41 @@ L_39:
 	POP	BC
 	POP	BC
 	POP	BC
-;  186					}
-L_48:
-.LINE 186
+;  176					}
+L_44:
+.LINE 176
 
-;  187					if(kb_Data[2] & kb_Alpha) {
-.LINE 187
+;  177					if(kb_Data[2] & kb_Alpha) {
+.LINE 177
 
 	LD	A,(16056340)
 	AND	A,128
-	JR	NZ,L_44
-	JR	L_53
-;  188						while(kb_Data[2] & kb_Alpha) {
-L_45:
-.LINE 188
+	JR	NZ,L_40
+	JR	L_49
+;  178						while(kb_Data[2] & kb_Alpha) {
+L_41:
+.LINE 178
 
-;  189							kb_Scan();
-.LINE 189
+;  179							kb_Scan();
+.LINE 179
 
 	CALL	_kb_Scan
-;  190						}
-L_44:
-.LINE 190
+;  180						}
+L_40:
+.LINE 180
 
 	LD	A,(16056340)
 	AND	A,128
-	JR	NZ,L_45
-;  191						beginKeymapper(fileName);
-.LINE 191
+	JR	NZ,L_41
+;  181						beginKeymapper(fileName);
+.LINE 181
 
 	LD	BC,(IX+6)
 	PUSH	BC
 	CALL	_beginKeymapper
 	POP	BC
-;  192						gfx_PrintStringXY(pauseText, 10, LCD_HEIGHT-20);
-.LINE 192
+;  182						gfx_PrintStringXY(pauseText, 10, LCD_HEIGHT-20);
+.LINE 182
 
 	LD	BC,220
 	PUSH	BC
@@ -1748,38 +1656,38 @@ L_44:
 	POP	BC
 	POP	BC
 	POP	BC
-;  193					}
-L_53:
-.LINE 193
+;  183					}
+L_49:
+.LINE 183
 
-;  194					if(kb_Data[1] & kb_Mode) {
-.LINE 194
+;  184					if(kb_Data[1] & kb_Mode) {
+.LINE 184
 
 	LD	A,(16056338)
 	AND	A,64
-	JR	NZ,L_49
-	JR	L_54
-;  195						while(kb_Data[1] & kb_Mode) {
-L_50:
-.LINE 195
+	JR	NZ,L_45
+	JR	L_50
+;  185						while(kb_Data[1] & kb_Mode) {
+L_46:
+.LINE 185
 
-;  196							kb_Scan();
-.LINE 196
+;  186							kb_Scan();
+.LINE 186
 
 	CALL	_kb_Scan
-;  197						}
-L_49:
-.LINE 197
+;  187						}
+L_45:
+.LINE 187
 
 	LD	A,(16056338)
 	AND	A,64
-	JR	NZ,L_50
-;  198						beginSetClock();
-.LINE 198
+	JR	NZ,L_46
+;  188						beginSetClock();
+.LINE 188
 
 	CALL	_beginSetClock
-;  199						gfx_PrintStringXY(pauseText, 10, LCD_HEIGHT-20);
-.LINE 199
+;  189						gfx_PrintStringXY(pauseText, 10, LCD_HEIGHT-20);
+.LINE 189
 
 	LD	BC,220
 	PUSH	BC
@@ -1791,24 +1699,24 @@ L_49:
 	POP	BC
 	POP	BC
 	POP	BC
-;  200					}
-;  201				}
-L_54:
-.LINE 201
+;  190					}
+;  191				}
+L_50:
+.LINE 191
 
 	LD	A,(_paused)
 	OR	A,A
-	JR	NZ,L_55
-;  202			}
-;  203		} while (playing);
-L_58:
-.LINE 203
+	JR	NZ,L_51
+;  192			}
+;  193		} while (playing);
+L_54:
+.LINE 193
 
 	LD	A,(_playing)
 	OR	A,A
-	JR	NZ,L_57
-;  204	}
-.LINE 204
+	JR	NZ,L_53
+;  194	}
+.LINE 194
 
 	LD	SP,IX
 	POP	IX
@@ -1843,23 +1751,23 @@ L_58:
 ;       Spill Code: 0 (instruction)
 
 
-.ENDFUNC "startEmulation",204,"_startEmulation"
+.ENDFUNC "startEmulation",194,"_startEmulation"
 	SEGMENT STRSECT
-L__40:
+L__39:
 	DB	"Paused"
 	DB	0
-L__41:
+L__40:
 	DB	"[clear] - Exit"
 	DB	0
-L__42:
+L__41:
 	DB	"[alpha] - Keymapping"
 	DB	0
-L__43:
+L__42:
 	DB	"[mode] - CPF"
 	DB	0
 	SEGMENT CODE
-;  205	
-;  206	void beginSetClock() {
+;  195	
+;  196	void beginSetClock() {
 _beginSetClock:
 .DEFINE "_beginSetClock"
 
@@ -1871,13 +1779,13 @@ _beginSetClock:
 
 .ENDEF
 
-.BEGFUNC "beginSetClock",206,"_beginSetClock"
+.BEGFUNC "beginSetClock",196,"_beginSetClock"
 
 	PUSH	IX
 	LD	IX,0
 	ADD	IX,SP
-;  207		gfx_FillScreen(bgColor);
-.LINE 207
+;  197		gfx_FillScreen(bgColor);
+.LINE 197
 
 	LD	A,(_bgColor)
 	LD	C,A
@@ -1885,11 +1793,24 @@ _beginSetClock:
 	PUSH	BC
 	CALL	_gfx_FillScreen
 	POP	BC
-;  208		gfx_PrintStringXY("Set the amount of cycles emulated per frame.", 10, 10);
-.LINE 208
+;  198		gfx_PrintStringXY("Set the amount of cycles emulated per frame.", 10, 10);
+.LINE 198
 
 	LD	BC,10
 	PUSH	BC
+	PUSH	BC
+	LD	BC,L__54
+	PUSH	BC
+	CALL	_gfx_PrintStringXY
+	POP	BC
+	POP	BC
+	POP	BC
+;  199		gfx_PrintStringXY("Press mode to exit.", 10, 25);
+.LINE 199
+
+	LD	BC,25
+	PUSH	BC
+	LD	BC,10
 	PUSH	BC
 	LD	BC,L__55
 	PUSH	BC
@@ -1897,22 +1818,9 @@ _beginSetClock:
 	POP	BC
 	POP	BC
 	POP	BC
-;  209		gfx_PrintStringXY("Press mode to exit.", 10, 25);
-.LINE 209
-
-	LD	BC,25
-	PUSH	BC
-	LD	BC,10
-	PUSH	BC
-	LD	BC,L__56
-	PUSH	BC
-	CALL	_gfx_PrintStringXY
-	POP	BC
-	POP	BC
-	POP	BC
-;  210		
-;  211		gfx_SetTextXY(140, 115);
-.LINE 211
+;  200		
+;  201		gfx_SetTextXY(140, 115);
+.LINE 201
 
 	LD	BC,115
 	PUSH	BC
@@ -1921,8 +1829,8 @@ _beginSetClock:
 	CALL	_gfx_SetTextXY
 	POP	BC
 	POP	BC
-;  212		gfx_PrintUInt(cpf, 2);
-.LINE 212
+;  202		gfx_PrintUInt(cpf, 2);
+.LINE 202
 
 	LD	BC,2
 	PUSH	BC
@@ -1933,8 +1841,8 @@ _beginSetClock:
 	CALL	_gfx_PrintUInt
 	POP	BC
 	POP	BC
-;  213		gfx_SetColor(bgColor);
-.LINE 213
+;  203		gfx_SetColor(bgColor);
+.LINE 203
 
 	LD	A,(_bgColor)
 	LD	C,A
@@ -1942,44 +1850,44 @@ _beginSetClock:
 	PUSH	BC
 	CALL	_gfx_SetColor
 	POP	BC
-;  214		
-;  215		gfx_BlitBuffer();
-.LINE 215
+;  204		
+;  205		gfx_BlitBuffer();
+.LINE 205
 
 	LD	BC,1
 	PUSH	BC
 	CALL	_gfx_Blit
 	POP	BC
-;  216		do {
-L_70:
-.LINE 216
+;  206		do {
+L_66:
+.LINE 206
 
-;  217			kb_Scan();
-.LINE 217
+;  207			kb_Scan();
+.LINE 207
 
 	CALL	_kb_Scan
-;  218			if(kb_Data[7] & kb_Down) {
-.LINE 218
+;  208			if(kb_Data[7] & kb_Down) {
+.LINE 208
 
 	LD	A,(16056350)
 	AND	A,1
-	JR	Z,L_68
-;  219				cpf--;
-.LINE 219
+	JR	Z,L_64
+;  209				cpf--;
+.LINE 209
 
 	LD	A,(_cpf)
 	DEC	A
 	LD	(_cpf),A
-;  220				if(cpf == 0) cpf = 1;
-.LINE 220
+;  210				if(cpf == 0) cpf = 1;
+.LINE 210
 
 	OR	A,A
-	JR	NZ,L_62
+	JR	NZ,L_58
 	LD	A,1
 	LD	(_cpf),A
-L_62:
-;  221				gfx_FillRectangle(140, 115, 30, 30);
-.LINE 221
+L_58:
+;  211				gfx_FillRectangle(140, 115, 30, 30);
+.LINE 211
 
 	LD	BC,30
 	PUSH	BC
@@ -1993,8 +1901,8 @@ L_62:
 	POP	BC
 	POP	BC
 	POP	BC
-;  222				gfx_SetTextXY(140, 115);
-.LINE 222
+;  212				gfx_SetTextXY(140, 115);
+.LINE 212
 
 	LD	BC,115
 	PUSH	BC
@@ -2003,8 +1911,8 @@ L_62:
 	CALL	_gfx_SetTextXY
 	POP	BC
 	POP	BC
-;  223				gfx_PrintUInt(cpf, 2);
-.LINE 223
+;  213				gfx_PrintUInt(cpf, 2);
+.LINE 213
 
 	LD	BC,2
 	PUSH	BC
@@ -2015,40 +1923,40 @@ L_62:
 	CALL	_gfx_PrintUInt
 	POP	BC
 	POP	BC
-;  224				gfx_BlitBuffer();
-.LINE 224
+;  214				gfx_BlitBuffer();
+.LINE 214
 
 	LD	BC,1
 	PUSH	BC
 	CALL	_gfx_Blit
 	POP	BC
-;  225			}
-L_68:
-.LINE 225
+;  215			}
+L_64:
+.LINE 215
 
-;  226			if(kb_Data[7] & kb_Up) {
-.LINE 226
+;  216			if(kb_Data[7] & kb_Up) {
+.LINE 216
 
 	LD	A,(16056350)
 	AND	A,8
-	JR	Z,L_69
-;  227				cpf++;
-.LINE 227
+	JR	Z,L_65
+;  217				cpf++;
+.LINE 217
 
 	LD	A,(_cpf)
 	INC	A
 	LD	(_cpf),A
-;  228				if(cpf > 10) cpf = 10;
-.LINE 228
+;  218				if(cpf > 20) cpf = 20;
+.LINE 218
 
-	LD	A,10
+	LD	A,20
 	LD	HL,_cpf
 	CP	A,(HL)
-	JR	NC,L_66
+	JR	NC,L_62
 	LD	(_cpf),A
-L_66:
-;  229				gfx_FillRectangle(140, 115, 30, 30);
-.LINE 229
+L_62:
+;  219				gfx_FillRectangle(140, 115, 30, 30);
+.LINE 219
 
 	LD	BC,30
 	PUSH	BC
@@ -2062,8 +1970,8 @@ L_66:
 	POP	BC
 	POP	BC
 	POP	BC
-;  230				gfx_SetTextXY(140, 115);
-.LINE 230
+;  220				gfx_SetTextXY(140, 115);
+.LINE 220
 
 	LD	BC,115
 	PUSH	BC
@@ -2072,8 +1980,8 @@ L_66:
 	CALL	_gfx_SetTextXY
 	POP	BC
 	POP	BC
-;  231				gfx_PrintUInt(cpf, 2);
-.LINE 231
+;  221				gfx_PrintUInt(cpf, 2);
+.LINE 221
 
 	LD	BC,2
 	PUSH	BC
@@ -2084,32 +1992,32 @@ L_66:
 	CALL	_gfx_PrintUInt
 	POP	BC
 	POP	BC
-;  232				gfx_BlitBuffer();
-.LINE 232
+;  222				gfx_BlitBuffer();
+.LINE 222
 
 	LD	BC,1
 	PUSH	BC
 	CALL	_gfx_Blit
 	POP	BC
-;  233			}
-L_69:
-.LINE 233
+;  223			}
+L_65:
+.LINE 223
 
-;  234			delay(100);
-.LINE 234
+;  224			delay(100);
+.LINE 224
 
 	LD	BC,100
 	PUSH	BC
 	CALL	_delay
 	POP	BC
-;  235		} while(kb_Data[1] != kb_Mode);
-.LINE 235
+;  225		} while(kb_Data[1] != kb_Mode);
+.LINE 225
 
 	LD	A,(16056338)
 	CP	A,64
-	JR	NZ,L_70
-;  236		gfx_FillScreen(bgColor);
-.LINE 236
+	JR	NZ,L_66
+;  226		gfx_FillScreen(bgColor);
+.LINE 226
 
 	LD	A,(_bgColor)
 	LD	C,A
@@ -2117,20 +2025,20 @@ L_69:
 	PUSH	BC
 	CALL	_gfx_FillScreen
 	POP	BC
-;  237		gfx_BlitBuffer();
-.LINE 237
+;  227		gfx_BlitBuffer();
+.LINE 227
 
 	LD	BC,1
 	PUSH	BC
 	CALL	_gfx_Blit
 	POP	BC
-;  238		paused = false;
-.LINE 238
+;  228		paused = false;
+.LINE 228
 
 	XOR	A,A
 	LD	(_paused),A
-;  239	}
-.LINE 239
+;  229	}
+.LINE 229
 
 	LD	SP,IX
 	POP	IX
@@ -2157,17 +2065,17 @@ L_69:
 ;       Spill Code: 0 (instruction)
 
 
-.ENDFUNC "beginSetClock",239,"_beginSetClock"
+.ENDFUNC "beginSetClock",229,"_beginSetClock"
 	SEGMENT STRSECT
-L__55:
+L__54:
 	DB	"Set the amount of cycles emulated per frame."
 	DB	0
-L__56:
+L__55:
 	DB	"Press mode to exit."
 	DB	0
 	SEGMENT CODE
-;  240	
-;  241	void beginKeymapper(char *fileName) {
+;  230	
+;  231	void beginKeymapper(char *fileName) {
 _beginKeymapper:
 .DEFINE "_beginKeymapper"
 
@@ -2179,9 +2087,9 @@ _beginKeymapper:
 
 .ENDEF
 
-.BEGFUNC "beginKeymapper",241,"_beginKeymapper"
+.BEGFUNC "beginKeymapper",231,"_beginKeymapper"
 
-.LINE 241
+.LINE 231
 
 .DEFINE "fileName"
 
@@ -2227,114 +2135,114 @@ _beginKeymapper:
 	LD	IX,0
 	ADD	IX,SP
 	PUSH	BC
-;  242		uint8_t selected = 0;
-.LINE 242
+;  232		uint8_t selected = 0;
+.LINE 232
 
 	LD	(IX+-1),0
-;  243		uint8_t i;
-;  244		bool awaiting = false;
-.LINE 244
+;  233		uint8_t i;
+;  234		bool awaiting = false;
+.LINE 234
 
 	LD	(IX+-3),0
-;  245		
-;  246		drawKeymappingMenu(selected);
-.LINE 246
+;  235		
+;  236		drawKeymappingMenu(selected);
+.LINE 236
 
 	LD	BC,0
 	PUSH	BC
 	CALL	_drawKeymappingMenu
 	POP	BC
-;  247		
-;  248		do {
-L_101:
-.LINE 248
+;  237		
+;  238		do {
+L_97:
+.LINE 238
 
-;  249			kb_Scan();
-.LINE 249
+;  239			kb_Scan();
+.LINE 239
 
 	CALL	_kb_Scan
-;  250			if(!awaiting) {
-.LINE 250
+;  240			if(!awaiting) {
+.LINE 240
 
 	LD	A,(IX+-3)
 	OR	A,A
-	JR	NZ,L_100
-;  251				if(kb_Data[7] & kb_Down) {
-.LINE 251
+	JR	NZ,L_96
+;  241				if(kb_Data[7] & kb_Down) {
+.LINE 241
 
 	LD	A,(16056350)
 	AND	A,1
-	JR	Z,L_83
-;  252					selected++;
-.LINE 252
+	JR	Z,L_79
+;  242					selected++;
+.LINE 242
 
 	INC	(IX+-1)
-;  253					if(selected > 16) selected = 0;
-.LINE 253
+;  243					if(selected > 16) selected = 0;
+.LINE 243
 
 	LD	A,16
 	CP	A,(IX+-1)
-	JR	NC,L_76
+	JR	NC,L_72
 	LD	(IX+-1),0
-L_76:
-;  254					drawKeymappingMenu(selected);
-.LINE 254
+L_72:
+;  244					drawKeymappingMenu(selected);
+.LINE 244
 
 	LD	C,(IX+-1)
 	LD	B,0
 	PUSH	BC
 	CALL	_drawKeymappingMenu
 	POP	BC
-;  255				}
-L_83:
-.LINE 255
+;  245				}
+L_79:
+.LINE 245
 
-;  256				if(kb_Data[7] & kb_Up) {
-.LINE 256
+;  246				if(kb_Data[7] & kb_Up) {
+.LINE 246
 
 	LD	A,(16056350)
 	AND	A,8
-	JR	Z,L_85
-;  257					if(selected == 0)
-.LINE 257
+	JR	Z,L_81
+;  247					if(selected == 0)
+.LINE 247
 
 	LD	A,(IX+-1)
 	OR	A,A
-	JR	NZ,L_80
-;  258						selected = 16;
-.LINE 258
+	JR	NZ,L_76
+;  248						selected = 16;
+.LINE 248
 
 	LD	(IX+-1),16
-;  259					else
-.LINE 259
+;  249					else
+.LINE 249
 
-	JR	L_81
-L_80:
-;  260						selected--;
-.LINE 260
+	JR	L_77
+L_76:
+;  250						selected--;
+.LINE 250
 
 	DEC	(IX+-1)
-L_81:
-;  261					drawKeymappingMenu(selected);
-.LINE 261
+L_77:
+;  251					drawKeymappingMenu(selected);
+.LINE 251
 
 	LD	C,(IX+-1)
 	LD	B,0
 	PUSH	BC
 	CALL	_drawKeymappingMenu
 	POP	BC
-;  262				}
-L_85:
-.LINE 262
+;  252				}
+L_81:
+.LINE 252
 
-;  263				if(kb_Data[6] & kb_Enter) {
-.LINE 263
+;  253				if(kb_Data[6] & kb_Enter) {
+.LINE 253
 
 	LD	A,(16056348)
 	AND	A,1
-	JR	Z,L_92
-;  264					drawKeymappingMenu(selected+16);
-.LINE 264
+	JR	Z,L_88
+;  254					drawKeymappingMenu(selected+16);
+.LINE 254
 
 	LD	A,(IX+-1)
 	ADD	A,16
@@ -2343,28 +2251,28 @@ L_85:
 	PUSH	BC
 	CALL	_drawKeymappingMenu
 	POP	BC
-;  265					awaiting = 1;
-.LINE 265
+;  255					awaiting = 1;
+.LINE 255
 
 	LD	(IX+-3),1
-;  266				}
-L_92:
-.LINE 266
+;  256				}
+L_88:
+.LINE 256
 
-;  267				if(kb_Data[1] & kb_2nd) {
-.LINE 267
+;  257				if(kb_Data[1] & kb_2nd) {
+.LINE 257
 
 	LD	A,(16056338)
 	AND	A,32
-	JR	Z,L_93
-;  268					for(i = 0; i < 16; i++) {
-.LINE 268
+	JR	Z,L_89
+;  258					for(i = 0; i < 16; i++) {
+.LINE 258
 
 	LD	(IX+-2),0
-	JR	L_89
-L_87:
-;  269						game_data[i+6] = i;
-.LINE 269
+	JR	L_85
+L_83:
+;  259						game_data[i+6] = i;
+.LINE 259
 
 	LD	A,(IX+-2)
 	UEXT	HL
@@ -2375,8 +2283,8 @@ L_87:
 	ADD	HL,BC
 	LD	A,(IX+-2)
 	LD	(HL),A
-;  270						controlMap[i] = i;
-.LINE 270
+;  260						controlMap[i] = i;
+.LINE 260
 
 	LD	A,(IX+-2)
 	UEXT	HL
@@ -2386,159 +2294,159 @@ L_87:
 	LD	A,(IX+-2)
 	LD	(HL),A
 	INC	(IX+-2)
-;  271					}
-L_89:
-.LINE 271
+;  261					}
+L_85:
+.LINE 261
 
 	LD	A,(IX+-2)
 	CP	A,16
-	JR	C,L_87
-;  272					drawKeymappingMenu(selected);
-.LINE 272
+	JR	C,L_83
+;  262					drawKeymappingMenu(selected);
+.LINE 262
 
 	LD	C,(IX+-1)
 	LD	B,0
 	PUSH	BC
 	CALL	_drawKeymappingMenu
 	POP	BC
-;  273				}
-L_93:
-.LINE 273
+;  263				}
+L_89:
+.LINE 263
 
-;  274				delay(100);
-.LINE 274
+;  264				delay(100);
+.LINE 264
 
 	LD	BC,100
 	PUSH	BC
 	CALL	_delay
 	POP	BC
-;  275			} else {
-.LINE 275
+;  265			} else {
+.LINE 265
 
-	JR	L_102
-L_100:
-;  276				keypad[0x0] = kb_Data[4] & kb_DecPnt;
-.LINE 276
+	JR	L_98
+L_96:
+;  266				keypad[0x0] = kb_Data[4] & kb_DecPnt;
+.LINE 266
 
 	LD	A,(16056344)
 	AND	A,1
 	LD	(_keypad),A
-;  277				keypad[0x1] = kb_Data[3] & kb_7;
-.LINE 277
+;  267				keypad[0x1] = kb_Data[3] & kb_7;
+.LINE 267
 
 	LD	A,(16056342)
 	AND	A,8
 	LD	HL,_keypad
 	INC	HL
 	LD	(HL),A
-;  278				keypad[0x2] = kb_Data[4] & kb_8;
-.LINE 278
+;  268				keypad[0x2] = kb_Data[4] & kb_8;
+.LINE 268
 
 	LD	A,(16056344)
 	AND	A,8
 	LD	IY,_keypad
 	LEA	HL,IY+2
 	LD	(HL),A
-;  279				keypad[0x3] = kb_Data[5] & kb_9;
-.LINE 279
+;  269				keypad[0x3] = kb_Data[5] & kb_9;
+.LINE 269
 
 	LD	A,(16056346)
 	AND	A,8
 	LEA	HL,IY+3
 	LD	(HL),A
-;  280				keypad[0x4] = kb_Data[3] & kb_4;
-.LINE 280
+;  270				keypad[0x4] = kb_Data[3] & kb_4;
+.LINE 270
 
 	LD	A,(16056342)
 	AND	A,4
 	LEA	HL,IY+4
 	LD	(HL),A
-;  281				keypad[0x5] = kb_Data[4] & kb_5;
-.LINE 281
+;  271				keypad[0x5] = kb_Data[4] & kb_5;
+.LINE 271
 
 	LD	A,(16056344)
 	AND	A,4
 	LEA	HL,IY+5
 	LD	(HL),A
-;  282				keypad[0x6] = kb_Data[5] & kb_6;
-.LINE 282
+;  272				keypad[0x6] = kb_Data[5] & kb_6;
+.LINE 272
 
 	LD	A,(16056346)
 	AND	A,4
 	LEA	HL,IY+6
 	LD	(HL),A
-;  283				keypad[0x7] = kb_Data[3] & kb_1;
-.LINE 283
+;  273				keypad[0x7] = kb_Data[3] & kb_1;
+.LINE 273
 
 	LD	A,(16056342)
 	AND	A,2
 	LEA	HL,IY+7
 	LD	(HL),A
-;  284				keypad[0x8] = kb_Data[4] & kb_2;
-.LINE 284
+;  274				keypad[0x8] = kb_Data[4] & kb_2;
+.LINE 274
 
 	LD	A,(16056344)
 	AND	A,2
 	LEA	HL,IY+8
 	LD	(HL),A
-;  285				keypad[0x9] = kb_Data[5] & kb_3;
-.LINE 285
+;  275				keypad[0x9] = kb_Data[5] & kb_3;
+.LINE 275
 
 	LD	A,(16056346)
 	AND	A,2
 	LEA	HL,IY+9
 	LD	(HL),A
-;  286				keypad[0xA] = kb_Data[3] & kb_0;
-.LINE 286
+;  276				keypad[0xA] = kb_Data[3] & kb_0;
+.LINE 276
 
 	LD	A,(16056342)
 	AND	A,1
 	LEA	HL,IY+10
 	LD	(HL),A
-;  287				keypad[0xB] = kb_Data[5] & kb_Chs;
-.LINE 287
+;  277				keypad[0xB] = kb_Data[5] & kb_Chs;
+.LINE 277
 
 	LD	A,(16056346)
 	AND	A,1
 	LEA	HL,IY+11
 	LD	(HL),A
-;  288				keypad[0xC] = kb_Data[6] & kb_Mul;
-.LINE 288
+;  278				keypad[0xC] = kb_Data[6] & kb_Mul;
+.LINE 278
 
 	LD	A,(16056348)
 	AND	A,8
 	LEA	HL,IY+12
 	LD	(HL),A
-;  289				keypad[0xD] = kb_Data[6] & kb_Sub;
-.LINE 289
+;  279				keypad[0xD] = kb_Data[6] & kb_Sub;
+.LINE 279
 
 	LD	A,(16056348)
 	AND	A,4
 	LEA	HL,IY+13
 	LD	(HL),A
-;  290				keypad[0xE] = kb_Data[6] & kb_Add;
-.LINE 290
+;  280				keypad[0xE] = kb_Data[6] & kb_Add;
+.LINE 280
 
 	LD	A,(16056348)
 	AND	A,2
 	LEA	HL,IY+14
 	LD	(HL),A
-;  291				keypad[0xF] = kb_Data[6] & kb_Enter;
-.LINE 291
+;  281				keypad[0xF] = kb_Data[6] & kb_Enter;
+.LINE 281
 
 	LD	A,(16056348)
 	AND	A,1
 	LEA	HL,IY+15
 	LD	(HL),A
-;  292				
-;  293				for(i = 0; i < 16; i++) {
-.LINE 293
+;  282				
+;  283				for(i = 0; i < 16; i++) {
+.LINE 283
 
 	LD	(IX+-2),0
-	JR	L_98
-L_96:
-;  294					if(keypad[i]) {
-.LINE 294
+	JR	L_94
+L_92:
+;  284					if(keypad[i]) {
+.LINE 284
 
 	LD	A,(IX+-2)
 	UEXT	HL
@@ -2547,9 +2455,9 @@ L_96:
 	ADD	HL,BC
 	LD	A,(HL)
 	OR	A,A
-	JR	Z,L_97
-;  295						game_data[selected+6] = i;
-.LINE 295
+	JR	Z,L_93
+;  285						game_data[selected+6] = i;
+.LINE 285
 
 	LD	A,(IX+-1)
 	UEXT	HL
@@ -2560,8 +2468,8 @@ L_96:
 	ADD	HL,BC
 	LD	A,(IX+-2)
 	LD	(HL),A
-;  296						controlMap[selected] = i;
-.LINE 296
+;  286						controlMap[selected] = i;
+.LINE 286
 
 	LD	A,(IX+-1)
 	UEXT	HL
@@ -2570,45 +2478,45 @@ L_96:
 	ADD	HL,BC
 	LD	A,(IX+-2)
 	LD	(HL),A
-;  297						awaiting = 0;
-.LINE 297
+;  287						awaiting = 0;
+.LINE 287
 
 	LD	(IX+-3),0
-;  298						drawKeymappingMenu(selected);
-.LINE 298
+;  288						drawKeymappingMenu(selected);
+.LINE 288
 
 	LD	C,(IX+-1)
 	LD	B,0
 	PUSH	BC
 	CALL	_drawKeymappingMenu
 	POP	BC
-;  299					}
-;  300				}
-L_97:
-.LINE 300
+;  289					}
+;  290				}
+L_93:
+.LINE 290
 
 	INC	(IX+-2)
-L_98:
+L_94:
 	LD	A,(IX+-2)
 	CP	A,16
-	JR	C,L_96
-;  301			}
-;  302		} while(kb_Data[2] != kb_Alpha);
-L_102:
-.LINE 302
+	JR	C,L_92
+;  291			}
+;  292		} while(kb_Data[2] != kb_Alpha);
+L_98:
+.LINE 292
 
 	LD	A,(16056340)
 	CP	A,128
-	JR	NZ,L_101
-;  303		
-;  304		ti_CloseAll();
-.LINE 304
+	JR	NZ,L_97
+;  293		
+;  294		ti_CloseAll();
+.LINE 294
 
 	CALL	_ti_CloseAll
-;  305		curFile = ti_Open(fileName, "w");
-.LINE 305
+;  295		curFile = ti_Open(fileName, "w");
+.LINE 295
 
-	LD	BC,L__74
+	LD	BC,L__73
 	PUSH	BC
 	LD	BC,(IX+6)
 	PUSH	BC
@@ -2616,8 +2524,8 @@ L_102:
 	POP	BC
 	POP	BC
 	LD	(_curFile),A
-;  306		ti_Write(&game_data, sizeof(game_data)/sizeof(uint8_t), 1, curFile);
-.LINE 306
+;  296		ti_Write(&game_data, sizeof(game_data)/sizeof(uint8_t), 1, curFile);
+.LINE 296
 
 	LD	C,A
 	LD	B,0
@@ -2633,9 +2541,9 @@ L_102:
 	POP	BC
 	POP	BC
 	POP	BC
-;  307		
-;  308		gfx_FillScreen(bgColor);
-.LINE 308
+;  297		
+;  298		gfx_FillScreen(bgColor);
+.LINE 298
 
 	LD	A,(_bgColor)
 	LD	C,A
@@ -2643,20 +2551,20 @@ L_102:
 	PUSH	BC
 	CALL	_gfx_FillScreen
 	POP	BC
-;  309		gfx_BlitBuffer();
-.LINE 309
+;  299		gfx_BlitBuffer();
+.LINE 299
 
 	LD	BC,1
 	PUSH	BC
 	CALL	_gfx_Blit
 	POP	BC
-;  310		paused = false;
-.LINE 310
+;  300		paused = false;
+.LINE 300
 
 	XOR	A,A
 	LD	(_paused),A
-;  311	}
-.LINE 311
+;  301	}
+.LINE 301
 
 	LD	SP,IX
 	POP	IX
@@ -2689,14 +2597,14 @@ L_102:
 ;       Spill Code: 0 (instruction)
 
 
-.ENDFUNC "beginKeymapper",311,"_beginKeymapper"
+.ENDFUNC "beginKeymapper",301,"_beginKeymapper"
 	SEGMENT STRSECT
-L__74:
+L__73:
 	DB	"w"
 	DB	0
 	SEGMENT CODE
-;  312	
-;  313	void drawKeymappingMenu(uint8_t selected) {
+;  302	
+;  303	void drawKeymappingMenu(uint8_t selected) {
 _drawKeymappingMenu:
 .DEFINE "_drawKeymappingMenu"
 
@@ -2708,9 +2616,9 @@ _drawKeymappingMenu:
 
 .ENDEF
 
-.BEGFUNC "drawKeymappingMenu",313,"_drawKeymappingMenu"
+.BEGFUNC "drawKeymappingMenu",303,"_drawKeymappingMenu"
 
-.LINE 313
+.LINE 303
 
 .DEFINE "selected"
 
@@ -2736,9 +2644,9 @@ _drawKeymappingMenu:
 	LD	IX,0
 	ADD	IX,SP
 	DEC	SP
-;  314		uint8_t i;
-;  315		gfx_FillScreen(bgColor);
-.LINE 315
+;  304		uint8_t i;
+;  305		gfx_FillScreen(bgColor);
+.LINE 305
 
 	LD	A,(_bgColor)
 	LD	C,A
@@ -2746,15 +2654,15 @@ _drawKeymappingMenu:
 	PUSH	BC
 	CALL	_gfx_FillScreen
 	POP	BC
-;  316		
-;  317		for(i = 0; i < 16; i++) {
-.LINE 317
+;  306		
+;  307		for(i = 0; i < 16; i++) {
+.LINE 307
 
 	LD	(IX+-1),0
-	JR	L_108
-L_106:
-;  318			gfx_PrintStringXY("Key", 30, i*10+10);
-.LINE 318
+	JR	L_104
+L_102:
+;  308			gfx_PrintStringXY("Key", 30, i*10+10);
+.LINE 308
 
 	LD	A,(IX+-1)
 	UEXT	HL
@@ -2766,14 +2674,14 @@ L_106:
 	PUSH	BC
 	LD	BC,30
 	PUSH	BC
-	LD	BC,L__76
+	LD	BC,L__75
 	PUSH	BC
 	CALL	_gfx_PrintStringXY
 	POP	BC
 	POP	BC
 	POP	BC
-;  319			gfx_SetTextXY(60, i*10+10);
-.LINE 319
+;  309			gfx_SetTextXY(60, i*10+10);
+.LINE 309
 
 	LD	A,(IX+-1)
 	UEXT	HL
@@ -2788,8 +2696,8 @@ L_106:
 	CALL	_gfx_SetTextXY
 	POP	BC
 	POP	BC
-;  320			gfx_PrintUInt(i, 2);
-.LINE 320
+;  310			gfx_PrintUInt(i, 2);
+.LINE 310
 
 	LD	BC,2
 	PUSH	BC
@@ -2800,8 +2708,8 @@ L_106:
 	CALL	_gfx_PrintUInt
 	POP	BC
 	POP	BC
-;  321			gfx_PrintStringXY(keyNames[game_data[i+6]], 90, i*10+10);
-.LINE 321
+;  311			gfx_PrintStringXY(keyNames[game_data[i+6]], 90, i*10+10);
+.LINE 311
 
 	LD	A,(IX+-1)
 	UEXT	HL
@@ -2835,18 +2743,31 @@ L_106:
 	POP	BC
 	POP	BC
 	INC	(IX+-1)
-;  322		}
-L_108:
-.LINE 322
+;  312		}
+L_104:
+.LINE 312
 
 	LD	A,(IX+-1)
 	CP	A,16
-	JR	C,L_106
-;  323		
-;  324		gfx_PrintStringXY("Select a key to remap, then press the new key.", 10, 200);
-.LINE 324
+	JR	C,L_102
+;  313		
+;  314		gfx_PrintStringXY("Select a key to remap, then press the new key.", 10, 200);
+.LINE 314
 
 	LD	BC,200
+	PUSH	BC
+	LD	BC,10
+	PUSH	BC
+	LD	BC,L__77
+	PUSH	BC
+	CALL	_gfx_PrintStringXY
+	POP	BC
+	POP	BC
+	POP	BC
+;  315		gfx_PrintStringXY("Press 2nd to reset, alpha to exit.", 10, 215);
+.LINE 315
+
+	LD	BC,215
 	PUSH	BC
 	LD	BC,10
 	PUSH	BC
@@ -2856,35 +2777,22 @@ L_108:
 	POP	BC
 	POP	BC
 	POP	BC
-;  325		gfx_PrintStringXY("Press 2nd to reset, alpha to exit.", 10, 215);
-.LINE 325
-
-	LD	BC,215
-	PUSH	BC
-	LD	BC,10
-	PUSH	BC
-	LD	BC,L__79
-	PUSH	BC
-	CALL	_gfx_PrintStringXY
-	POP	BC
-	POP	BC
-	POP	BC
-;  326		
-;  327		gfx_SetColor(0x01);
-.LINE 327
+;  316		
+;  317		gfx_SetColor(0x01);
+.LINE 317
 
 	LD	BC,1
 	PUSH	BC
 	CALL	_gfx_SetColor
 	POP	BC
-;  328		if(selected > 16) {
-.LINE 328
+;  318		if(selected > 16) {
+.LINE 318
 
 	LD	A,16
 	CP	A,(IX+6)
-	JR	NC,L_111
-;  329			gfx_Circle(13, (selected%16)*10+13, 3);
-.LINE 329
+	JR	NC,L_107
+;  319			gfx_Circle(13, (selected%16)*10+13, 3);
+.LINE 319
 
 	LD	BC,3
 	PUSH	BC
@@ -2904,13 +2812,13 @@ L_108:
 	POP	BC
 	POP	BC
 	POP	BC
-;  330		} else {
-.LINE 330
+;  320		} else {
+.LINE 320
 
-	JR	L_112
-L_111:
-;  331			gfx_FillRectangle(10, (selected%16)*10+10, 6, 6);
-.LINE 331
+	JR	L_108
+L_107:
+;  321			gfx_FillRectangle(10, (selected%16)*10+10, 6, 6);
+.LINE 321
 
 	LD	BC,6
 	PUSH	BC
@@ -2932,20 +2840,20 @@ L_111:
 	POP	BC
 	POP	BC
 	POP	BC
-;  332		}
-L_112:
-.LINE 332
+;  322		}
+L_108:
+.LINE 322
 
-;  333		
-;  334		gfx_BlitBuffer();
-.LINE 334
+;  323		
+;  324		gfx_BlitBuffer();
+.LINE 324
 
 	LD	BC,1
 	PUSH	BC
 	CALL	_gfx_Blit
 	POP	BC
-;  335	}
-.LINE 335
+;  325	}
+.LINE 325
 
 	LD	SP,IX
 	POP	IX
@@ -2973,20 +2881,20 @@ L_112:
 ;       Spill Code: 0 (instruction)
 
 
-.ENDFUNC "drawKeymappingMenu",335,"_drawKeymappingMenu"
+.ENDFUNC "drawKeymappingMenu",325,"_drawKeymappingMenu"
 	SEGMENT STRSECT
-L__76:
+L__75:
 	DB	"Key"
 	DB	0
-L__78:
+L__77:
 	DB	"Select a key to remap, then press the new key."
 	DB	0
-L__79:
+L__78:
 	DB	"Press 2nd to reset, alpha to exit."
 	DB	0
 	SEGMENT CODE
-;  336	
-;  337	void drawGraphics() {
+;  326	
+;  327	void drawGraphics() {
 _drawGraphics:
 .DEFINE "_drawGraphics"
 
@@ -2998,19 +2906,48 @@ _drawGraphics:
 
 .ENDEF
 
-.BEGFUNC "drawGraphics",337,"_drawGraphics"
+.BEGFUNC "drawGraphics",327,"_drawGraphics"
 
 	PUSH	IX
 	LD	IX,0
 	ADD	IX,SP
-;  338		drawFlag = false;
-.LINE 338
+;  328		drawFlag = false;
+.LINE 328
 
 	XOR	A,A
 	LD	(_drawFlag),A
-;  339		
-;  340		gfx_ScaledSprite_NoClip(canvas, 30, 55, 4, 4);
-.LINE 340
+;  329		
+;  330		if(extendedScreen)
+.LINE 330
+
+	LD	A,(_extendedScreen)
+	OR	A,A
+	JR	Z,L_111
+;  331			gfx_ScaledSprite_NoClip(scanvas, 30, 55, 2, 2);
+.LINE 331
+
+	LD	BC,2
+	PUSH	BC
+	PUSH	BC
+	LD	BC,55
+	PUSH	BC
+	LD	BC,30
+	PUSH	BC
+	LD	BC,_scanvas_data
+	PUSH	BC
+	CALL	_gfx_ScaledSprite_NoClip
+	POP	BC
+	POP	BC
+	POP	BC
+	POP	BC
+	POP	BC
+;  332		else
+.LINE 332
+
+	JR	L_112
+L_111:
+;  333			gfx_ScaledSprite_NoClip(canvas, 30, 55, 4, 4);
+.LINE 333
 
 	LD	BC,4
 	PUSH	BC
@@ -3027,7 +2964,8 @@ _drawGraphics:
 	POP	BC
 	POP	BC
 	POP	BC
-.LINE 341
+L_112:
+.LINE 334
 
 	LD	SP,IX
 	POP	IX
@@ -3037,7 +2975,9 @@ _drawGraphics:
 ;**************************** _drawGraphics ***************************
 ;Name                         Addr/Register   Size   Type
 ;_canvas_data                        IMPORT   2050   variable
+;_scanvas_data                       IMPORT   8194   variable
 ;_gfx_ScaledSprite_NoClip            IMPORT  -----   function
+;_extendedScreen                     IMPORT      1   variable
 ;_drawFlag                           IMPORT      1   variable
 
 
@@ -3045,14 +2985,16 @@ _drawGraphics:
 ;       Spill Code: 0 (instruction)
 
 
-.ENDFUNC "drawGraphics",341,"_drawGraphics"
+.ENDFUNC "drawGraphics",334,"_drawGraphics"
 	XREF _sprites_gfx_pal:ROM
+	XREF _scanvas_data:ROM
 	XREF _canvas_data:ROM
 	XREF _emulateCycle:ROM
 	XREF _loadProgram:ROM
 	XREF _controlMap:ROM
 	XREF _keypad:ROM
 	XREF _game_data:ROM
+	XREF _extendedScreen:ROM
 	XREF _playing:ROM
 	XREF _paused:ROM
 	XREF _drawFlag:ROM
@@ -3063,6 +3005,7 @@ _drawGraphics:
 	XREF _gfx_SetTextXY:ROM
 	XREF _gfx_PrintStringXY:ROM
 	XREF _gfx_PrintUInt:ROM
+	XREF _gfx_SetTextScale:ROM
 	XREF _gfx_Blit:ROM
 	XREF _gfx_SetDraw:ROM
 	XREF _gfx_Circle:ROM
@@ -3089,7 +3032,6 @@ _drawGraphics:
 	XDEF _startEmulation
 	XDEF _drawMenu
 	XDEF _main
-	XDEF _concatenate
 	XDEF _keyNames
 	XDEF _pauseText
 	XDEF _cpf

@@ -14,6 +14,16 @@ _canvas_data:
 .DIM 2050
 .TYPE 108
 .ENDEF
+_scanvas_data:
+	DS	8194
+.DEFINE "scanvas_data"
+.ALIAS "_scanvas_data"
+.CLASS 83
+.VALUE _scanvas_data
+.DIM 8194
+.TYPE 108
+.ENDEF
+	XDEF _scanvas_data
 	XDEF _canvas_data
 ;    1	// Converted using ConvPNG
 ;    2	#include <stdint.h>

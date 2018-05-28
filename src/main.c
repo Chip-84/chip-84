@@ -51,13 +51,6 @@ const char *keyNames[16] = {
 	"Enter"
 };
 
-uint8_t concatenate(uint8_t x, uint8_t y) {
-	uint8_t pow = 10;
-	while (y >= pow)
-		pow *= 10;
-	return x * pow + y;
-}
-
 void main(void) {
 	uint8_t i;
 	char *varName;
@@ -69,10 +62,6 @@ void main(void) {
 	
 	count = 0;
 	
-	//ti_CloseAll();
-	//curFile = ti_Open("C84Cfg", "a");
-	//ti_Write(&test1, 16, 1, curFile);
-	
 	gfx_Begin(gfx_8bpp);
 	gfx_Blit(gfx_screen);
     gfx_SetDrawBuffer();
@@ -80,9 +69,11 @@ void main(void) {
 	gfx_SetColor(0xff);
 	
 	gfx_SetTextFGColor(0x00);
-	gfx_PrintStringXY("Chip-84", 128, 100);
+	gfx_SetTextScale(2, 2);
+	gfx_PrintStringXY("Chip-84", 103, 95);
+	gfx_SetTextScale(1, 1);
 	gfx_PrintStringXY("2018 Christian Kosman", 80, 120);
-	gfx_PrintStringXY("version 1.1.2", LCD_WIDTH-100, LCD_HEIGHT-30);
+	gfx_PrintStringXY("version 2.0.0", LCD_WIDTH-100, LCD_HEIGHT-30);
 	gfx_BlitBuffer();
 	
 	delay(1000);
@@ -136,13 +127,12 @@ void drawMenu(uint8_t start) {
 			gfx_PrintStringXY(files[i+start], 50, 10*i+10);
 		}
 	}
-	gfx_SetColor(0x00);
-	gfx_FillRectangle(10, 10, 6, 6);
+	gfx_PrintStringXY(">",10,10);
 	
-	gfx_PrintStringXY("Use the arrows and enter to select a ROM.", 20, 180);
-	gfx_PrintStringXY("Then use 1, 2, 3, PLUS, 4, 5, 6, MINUS, 7, 8, 9,", 20, 195);
-	gfx_PrintStringXY("TIMES, COMMA, (, ), and DIVIDE for controls.", 20, 205);
-	gfx_PrintStringXY("Press clear to quit.", 20, 220);
+	gfx_PrintStringXY("Use the arrows and enter to select a ROM.", 10, 180);
+	gfx_PrintStringXY("Then use 1, 2, 3, PLUS, 4, 5, 6, MINUS, 7, 8, 9,", 10, 195);
+	gfx_PrintStringXY("TIMES, 0, DECIMAL, ( - ), and ENTER to control.", 10, 205);
+	gfx_PrintStringXY("Press clear to quit.", 10, 220);
 	
 }
 
@@ -225,7 +215,7 @@ void beginSetClock() {
 		}
 		if(kb_Data[7] & kb_Up) {
 			cpf++;
-			if(cpf > 10) cpf = 10;
+			if(cpf > 20) cpf = 20;
 			gfx_FillRectangle(140, 115, 30, 30);
 			gfx_SetTextXY(140, 115);
 			gfx_PrintUInt(cpf, 2);
@@ -337,5 +327,8 @@ void drawKeymappingMenu(uint8_t selected) {
 void drawGraphics() {
 	drawFlag = false;
 	
-	gfx_ScaledSprite_NoClip(canvas, 30, 55, 4, 4);
+	if(extendedScreen)
+		gfx_ScaledSprite_NoClip(scanvas, 30, 55, 2, 2);
+	else
+		gfx_ScaledSprite_NoClip(canvas, 30, 55, 4, 4);
 }

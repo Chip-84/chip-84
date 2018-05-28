@@ -17,6 +17,7 @@
 
 uint16_t opcode = 0;
 uint8_t memory[4096];
+uint8_t SV[8];
 uint8_t V[16];
 uint16_t I = 0;
 uint16_t pc = 0;
@@ -29,6 +30,7 @@ bool drawFlag = false;
 
 bool paused = false;
 bool playing = false;
+bool extendedScreen = 0;
 
 uint8_t game_data[3584];
 uint8_t keypad[16];
@@ -54,28 +56,60 @@ unsigned char fontset[80] = {
     0xF0, 0x80, 0xF0, 0x80, 0xF0, //E
     0xF0, 0x80, 0xF0, 0x80, 0x80  //F
 };
+uint16_t  fontset_ten[80] = {
+	0xC67C, 0xDECE, 0xF6D6, 0xC6E6, 0x007C, // 0
+	0x3010, 0x30F0, 0x3030, 0x3030, 0x00FC, // 1
+	0xCC78, 0x0CCC, 0x3018, 0xCC60, 0x00FC, // 2
+	0xCC78, 0x0C0C, 0x0C38, 0xCC0C, 0x0078, // 3
+	0x1C0C, 0x6C3C, 0xFECC, 0x0C0C, 0x001E, // 4
+	0xC0FC, 0xC0C0, 0x0CF8, 0xCC0C, 0x0078, // 5
+	0x6038, 0xC0C0, 0xCCF8, 0xCCCC, 0x0078, // 6
+	0xC6FE, 0x06C6, 0x180C, 0x3030, 0x0030, // 7
+	0xCC78, 0xECCC, 0xDC78, 0xCCCC, 0x0078, // 8
+	0xC67C, 0xC6C6, 0x0C7E, 0x3018, 0x0070, // 9
+	0x7830, 0xCCCC, 0xFCCC, 0xCCCC, 0x00CC, // A
+	0x66FC, 0x6666, 0x667C, 0x6666, 0x00FC, // B
+	0x663C, 0xC0C6, 0xC0C0, 0x66C6, 0x003C, // C
+	0x6CF8, 0x6666, 0x6666, 0x6C66, 0x00F8, // D
+	0x62FE, 0x6460, 0x647C, 0x6260, 0x00FE, // E
+	0x66FE, 0x6462, 0x647C, 0x6060, 0x00F0  // F
+};
 
 uint8_t step;
-uint8_t pixel;
+uint16_t pixel;
 uint16_t index;
 
 uint8_t _y;
 uint8_t _x;
+
+uint8_t screen_width;
+uint8_t screen_height;
 
 void initialize() {
 	
 	opcode = I = sp = delay_timer = sound_timer = 0;
 	pc = 0x200;
 	
+	extendedScreen = 0;
+	screen_width = 64;
+	screen_height = 32;
+	
+	scanvas_data[0] = 128;
+	scanvas_data[1] = 64;
+	memset(scanvas_data + 2, 0, 8192);
+
 	canvas_data[0] = 64;
 	canvas_data[1] = 32;
 	memset(canvas_data + 2, 0, 2048);
+		
 	memset(keys, 0, 16);
 	memset(stack, 0, 16);
 	memset(V, 0, 16);
+	memset(SV, 0, 8);
 	memset(memory, 0, 4096);
 	
 	memcpy(memory, fontset, 80);
+	memcpy(memory + 80, fontset_ten, 80);
 	
 	srand(rtc_Time());
 }
@@ -165,13 +199,85 @@ void emulateCycle(uint8_t steps) {
 		
 		switch(opcode & 0xf000) {
 			case 0x0000: {
-				switch(opcode & 0x000f) {
-					case 0x0000:
-						memset(canvas_data + 2, 0, 2048);
+				switch(opcode & 0x00f0) {
+					case 0x00c0: {
+						uint8_t n = (opcode & 0x000f);
+						uint8_t *disp;
+						
+						dbg_sprintf(dbgout, "SCD called\n");
+						
+						if(extendedScreen) {
+							disp = &scanvas_data[2];
+						} else {
+							disp = &canvas_data[2];
+						}
+						for(i = screen_height; i >= 0; i--) {
+							memcpy(disp + (i+n)*screen_width, disp + i*screen_width, screen_width);
+							memset(disp + i*screen_width, 0, screen_width);
+						}
+						
+						drawFlag = true; 
+						
+						break;
+					}
+					break;
+				}
+				switch(opcode & 0x00ff) {
+					case 0x00e0:
+						if(extendedScreen)
+							memset(scanvas_data + 2, 0, 8192);
+						else
+							memset(canvas_data + 2, 0, 2048);
 						drawFlag = true;
 						break;
-					case 0x000e:
+					case 0x00ee:
 						pc = stack[(--sp)&0xf];
+						break;
+					case 0x00fb: { //SCR
+						uint8_t *disp;
+						
+						if(extendedScreen) {
+							disp = &scanvas_data[2];
+						} else {
+							disp = &canvas_data[2];
+						}
+						for(i = 0; i < screen_height; i++) {
+							memcpy(disp + 4, disp, screen_width - 4);
+							memset(disp, 0, 4);
+							disp += screen_width;
+						}
+						break;
+					}
+					case 0x00fc: { //SCL
+						uint8_t *disp;
+						
+						if(extendedScreen) {
+							disp = &scanvas_data[2];
+						} else {
+							disp = &canvas_data[2];
+						}
+						for(i = 0; i < screen_height; i++) {
+							memcpy(disp, disp + 4, screen_width - 4);
+							memset(disp + screen_width - 4, 0, 4);
+							disp += screen_width;
+						}
+						break;
+					}
+					case 0x00fd:
+						playing = 0;
+						//exit
+						break;
+					case 0x00fe:
+						extendedScreen = 0;
+						screen_width = 64;
+						screen_height = 32;
+						dbg_sprintf(dbgout, "Extended mode off\n");
+						break;
+					case 0x00ff:
+						extendedScreen = 1;
+						screen_width = 128;
+						screen_height = 64;
+						dbg_sprintf(dbgout, "Extended mode on\n");
 						break;
 					default:
 						pc = (pc & 0x0fff);
@@ -239,7 +345,7 @@ void emulateCycle(uint8_t steps) {
 					case 0x0005: {
 						const uint8_t x = (opcode & 0x0f00) >> 8;
 						const uint8_t y = (opcode & 0x00f0) >> 4;
-						V[0xf] = V[x] > V[y];
+						V[0xf] = V[x] >= V[y];
 						V[x] -= V[y];
 						break;
 					}
@@ -253,7 +359,7 @@ void emulateCycle(uint8_t steps) {
 					case 0x0007: {
 						const uint8_t x = (opcode & 0x0f00) >> 8;
 						const uint8_t y = (opcode & 0x00f0) >> 4;
-						V[0xf] = V[y] > V[x];
+						V[0xf] = V[y] >= V[x];
 						V[x] = V[y] - V[x];
 						break;
 					}
@@ -266,6 +372,7 @@ void emulateCycle(uint8_t steps) {
 					}
 					break;
 				}
+				break;
 			}
 			case 0x9000: {
 				if(V[(opcode & 0x0f00) >> 8] != V[(opcode & 0x00f0) >> 4] && (opcode & 0x000f) == 0)
@@ -285,19 +392,44 @@ void emulateCycle(uint8_t steps) {
 				break;
 			}
 			case 0xd000: {
-				const uint8_t x = V[(opcode & 0x0f00) >> 8];
-				const uint8_t y = V[(opcode & 0x00f0) >> 4];
-				const uint8_t height = (opcode & 0x000f);
+				uint8_t x = V[(opcode & 0x0f00) >> 8];
+				uint8_t y = V[(opcode & 0x00f0) >> 4];
+				uint8_t height = (opcode & 0x000f);
 				
 				V[0xf] = 0;
 				
-				for(_y = 0; _y < height; ++_y) {
-					pixel = memory[I + _y];
-					for(_x = 0; _x < 8; ++_x) {
-						if((pixel & (0x80 >> _x)) != 0) {
-							index = (((x + _x) + ((y + _y) << 6)) % 2048) + 2;
-							V[0xf] |= canvas_data[index] & 1;
-							canvas_data[index] = ~canvas_data[index];
+				if(extendedScreen) {
+					//Extended screen DXY0
+					uint8_t cols = 1;
+					if(height == 0) {
+						cols = 2;
+						height = 16;
+					}
+					for(_y = 0; _y < height; ++_y) {
+						pixel = memory[I + (cols*_y)];
+						if(cols == 2) {
+							pixel <<= 8;
+							pixel |= memory[I + (2*_y)+1];
+						}
+						for(_x = 0; _x < 8*cols; ++_x) {
+							if((pixel & (((cols == 2) ? 0x8000 : 0x80) >> _x)) != 0) {
+								index = (((x + _x) + ((y + _y) << 7)) & 0x1fff) + 2;
+								V[0xf] |= scanvas_data[index] & 1;
+								scanvas_data[index] = ~scanvas_data[index];
+							}
+						}
+					}
+				} else {
+					//Normal screen DXYN
+					if(height == 0) height = 16;
+					for(_y = 0; _y < height; ++_y) {
+						pixel = memory[I + _y];
+						for(_x = 0; _x < 8; ++_x) {
+							if((pixel & (0x80 >> _x)) != 0) {
+								index = (((x + _x) + ((y + _y) << 6)) & 0x7ff) + 2;
+								V[0xf] |= canvas_data[index] & 1;
+								canvas_data[index] = ~canvas_data[index];
+							}
 						}
 					}
 				}
@@ -355,10 +487,18 @@ void emulateCycle(uint8_t steps) {
 						const uint8_t x = (opcode & 0x0f00) >> 8;
 						//V[0xf] = (I > 0xfff - V[x]);
 						I += V[x];
+						if(I >= 0x1000)
+							V[0xf] = 1;
+						else
+							V[0xf] = 0;
 						break;
 					}
 					case 0x0029: {
 						I = V[(opcode & 0x0f00) >> 8] * 5;
+						break;
+					}
+					case 0x0030: {
+						I = V[(opcode & 0x0f00) >> 8] * 10 + 80;
 						break;
 					}
 					case 0x0033: {
@@ -371,17 +511,35 @@ void emulateCycle(uint8_t steps) {
 					case 0x0055: {
 						const uint8_t x = (opcode & 0x0f00) >> 8;
 						for(i = 0; i <= x; ++i) {
-							memory[I + i] = V[i];
+							if(I < 0x1000)
+								memory[I + i] = V[i];
 						}
-						//I += x + 1;
 						break;
 					}
 					case 0x0065: {
 						const uint8_t x = (opcode & 0x0f00) >> 8;
 						for(i = 0; i <= x; ++i) {
-							V[i] = memory[I + i];
+							if(I < 0x1000)
+								V[i] = memory[I + i];
+							else
+								V[i] = 0;
 						}
-						//I += x + 1;
+						break;
+					}
+					case 0x0075: {
+						uint8_t x = (opcode & 0x0f00) >> 8;
+						if (x > 7) x = 7;
+						for(i = 0; i <= x; ++i) {
+							SV[i] = V[i];
+						}
+						break;
+					}
+					case 0x0085: {
+						uint8_t x = (opcode & 0x0f00) >> 8;
+						if (x > 7) x = 7;
+						for(i = 0; i <= x; ++i) {
+							V[i] = SV[i];
+						}
 						break;
 					}
 				}

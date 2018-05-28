@@ -11,6 +11,7 @@
 
 extern uint16_t opcode;
 extern uint8_t memory[4096];
+extern uint8_t SV[8];
 extern uint8_t V[16];
 extern uint16_t I;
 extern uint16_t pc;
@@ -23,6 +24,7 @@ extern bool drawFlag;
 
 extern bool paused;
 extern bool playing;
+extern bool extendedScreen;
 
 extern ti_var_t file;
 
