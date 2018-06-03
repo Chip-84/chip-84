@@ -200,18 +200,16 @@ void emulateCycle(uint8_t steps) {
 		switch(opcode & 0xf000) {
 			case 0x0000: {
 				switch(opcode & 0x00f0) {
-					case 0x00c0: {
+					case 0x00c0: { //SCD
 						uint8_t n = (opcode & 0x000f);
 						uint8_t *disp;
-						
-						dbg_sprintf(dbgout, "SCD called\n");
 						
 						if(extendedScreen) {
 							disp = &scanvas_data[2];
 						} else {
 							disp = &canvas_data[2];
 						}
-						for(i = screen_height; i >= 0; i--) {
+						for(i = screen_height-2; i >= 0; i--) {
 							memcpy(disp + (i+n)*screen_width, disp + i*screen_width, screen_width);
 							memset(disp + i*screen_width, 0, screen_width);
 						}

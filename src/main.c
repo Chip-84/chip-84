@@ -73,7 +73,7 @@ void main(void) {
 	gfx_PrintStringXY("Chip-84", 103, 95);
 	gfx_SetTextScale(1, 1);
 	gfx_PrintStringXY("2018 Christian Kosman", 80, 120);
-	gfx_PrintStringXY("version 2.0.0", LCD_WIDTH-100, LCD_HEIGHT-30);
+	gfx_PrintStringXY("version 2.0.1", LCD_WIDTH-100, LCD_HEIGHT-30);
 	gfx_BlitBuffer();
 	
 	delay(1000);
@@ -172,7 +172,7 @@ void startEmulation(char *fileName) {
 					}
 					paused = false;
 					gfx_SetColor(bgColor);
-					gfx_FillRectangle(10, 10, 200, 50);
+					gfx_FillRectangle(10, 10, 200, 40);
 				}
 				if(kb_Data[2] & kb_Alpha) {
 					while(kb_Data[2] & kb_Alpha) {

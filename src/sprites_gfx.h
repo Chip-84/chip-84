@@ -16,7 +16,7 @@ extern uint8_t canvas_data[2050];
 extern uint8_t scanvas_data[8194];
 #define scanvas ((gfx_sprite_t*)scanvas_data)
 
-#define sizeof_sprites_gfx_pal 4
-extern uint16_t sprites_gfx_pal[2];
+#define sizeof_sprites_gfx_pal 12
+extern uint16_t sprites_gfx_pal[6];
 
 #endif
