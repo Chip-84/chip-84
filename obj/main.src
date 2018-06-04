@@ -702,7 +702,7 @@ _main:
 
 	LD	BC,0
 	PUSH	BC
-	LD	BC,4
+	LD	BC,12
 	PUSH	BC
 	LD	BC,_sprites_gfx_pal
 	PUSH	BC
@@ -769,7 +769,7 @@ _main:
 	POP	BC
 	POP	BC
 	POP	BC
-;   76		gfx_PrintStringXY("version 2.0.0", LCD_WIDTH-100, LCD_HEIGHT-30);
+;   76		gfx_PrintStringXY("version 2.0.2", LCD_WIDTH-100, LCD_HEIGHT-30);
 .LINE 76
 
 	LD	BC,210
@@ -1030,7 +1030,7 @@ L_17:
 ;_gfx_SetTextScale                   IMPORT  -----   function
 ;_gfx_SetTextFGColor                 IMPORT  -----   function
 ;_gfx_SetColor                       IMPORT  -----   function
-;_sprites_gfx_pal                    IMPORT      4   variable
+;_sprites_gfx_pal                    IMPORT     12   variable
 ;_gfx_SetPalette                     IMPORT  -----   function
 ;_gfx_SetDraw                        IMPORT  -----   function
 ;_gfx_Blit                           IMPORT  -----   function
@@ -1057,7 +1057,7 @@ L__18:
 	DB	"2018 Christian Kosman"
 	DB	0
 L__19:
-	DB	"version 2.0.0"
+	DB	"version 2.0.2"
 	DB	0
 L__20:
 	DB	"Chip84"
@@ -1595,10 +1595,10 @@ L_35:
 	PUSH	BC
 	CALL	_gfx_SetColor
 	POP	BC
-;  175						gfx_FillRectangle(10, 10, 200, 50);
+;  175						gfx_FillRectangle(10, 10, 200, 40);
 .LINE 175
 
-	LD	BC,50
+	LD	BC,40
 	PUSH	BC
 	LD	BC,200
 	PUSH	BC
@@ -1946,10 +1946,10 @@ L_64:
 	LD	A,(_cpf)
 	INC	A
 	LD	(_cpf),A
-;  218				if(cpf > 20) cpf = 20;
+;  218				if(cpf > 50) cpf = 50;
 .LINE 218
 
-	LD	A,20
+	LD	A,50
 	LD	HL,_cpf
 	CP	A,(HL)
 	JR	NC,L_62

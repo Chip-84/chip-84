@@ -73,7 +73,7 @@ void main(void) {
 	gfx_PrintStringXY("Chip-84", 103, 95);
 	gfx_SetTextScale(1, 1);
 	gfx_PrintStringXY("2018 Christian Kosman", 80, 120);
-	gfx_PrintStringXY("version 2.0.1", LCD_WIDTH-100, LCD_HEIGHT-30);
+	gfx_PrintStringXY("version 2.0.2", LCD_WIDTH-100, LCD_HEIGHT-30);
 	gfx_BlitBuffer();
 	
 	delay(1000);
@@ -215,7 +215,7 @@ void beginSetClock() {
 		}
 		if(kb_Data[7] & kb_Up) {
 			cpf++;
-			if(cpf > 20) cpf = 20;
+			if(cpf > 50) cpf = 50;
 			gfx_FillRectangle(140, 115, 30, 30);
 			gfx_SetTextXY(140, 115);
 			gfx_PrintUInt(cpf, 2);

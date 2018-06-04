@@ -303,7 +303,7 @@ void emulateCycle(uint8_t steps) {
 				break;
 			}
 			case 0x5000: {
-				if(V[(opcode & 0x0f00) >> 8] == V[(opcode & 0x00f0) >> 4] && (opcode & 0x000f) == 0)
+				if(V[(opcode & 0x0f00) >> 8] == V[(opcode & 0x00f0) >> 4])
 					pc += 2;
 				break;
 			}
@@ -312,7 +312,7 @@ void emulateCycle(uint8_t steps) {
 				break;
 			}
 			case 0x7000: {
-				V[(opcode & 0x0f00) >> 8] += (opcode & 0x00ff);
+				V[(opcode & 0x0f00) >> 8] = (V[(opcode & 0x0f00) >> 8] + (opcode & 0x00ff)) & 0xff;
 				break;
 			}
 			case 0x8000: {
@@ -338,6 +338,7 @@ void emulateCycle(uint8_t steps) {
 						const uint8_t y = (opcode & 0x00f0) >> 4;
 						V[0xf] = (V[x] + V[y] > 0xff);
 						V[x] += V[y];
+						V[x] &= 255;
 						break;
 					}
 					case 0x0005: {
@@ -373,7 +374,7 @@ void emulateCycle(uint8_t steps) {
 				break;
 			}
 			case 0x9000: {
-				if(V[(opcode & 0x0f00) >> 8] != V[(opcode & 0x00f0) >> 4] && (opcode & 0x000f) == 0)
+				if(V[(opcode & 0x0f00) >> 8] != V[(opcode & 0x00f0) >> 4])
 					pc += 2;
 				break;
 			}
@@ -386,7 +387,7 @@ void emulateCycle(uint8_t steps) {
 				break;
 			}
 			case 0xc000: {
-				V[(opcode & 0x0f00) >> 8] = (rand() % 256) & (opcode & 0x00FF);
+				V[(opcode & 0x0f00) >> 8] = (rand() & 0xff) & (opcode & 0x00FF);
 				break;
 			}
 			case 0xd000: {
@@ -407,12 +408,12 @@ void emulateCycle(uint8_t steps) {
 						pixel = memory[I + (cols*_y)];
 						if(cols == 2) {
 							pixel <<= 8;
-							pixel |= memory[I + (2*_y)+1];
+							pixel |= memory[I + (_y << 1)+1];
 						}
-						for(_x = 0; _x < 8*cols; ++_x) {
+						for(_x = 0; _x < (cols << 3); ++_x) {
 							if((pixel & (((cols == 2) ? 0x8000 : 0x80) >> _x)) != 0) {
-								index = (((x + _x) + ((y + _y) << 7)) & 0x1fff) + 2;
-								V[0xf] |= scanvas_data[index] & 1;
+								index = (((x + _x) & 0x7f) + (((y + _y) & 0x3f) << 7)) + 2;
+								V[0xf] = scanvas_data[index] & 1;
 								scanvas_data[index] = ~scanvas_data[index];
 							}
 						}
@@ -424,8 +425,8 @@ void emulateCycle(uint8_t steps) {
 						pixel = memory[I + _y];
 						for(_x = 0; _x < 8; ++_x) {
 							if((pixel & (0x80 >> _x)) != 0) {
-								index = (((x + _x) + ((y + _y) << 6)) & 0x7ff) + 2;
-								V[0xf] |= canvas_data[index] & 1;
+								index = (((x + _x) & 0x3f) + (((y + _y) & 0x1f) << 6)) + 2;
+								V[0xf] = canvas_data[index] & 1;
 								canvas_data[index] = ~canvas_data[index];
 							}
 						}
@@ -483,20 +484,15 @@ void emulateCycle(uint8_t steps) {
 					}
 					case 0x001E: {
 						const uint8_t x = (opcode & 0x0f00) >> 8;
-						//V[0xf] = (I > 0xfff - V[x]);
-						I += V[x];
-						if(I >= 0x1000)
-							V[0xf] = 1;
-						else
-							V[0xf] = 0;
+						I = (I + V[x]) & 0xffff;
 						break;
 					}
 					case 0x0029: {
-						I = V[(opcode & 0x0f00) >> 8] * 5;
+						I = (V[(opcode & 0x0f00) >> 8] & 0xf) * 5;
 						break;
 					}
 					case 0x0030: {
-						I = V[(opcode & 0x0f00) >> 8] * 10 + 80;
+						I = (V[(opcode & 0x0f00) >> 8] & 0xf) * 10 + 80;
 						break;
 					}
 					case 0x0033: {
@@ -509,18 +505,14 @@ void emulateCycle(uint8_t steps) {
 					case 0x0055: {
 						const uint8_t x = (opcode & 0x0f00) >> 8;
 						for(i = 0; i <= x; ++i) {
-							if(I < 0x1000)
-								memory[I + i] = V[i];
+							memory[I + i] = V[i];
 						}
 						break;
 					}
 					case 0x0065: {
 						const uint8_t x = (opcode & 0x0f00) >> 8;
 						for(i = 0; i <= x; ++i) {
-							if(I < 0x1000)
-								V[i] = memory[I + i];
-							else
-								V[i] = 0;
+							V[i] = memory[I + i];
 						}
 						break;
 					}
@@ -546,12 +538,12 @@ void emulateCycle(uint8_t steps) {
 			default:
 				break;
 		}
-		if(sound_timer > 0) {
-			--sound_timer;
-		}
-		if(delay_timer > 0) {
-			--delay_timer;
-		}
+	}
+	if(sound_timer > 0) {
+		--sound_timer;
+	}
+	if(delay_timer > 0) {
+		--delay_timer;
 	}
 }
 
