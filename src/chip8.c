@@ -193,7 +193,11 @@ void emulateCycle(uint8_t steps) {
 	
 	for(step = 0; step < steps; ++step) {
 		int i;
+		uint8_t x;
+		uint8_t y;
 		opcode = (memory[pc] << 8) | memory[pc+1];
+		x = (opcode & 0x0f00) >> 8;
+		y = (opcode & 0x00f0) >> 4;
 		
 		pc += 2;
 		
@@ -240,7 +244,7 @@ void emulateCycle(uint8_t steps) {
 							disp = &canvas_data[2];
 						}
 						for(i = 0; i < screen_height; i++) {
-							memcpy(disp + 4, disp, screen_width - 4);
+							memmove(disp + 4, disp, screen_width - 4);
 							memset(disp, 0, 4);
 							disp += screen_width;
 						}
@@ -255,7 +259,7 @@ void emulateCycle(uint8_t steps) {
 							disp = &canvas_data[2];
 						}
 						for(i = 0; i < screen_height; i++) {
-							memcpy(disp, disp + 4, screen_width - 4);
+							memmove(disp, disp + 4, screen_width - 4);
 							memset(disp + screen_width - 4, 0, 4);
 							disp += screen_width;
 						}
@@ -293,78 +297,68 @@ void emulateCycle(uint8_t steps) {
 				break;
 			}
 			case 0x3000: {
-				if(V[(opcode & 0x0f00) >> 8] == (opcode & 0x00ff))
+				if(V[x] == (opcode & 0x00ff))
 					pc += 2;
 				break;
 			}
 			case 0x4000: {
-				if(V[(opcode & 0x0f00) >> 8] != (opcode & 0x00ff))
+				if(V[x] != (opcode & 0x00ff))
 					pc += 2;
 				break;
 			}
 			case 0x5000: {
-				if(V[(opcode & 0x0f00) >> 8] == V[(opcode & 0x00f0) >> 4])
+				if(V[x] == V[y])
 					pc += 2;
 				break;
 			}
 			case 0x6000: {
-				V[(opcode & 0x0f00) >> 8] = (opcode & 0x00ff);
+				V[x] = (opcode & 0x00ff);
 				break;
 			}
 			case 0x7000: {
-				V[(opcode & 0x0f00) >> 8] = (V[(opcode & 0x0f00) >> 8] + (opcode & 0x00ff)) & 0xff;
+				V[x] = (V[x] + (opcode & 0x00ff)) & 0xff;
 				break;
 			}
 			case 0x8000: {
 				switch(opcode & 0x000f) {
 					case 0x0000: {
-						V[(opcode & 0x0f00) >> 8]  = V[(opcode & 0x00f0) >> 4];
+						V[x]  = V[y];
 						break;
 					}
 					case 0x0001: {
-						V[(opcode & 0x0f00) >> 8] |= V[(opcode & 0x00f0) >> 4];
+						V[x] |= V[y];
 						break;
 					}
 					case 0x0002: {
-						V[(opcode & 0x0f00) >> 8] &= V[(opcode & 0x00f0) >> 4];
+						V[x] &= V[y];
 						break;
 					}
 					case 0x0003: {
-						V[(opcode & 0x0f00) >> 8] ^= V[(opcode & 0x00f0) >> 4];
+						V[x] ^= V[y];
 						break;
 					}
 					case 0x0004: {
-						const uint8_t x = (opcode & 0x0f00) >> 8;
-						const uint8_t y = (opcode & 0x00f0) >> 4;
 						V[0xf] = (V[x] + V[y] > 0xff);
 						V[x] += V[y];
 						V[x] &= 255;
 						break;
 					}
 					case 0x0005: {
-						const uint8_t x = (opcode & 0x0f00) >> 8;
-						const uint8_t y = (opcode & 0x00f0) >> 4;
 						V[0xf] = V[x] >= V[y];
 						V[x] -= V[y];
 						break;
 					}
 					case 0x0006: {
-						const uint8_t x = (opcode & 0x0f00) >> 8;
-						const uint8_t y = (opcode & 0x00f0) >> 4;
 						V[0xf] = V[x] & 1;
 						V[x] >>= 1;
 						break;
 					}
 					case 0x0007: {
-						const uint8_t x = (opcode & 0x0f00) >> 8;
-						const uint8_t y = (opcode & 0x00f0) >> 4;
 						V[0xf] = V[y] >= V[x];
 						V[x] = V[y] - V[x];
 						break;
 					}
 					case 0x000E: {
-						const uint8_t x = (opcode & 0x0f00) >> 8;
-						const uint8_t y = (opcode & 0x00f0) >> 4;
 						V[0xf] = V[x] >> 7;
 						V[x] <<= 1;
 						break;
@@ -374,7 +368,7 @@ void emulateCycle(uint8_t steps) {
 				break;
 			}
 			case 0x9000: {
-				if(V[(opcode & 0x0f00) >> 8] != V[(opcode & 0x00f0) >> 4])
+				if(V[x] != V[y])
 					pc += 2;
 				break;
 			}
@@ -387,12 +381,12 @@ void emulateCycle(uint8_t steps) {
 				break;
 			}
 			case 0xc000: {
-				V[(opcode & 0x0f00) >> 8] = (rand() & 0xff) & (opcode & 0x00FF);
+				V[x] = (rand() & 0xff) & (opcode & 0x00FF);
 				break;
 			}
 			case 0xd000: {
-				uint8_t x = V[(opcode & 0x0f00) >> 8];
-				uint8_t y = V[(opcode & 0x00f0) >> 4];
+				uint8_t xd = V[x];
+				uint8_t yd = V[y];
 				uint8_t height = (opcode & 0x000f);
 				
 				V[0xf] = 0;
@@ -412,7 +406,7 @@ void emulateCycle(uint8_t steps) {
 						}
 						for(_x = 0; _x < (cols << 3); ++_x) {
 							if((pixel & (((cols == 2) ? 0x8000 : 0x80) >> _x)) != 0) {
-								index = (((x + _x) & 0x7f) + (((y + _y) & 0x3f) << 7)) + 2;
+								index = (((xd + _x) & 0x7f) + (((yd + _y) & 0x3f) << 7)) + 2;
 								V[0xf] = scanvas_data[index] & 1;
 								scanvas_data[index] = ~scanvas_data[index];
 							}
@@ -425,7 +419,7 @@ void emulateCycle(uint8_t steps) {
 						pixel = memory[I + _y];
 						for(_x = 0; _x < 8; ++_x) {
 							if((pixel & (0x80 >> _x)) != 0) {
-								index = (((x + _x) & 0x3f) + (((y + _y) & 0x1f) << 6)) + 2;
+								index = (((xd + _x) & 0x3f) + (((yd + _y) & 0x1f) << 6)) + 2;
 								V[0xf] = canvas_data[index] & 1;
 								canvas_data[index] = ~canvas_data[index];
 							}
@@ -440,12 +434,12 @@ void emulateCycle(uint8_t steps) {
 			case 0xe000: {
 				switch(opcode & 0x00ff) {
 					case 0x009e: {
-						if(keys[V[(opcode & 0x0f00) >> 8]])
+						if(keys[V[x]])
 							pc += 2;
 						break;
 					}
 					case 0x00a1: {
-						if(!keys[V[(opcode & 0x0f00) >> 8]])
+						if(!keys[V[x]])
 							pc += 2;
 						break;
 					}
@@ -455,7 +449,7 @@ void emulateCycle(uint8_t steps) {
 			case 0xf000: {
 				switch(opcode & 0x00ff) {
 					case 0x0007: {
-						V[(opcode & 0x0f00) >> 8] = delay_timer;
+						V[x] = delay_timer;
 						break;
 					}
 					case 0x000A: {
@@ -464,7 +458,7 @@ void emulateCycle(uint8_t steps) {
 						
 						for(i = 0; i < 16; ++i) {
 							if(keys[i]) {
-								V[(opcode & 0x0f00) >> 8] = i;
+								V[x] = i;
 								pc += 2;
 								key_pressed = true;
 								break;
@@ -475,49 +469,44 @@ void emulateCycle(uint8_t steps) {
 							return;
 					}
 					case 0x0015: {
-						delay_timer = V[(opcode & 0x0f00) >> 8];
+						delay_timer = V[x];
 						break;
 					}
 					case 0x0018: {
-						sound_timer = V[(opcode & 0x0f00) >> 8];
+						sound_timer = V[x];
 						break;
 					}
 					case 0x001E: {
-						const uint8_t x = (opcode & 0x0f00) >> 8;
 						I = (I + V[x]) & 0xffff;
 						break;
 					}
 					case 0x0029: {
-						I = (V[(opcode & 0x0f00) >> 8] & 0xf) * 5;
+						I = (V[x] & 0xf) * 5;
 						break;
 					}
 					case 0x0030: {
-						I = (V[(opcode & 0x0f00) >> 8] & 0xf) * 10 + 80;
+						I = (V[x] & 0xf) * 10 + 80;
 						break;
 					}
 					case 0x0033: {
-						const uint8_t x = (opcode & 0x0f00) >> 8;
-						memory[ I ] =  V[x] / 100;
+						memory[ I ] = V[x] / 100;
 						memory[I+1] = (V[x] / 10) % 10;
 						memory[I+2] = V[x] % 10;
 						break;
 					}
 					case 0x0055: {
-						const uint8_t x = (opcode & 0x0f00) >> 8;
 						for(i = 0; i <= x; ++i) {
 							memory[I + i] = V[i];
 						}
 						break;
 					}
 					case 0x0065: {
-						const uint8_t x = (opcode & 0x0f00) >> 8;
 						for(i = 0; i <= x; ++i) {
 							V[i] = memory[I + i];
 						}
 						break;
 					}
 					case 0x0075: {
-						uint8_t x = (opcode & 0x0f00) >> 8;
 						if (x > 7) x = 7;
 						for(i = 0; i <= x; ++i) {
 							SV[i] = V[i];
@@ -525,7 +514,6 @@ void emulateCycle(uint8_t steps) {
 						break;
 					}
 					case 0x0085: {
-						uint8_t x = (opcode & 0x0f00) >> 8;
 						if (x > 7) x = 7;
 						for(i = 0; i <= x; ++i) {
 							V[i] = SV[i];

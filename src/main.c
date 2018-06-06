@@ -22,6 +22,7 @@ void drawMenu(uint8_t start);
 void drawKeymappingMenu(uint8_t selected);
 void beginKeymapper(char *fileName);
 void beginSetClock(void);
+void drawPreview();
 
 ti_var_t curFile;
 
@@ -30,6 +31,8 @@ uint8_t count;
 
 uint8_t bgColor = 0x88;
 uint8_t cpf = 10;
+
+uint8_t frameCount = 0;
 
 const char *pauseText = "[2nd] - Pause";
 const char *keyNames[16] = {
@@ -73,16 +76,13 @@ void main(void) {
 	gfx_PrintStringXY("Chip-84", 103, 95);
 	gfx_SetTextScale(1, 1);
 	gfx_PrintStringXY("2018 Christian Kosman", 80, 120);
-	gfx_PrintStringXY("version 2.0.2", LCD_WIDTH-100, LCD_HEIGHT-30);
+	gfx_PrintStringXY("version 2.1.0", LCD_WIDTH-100, LCD_HEIGHT-30);
 	gfx_BlitBuffer();
 	
 	delay(1000);
 	
 	while((varName = ti_Detect(&search_pos, "Chip84")) != NULL) {
-		//dbg_sprintf(dbgout, "%s\n", varName);
-		
 		strcpy(files[count], varName);
-		
 		++count;
 	}
 	
@@ -92,12 +92,14 @@ void main(void) {
 		kb_Scan();
 		
 		if(kb_Data[7] & kb_Up) {
+			frameCount = 0;
 			if(startPos == 0)
 				startPos = count-1;
 			else
 				startPos--;
 			drawMenu(startPos);
 		} else if(kb_Data[7] & kb_Down) {
+			frameCount = 0;
 			if(startPos == count-1)
 				startPos = 0;
 			else
@@ -109,8 +111,22 @@ void main(void) {
 			drawMenu(startPos);
 		}
 		
+		if(frameCount > 9) {
+			if(frameCount < 100) {
+				frameCount = 101;
+				loadProgram(files[startPos]);
+				gfx_PrintStringXY("Preview", 187, 45);
+			}
+			emulateCycle(20);
+			
+			if(drawFlag)
+				drawPreview();
+		} else {
+			frameCount++;
+			delay(100);
+		}
+		
 		gfx_BlitBuffer();
-		delay(100);
 	} while (kb_Data[6] != kb_Clear);
 	
 	gfx_End();
@@ -331,4 +347,13 @@ void drawGraphics() {
 		gfx_ScaledSprite_NoClip(scanvas, 30, 55, 2, 2);
 	else
 		gfx_ScaledSprite_NoClip(canvas, 30, 55, 4, 4);
+}
+
+void drawPreview() {
+	drawFlag = false;
+	
+	if(extendedScreen)
+		gfx_Sprite_NoClip(scanvas, 150, 55);
+	else
+		gfx_ScaledSprite_NoClip(canvas, 150, 55, 2, 2);
 }
