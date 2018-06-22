@@ -273,12 +273,14 @@ void emulateCycle(uint8_t steps) {
 						extendedScreen = 0;
 						screen_width = 64;
 						screen_height = 32;
+						memcpy(canvas_data + 2, scanvas_data + 2, 2048);
 						dbg_sprintf(dbgout, "Extended mode off\n");
 						break;
 					case 0x00ff:
 						extendedScreen = 1;
 						screen_width = 128;
 						screen_height = 64;
+						memcpy(scanvas_data + 2, canvas_data + 2, 2048);
 						dbg_sprintf(dbgout, "Extended mode on\n");
 						break;
 					default:
@@ -407,7 +409,8 @@ void emulateCycle(uint8_t steps) {
 						for(_x = 0; _x < (cols << 3); ++_x) {
 							if((pixel & (((cols == 2) ? 0x8000 : 0x80) >> _x)) != 0) {
 								index = (((xd + _x) & 0x7f) + (((yd + _y) & 0x3f) << 7)) + 2;
-								V[0xf] = scanvas_data[index] & 1;
+								if(scanvas_data[index] & 1)
+									V[0xf] = 1;
 								scanvas_data[index] = ~scanvas_data[index];
 							}
 						}
@@ -420,7 +423,8 @@ void emulateCycle(uint8_t steps) {
 						for(_x = 0; _x < 8; ++_x) {
 							if((pixel & (0x80 >> _x)) != 0) {
 								index = (((xd + _x) & 0x3f) + (((yd + _y) & 0x1f) << 6)) + 2;
-								V[0xf] = canvas_data[index] & 1;
+								if(canvas_data[index] & 1)
+									V[0xf] = 1;
 								canvas_data[index] = ~canvas_data[index];
 							}
 						}
@@ -531,7 +535,7 @@ void emulateCycle(uint8_t steps) {
 		--sound_timer;
 	}
 	if(delay_timer > 0) {
-		--delay_timer;
+		delay_timer -= 2;
 	}
 }
 

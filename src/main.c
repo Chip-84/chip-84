@@ -22,7 +22,7 @@ void drawMenu(uint8_t start);
 void drawKeymappingMenu(uint8_t selected);
 void beginKeymapper(char *fileName);
 void beginSetClock(void);
-void drawPreview();
+void drawPreview(uint8_t x, uint8_t y);
 
 ti_var_t curFile;
 
@@ -76,7 +76,7 @@ void main(void) {
 	gfx_PrintStringXY("Chip-84", 103, 95);
 	gfx_SetTextScale(1, 1);
 	gfx_PrintStringXY("2018 Christian Kosman", 80, 120);
-	gfx_PrintStringXY("version 2.1.0", LCD_WIDTH-100, LCD_HEIGHT-30);
+	gfx_PrintStringXY("version 2.2.0", LCD_WIDTH-100, LCD_HEIGHT-30);
 	gfx_BlitBuffer();
 	
 	delay(1000);
@@ -115,12 +115,12 @@ void main(void) {
 			if(frameCount < 100) {
 				frameCount = 101;
 				loadProgram(files[startPos]);
-				gfx_PrintStringXY("Preview", 187, 45);
+				gfx_PrintStringXY("Preview", 187, 60);
 			}
 			emulateCycle(20);
 			
 			if(drawFlag)
-				drawPreview();
+				drawPreview(150, 70);
 		} else {
 			frameCount++;
 			delay(100);
@@ -138,17 +138,20 @@ void drawMenu(uint8_t start) {
 	gfx_SetTextFGColor(0x00);
 	for(i = 0; i < 16; i++) {
 		if(i + start <= count-1) {
-			gfx_SetTextXY(20, 10*i+10);
-			gfx_PrintUInt(i+start, 3);
-			gfx_PrintStringXY(files[i+start], 50, 10*i+10);
+			//gfx_SetTextXY(20, 10*i+50);
+			//gfx_PrintUInt(i+start, 3);
+			gfx_PrintStringXY(files[i+start], 30, 10*i+50);
 		}
 	}
-	gfx_PrintStringXY(">",10,10);
+	gfx_PrintStringXY(">",20,50);
 	
-	gfx_PrintStringXY("Use the arrows and enter to select a ROM.", 10, 180);
-	gfx_PrintStringXY("Then use 1, 2, 3, PLUS, 4, 5, 6, MINUS, 7, 8, 9,", 10, 195);
-	gfx_PrintStringXY("TIMES, 0, DECIMAL, ( - ), and ENTER to control.", 10, 205);
-	gfx_PrintStringXY("Press clear to quit.", 10, 220);
+	//gfx_PrintStringXY("Use the arrows and enter to select a ROM.", 10, 180);
+	//gfx_PrintStringXY("Then use 1, 2, 3, PLUS, 4, 5, 6, MINUS, 7, 8, 9,", 10, 195);
+	//gfx_PrintStringXY("TIMES, 0, DECIMAL, ( - ), and ENTER to control.", 10, 205);
+	gfx_SetTextScale(2,2);
+	gfx_PrintStringXY("Select a ROM", 20, 20);
+	gfx_SetTextScale(1,1);
+	gfx_PrintStringXY("[clear] - Quit", 220, 220);
 	
 }
 
@@ -168,80 +171,77 @@ void startEmulation(char *fileName) {
 		
 		gfx_BlitBuffer();
 		if(paused) {
-			gfx_PrintStringXY("Paused", 10, 10);
-			gfx_PrintStringXY("[clear] - Exit", 10, 20);
-			gfx_PrintStringXY("[alpha] - Keymapping", 10, 30);
-			gfx_PrintStringXY("[mode] - CPF", 10, 40);
+			uint8_t selected_option = 0;
+			
+			gfx_FillScreen(bgColor);
+			drawPreview(170,135);
+			gfx_SetTextScale(2, 2);
+			gfx_PrintStringXY("Paused", 20, 20);
+			gfx_SetTextScale(1, 1);
+			gfx_PrintStringXY("Keymapping", 20, 50);
+			gfx_PrintStringXY("Cycles per frame -", 20, 60);
+			gfx_PrintStringXY("Resume", 20, 70);
+			gfx_PrintStringXY("Quit game", 20, 80);
 			gfx_BlitBuffer();
+			gfx_SetColor(bgColor);
 			while(paused) {
 				kb_Scan();
-				if(kb_Data[6] & kb_Clear) {
-					while(kb_Data[6] & kb_Clear) {
+				
+				gfx_FillRectangle(10, 50 + selected_option*10, 10, 10);
+				
+				if(kb_Data[7] & kb_Up) {
+					selected_option--;
+					if(selected_option == 255) selected_option = 3;
+				}
+				if(kb_Data[7] & kb_Down) {
+					selected_option++;
+					if(selected_option == 4) selected_option = 0;
+				}
+				
+				gfx_PrintStringXY(">", 10, 50 + selected_option*10);
+				
+				if(selected_option == 0) {
+					if(kb_Data[6] & kb_Enter) {
+						beginKeymapper(fileName);
+						gfx_PrintStringXY(pauseText, 10, LCD_HEIGHT-20);
+					}
+				}
+				
+				if(selected_option == 1) {
+					if(kb_Data[7] & kb_Left) {
+						cpf--;
+					}
+					if(kb_Data[7] & kb_Right) {
+						cpf++;
+					}
+				}
+				gfx_FillRectangle(150, 60, 30, 30);
+				gfx_SetTextXY(150, 60);
+				gfx_PrintUInt(cpf, 2);
+				
+				if(kb_Data[6] & kb_Clear || (selected_option == 3 && kb_Data[6] & kb_Enter)) {
+					while(kb_Data[6] & kb_Clear || kb_Data[6] & kb_Enter) {
 						kb_ScanGroup(6);
 					}
 					playing = false;
 					break;
 				}
-				if(kb_Data[1] & kb_2nd) {
-					while(kb_Data[1] & kb_2nd) {
+				if(kb_Data[1] & kb_2nd || (selected_option == 2 && kb_Data[6] & kb_Enter)) {
+					while(kb_Data[1] & kb_2nd || kb_Data[6] & kb_Enter) {
 						kb_Scan();
 					}
 					paused = false;
 					gfx_SetColor(bgColor);
-					gfx_FillRectangle(10, 10, 200, 40);
-				}
-				if(kb_Data[2] & kb_Alpha) {
-					while(kb_Data[2] & kb_Alpha) {
-						kb_Scan();
-					}
-					beginKeymapper(fileName);
+					gfx_FillScreen(bgColor);
+					drawGraphics();
 					gfx_PrintStringXY(pauseText, 10, LCD_HEIGHT-20);
 				}
-				if(kb_Data[1] & kb_Mode) {
-					while(kb_Data[1] & kb_Mode) {
-						kb_Scan();
-					}
-					beginSetClock();
-					gfx_PrintStringXY(pauseText, 10, LCD_HEIGHT-20);
-				}
+				
+				gfx_BlitBuffer();
+				delay(100);
 			}
 		}
 	} while (playing);
-}
-
-void beginSetClock() {
-	gfx_FillScreen(bgColor);
-	gfx_PrintStringXY("Set the amount of cycles emulated per frame.", 10, 10);
-	gfx_PrintStringXY("Press mode to exit.", 10, 25);
-	
-	gfx_SetTextXY(140, 115);
-	gfx_PrintUInt(cpf, 2);
-	gfx_SetColor(bgColor);
-	
-	gfx_BlitBuffer();
-	do {
-		kb_Scan();
-		if(kb_Data[7] & kb_Down) {
-			cpf--;
-			if(cpf == 0) cpf = 1;
-			gfx_FillRectangle(140, 115, 30, 30);
-			gfx_SetTextXY(140, 115);
-			gfx_PrintUInt(cpf, 2);
-			gfx_BlitBuffer();
-		}
-		if(kb_Data[7] & kb_Up) {
-			cpf++;
-			if(cpf > 50) cpf = 50;
-			gfx_FillRectangle(140, 115, 30, 30);
-			gfx_SetTextXY(140, 115);
-			gfx_PrintUInt(cpf, 2);
-			gfx_BlitBuffer();
-		}
-		delay(100);
-	} while(kb_Data[1] != kb_Mode);
-	gfx_FillScreen(bgColor);
-	gfx_BlitBuffer();
-	paused = false;
 }
 
 void beginKeymapper(char *fileName) {
@@ -305,7 +305,11 @@ void beginKeymapper(char *fileName) {
 				}
 			}
 		}
-	} while(kb_Data[2] != kb_Alpha);
+	} while(kb_Data[6] != kb_Clear);
+	
+	while(kb_Data[6] & kb_Clear) {
+		kb_ScanGroup(6);
+	}
 	
 	ti_CloseAll();
 	curFile = ti_Open(fileName, "w");
@@ -328,7 +332,7 @@ void drawKeymappingMenu(uint8_t selected) {
 	}
 	
 	gfx_PrintStringXY("Select a key to remap, then press the new key.", 10, 200);
-	gfx_PrintStringXY("Press 2nd to reset, alpha to exit.", 10, 215);
+	gfx_PrintStringXY("Press 2nd to reset, clear to exit.", 10, 215);
 	
 	gfx_SetColor(0x01);
 	if(selected > 16) {
@@ -349,11 +353,11 @@ void drawGraphics() {
 		gfx_ScaledSprite_NoClip(canvas, 30, 55, 4, 4);
 }
 
-void drawPreview() {
+void drawPreview(uint8_t x, uint8_t y) {
 	drawFlag = false;
 	
 	if(extendedScreen)
-		gfx_Sprite_NoClip(scanvas, 150, 55);
+		gfx_Sprite_NoClip(scanvas, x, y);
 	else
-		gfx_ScaledSprite_NoClip(canvas, 150, 55, 2, 2);
+		gfx_ScaledSprite_NoClip(canvas, x, y, 2, 2);
 }
