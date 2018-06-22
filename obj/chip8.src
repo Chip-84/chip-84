@@ -1762,7 +1762,7 @@ _emulateCycle:
 
 .CLASS 65
 
-.VALUE -25
+.VALUE -19
 
 .TYPE 12
 
@@ -1772,7 +1772,7 @@ _emulateCycle:
 
 .CLASS 65
 
-.VALUE -26
+.VALUE -20
 
 .TYPE 12
 
@@ -1781,7 +1781,7 @@ _emulateCycle:
 	PUSH	IX
 	LD	IX,0
 	ADD	IX,SP
-	LEA	HL,IX+-74
+	LEA	HL,IX+-80
 	LD	SP,HL
 ;  190		
 ;  191		kb_Scan();
@@ -1798,8 +1798,8 @@ _emulateCycle:
 
 	XOR	A,A
 	LD	(_step),A
-	JR	L_170
-L_168:
+	JR	L_166
+L_164:
 ;  195			int i;
 ;  196			uint8_t x;
 ;  197			uint8_t y;
@@ -1863,7 +1863,20 @@ L_168:
 	LD	(HL),C
 	INC	HL
 	LD	(HL),B
-;  203			
+;  203			dbg_sprintf(dbgout, "%x \n", opcode);
+.LINE 203
+
+	LD	BC,(_opcode)
+	CALL	__stoiu
+	PUSH	HL
+	LD	BC,L__10
+	PUSH	BC
+	LD	BC,16449536
+	PUSH	BC
+	CALL	_sprintf
+	POP	BC
+	POP	BC
+	POP	BC
 ;  204			switch(opcode & 0xf000) {
 .LINE 204
 
@@ -1873,7 +1886,7 @@ L_168:
 	CALL	__iand
 	CALL	__case16D
 	JP	(HL)
-L__10:
+L__11:
 	DW	16
 	DW	0
 	DW24	L_16	
@@ -1918,12 +1931,12 @@ L__10:
 	DW24	L_86	
 
 	DW	57344
-	DW24	L_118	
+	DW24	L_114	
 
 	DW	61440
-	DW24	L_126	
+	DW24	L_122	
 
-	DW24	L_169	
+	DW24	L_165	
 
 ;  205				case 0x0000: {
 L_16:
@@ -1950,7 +1963,7 @@ L_16:
 
 	LD	A,(_opcode)
 	AND	A,15
-	LD	(IX+-26),A
+	LD	(IX+-20),A
 ;  209							uint8_t *disp;
 ;  210							
 ;  211							if(extendedScreen) {
@@ -2005,7 +2018,7 @@ L_21:
 	LD	BC,(IX+-16)
 	ADD	HL,BC
 	PUSH	HL
-	LD	A,(IX+-26)
+	LD	A,(IX+-20)
 	UEXT	HL
 	LD	L,A
 	LD	BC,(IX+-3)
@@ -2080,7 +2093,7 @@ L_53:
 	LD	L,A
 	CALL	__case8D
 	JP	(HL)
-L__13:
+L__14:
 	DW	7
 	DB	224
 	DW24	L_26	
@@ -2155,7 +2168,7 @@ L_29:
 ;  234							break;
 .LINE 234
 
-	JR	L_169
+	JR	L_165
 ;  235						case 0x00ee:
 L_30:
 .LINE 235
@@ -2180,7 +2193,7 @@ L_30:
 ;  237							break;
 .LINE 237
 
-	JR	L_169
+	JR	L_165
 ;  238						case 0x00fb: { //SCR
 L_31:
 .LINE 238
@@ -2277,7 +2290,7 @@ L_37:
 ;  251							break;
 .LINE 251
 
-	JR	L_169
+	JR	L_165
 ;  252						}
 ;  253						case 0x00fc: { //SCL
 L_40:
@@ -2381,7 +2394,7 @@ L_46:
 ;  266							break;
 .LINE 266
 
-	JR	L_169
+	JR	L_165
 ;  267						}
 ;  268						case 0x00fd:
 L_49:
@@ -2396,7 +2409,7 @@ L_49:
 ;  271							break;
 .LINE 271
 
-	JR	L_169
+	JR	L_165
 ;  272						case 0x00fe:
 L_50:
 .LINE 272
@@ -2432,7 +2445,7 @@ L_50:
 ;  277							dbg_sprintf(dbgout, "Extended mode off\n");
 .LINE 277
 
-	LD	BC,L__19
+	LD	BC,L__20
 	PUSH	BC
 	LD	BC,16449536
 	PUSH	BC
@@ -2442,7 +2455,7 @@ L_50:
 ;  278							break;
 .LINE 278
 
-	JR	L_169
+	JR	L_165
 ;  279						case 0x00ff:
 L_51:
 .LINE 279
@@ -2478,7 +2491,7 @@ L_51:
 ;  284							dbg_sprintf(dbgout, "Extended mode on\n");
 .LINE 284
 
-	LD	BC,L__20
+	LD	BC,L__21
 	PUSH	BC
 	LD	BC,16449536
 	PUSH	BC
@@ -2488,7 +2501,7 @@ L_51:
 ;  285							break;
 .LINE 285
 
-	JR	L_169
+	JR	L_165
 ;  286						default:
 L_52:
 .LINE 286
@@ -2507,7 +2520,7 @@ L_52:
 ;  288							break;
 .LINE 288
 
-	JR	L_169
+	JR	L_165
 ;  289					}
 ;  290					break;
 ;  291				}
@@ -2529,7 +2542,7 @@ L_55:
 ;  294					break;
 .LINE 294
 
-	JR	L_169
+	JR	L_165
 ;  295				}
 ;  296				case 0x2000: {
 L_56:
@@ -2566,7 +2579,7 @@ L_56:
 ;  299					break;
 .LINE 299
 
-	JR	L_169
+	JR	L_165
 ;  300				}
 ;  301				case 0x3000: {
 L_58:
@@ -2592,7 +2605,7 @@ L_58:
 	LD	HL,DE
 	OR	A,A
 	SBC	HL,BC
-	JR	NZ,L_169
+	JR	NZ,L_165
 ;  303						pc += 2;
 .LINE 303
 
@@ -2606,7 +2619,7 @@ L_58:
 ;  304					break;
 .LINE 304
 
-	JR	L_169
+	JR	L_165
 ;  305				}
 ;  306				case 0x4000: {
 L_61:
@@ -2632,7 +2645,7 @@ L_61:
 	LD	HL,DE
 	OR	A,A
 	SBC	HL,BC
-	JR	Z,L_169
+	JR	Z,L_165
 ;  308						pc += 2;
 .LINE 308
 
@@ -2646,7 +2659,7 @@ L_61:
 ;  309					break;
 .LINE 309
 
-	JR	L_169
+	JR	L_165
 ;  310				}
 ;  311				case 0x5000: {
 L_64:
@@ -2667,7 +2680,7 @@ L_64:
 	ADD	HL,BC
 	LD	A,(IY)
 	CP	A,(HL)
-	JR	NZ,L_169
+	JR	NZ,L_165
 ;  313						pc += 2;
 .LINE 313
 
@@ -2681,7 +2694,7 @@ L_64:
 ;  314					break;
 .LINE 314
 
-	JR	L_169
+	JR	L_165
 ;  315				}
 ;  316				case 0x6000: {
 L_67:
@@ -2701,7 +2714,7 @@ L_67:
 ;  318					break;
 .LINE 318
 
-	JR	L_169
+	JR	L_165
 ;  319				}
 ;  320				case 0x7000: {
 L_68:
@@ -2715,16 +2728,16 @@ L_68:
 	LD	L,A
 	LD	BC,_V
 	ADD	HL,BC
-	LD	(IX+-32),HL
+	LD	(IX+-26),HL
 	LD	A,(_opcode)
-	LD	HL,(IX+-32)
+	LD	HL,(IX+-26)
 	ADD	A,(HL)
-	LD	HL,(IX+-32)
+	LD	HL,(IX+-26)
 	LD	(HL),A
 ;  322					break;
 .LINE 322
 
-	JR	L_169
+	JR	L_165
 ;  323				}
 ;  324				case 0x8000: {
 L_69:
@@ -2741,7 +2754,7 @@ L_69:
 	LD	L,A
 	CALL	__case8D
 	JP	(HL)
-L__24:
+L__25:
 	DW	9
 	DB	0
 	DW24	L_70	
@@ -2770,7 +2783,7 @@ L__24:
 	DB	14
 	DW24	L_78	
 
-	DW24	L_169	
+	DW24	L_165	
 
 ;  326						case 0x0000: {
 L_70:
@@ -2794,7 +2807,7 @@ L_70:
 ;  328							break;
 .LINE 328
 
-	JR	L_169
+	JR	L_165
 ;  329						}
 ;  330						case 0x0001: {
 L_71:
@@ -2808,20 +2821,20 @@ L_71:
 	LD	L,A
 	LD	BC,_V
 	ADD	HL,BC
-	LD	(IX+-35),HL
+	LD	(IX+-29),HL
 	LD	A,(IX+-5)
 	UEXT	HL
 	LD	L,A
 	ADD	HL,BC
-	LD	IY,(IX+-35)
+	LD	IY,(IX+-29)
 	LD	A,(HL)
 	OR	A,(IY)
-	LD	HL,(IX+-35)
+	LD	HL,(IX+-29)
 	LD	(HL),A
 ;  332							break;
 .LINE 332
 
-	JR	L_169
+	JR	L_165
 ;  333						}
 ;  334						case 0x0002: {
 L_72:
@@ -2835,20 +2848,20 @@ L_72:
 	LD	L,A
 	LD	BC,_V
 	ADD	HL,BC
-	LD	(IX+-38),HL
+	LD	(IX+-32),HL
 	LD	A,(IX+-5)
 	UEXT	HL
 	LD	L,A
 	ADD	HL,BC
-	LD	IY,(IX+-38)
+	LD	IY,(IX+-32)
 	LD	A,(HL)
 	AND	A,(IY)
-	LD	HL,(IX+-38)
+	LD	HL,(IX+-32)
 	LD	(HL),A
 ;  336							break;
 .LINE 336
 
-	JR	L_169
+	JR	L_165
 ;  337						}
 ;  338						case 0x0003: {
 L_73:
@@ -2862,20 +2875,20 @@ L_73:
 	LD	L,A
 	LD	BC,_V
 	ADD	HL,BC
-	LD	(IX+-41),HL
+	LD	(IX+-35),HL
 	LD	A,(IX+-5)
 	UEXT	HL
 	LD	L,A
 	ADD	HL,BC
-	LD	IY,(IX+-41)
+	LD	IY,(IX+-35)
 	LD	A,(HL)
 	XOR	A,(IY)
-	LD	HL,(IX+-41)
+	LD	HL,(IX+-35)
 	LD	(HL),A
 ;  340							break;
 .LINE 340
 
-	JR	L_169
+	JR	L_165
 ;  341						}
 ;  342						case 0x0004: {
 L_74:
@@ -2889,7 +2902,7 @@ L_74:
 	LD	L,A
 	LD	BC,_V
 	ADD	HL,BC
-	LD	(IX+-44),HL
+	LD	(IX+-38),HL
 	LD	A,(IX+-5)
 	UEXT	HL
 	LD	L,A
@@ -2898,7 +2911,7 @@ L_74:
 	UEXT	HL
 	LD	L,A
 	LD	BC,HL
-	LD	HL,(IX+-44)
+	LD	HL,(IX+-38)
 	LD	A,(HL)
 	UEXT	HL
 	LD	L,A
@@ -2908,12 +2921,12 @@ L_74:
 	OR	A,A
 	SBC	HL,BC
 	CALL	__setflag
-	JP	P,L__26
+	JP	P,L__27
 	LD	A,1
-	JR	L__27
-L__26:
-	XOR	A,A
+	JR	L__28
 L__27:
+	XOR	A,A
+L__28:
 	LD	HL,_V+15
 	LD	(HL),A
 ;  344							V[x] += V[y];
@@ -2924,26 +2937,26 @@ L__27:
 	LD	L,A
 	LD	BC,_V
 	ADD	HL,BC
-	LD	IY,(IX+-44)
-	LD	(IX+-62),HL	; spill
-	LD	HL,(IX+-44)
-	LD	(IX+-71),HL	; spill
-	LD	HL,(IX+-62)	; unspill
+	LD	IY,(IX+-38)
+	LD	(IX+-68),HL	; spill
+	LD	HL,(IX+-38)
+	LD	(IX+-77),HL	; spill
+	LD	HL,(IX+-68)	; unspill
 	LD	A,(HL)
 	ADD	A,(IY)
-	LD	HL,(IX+-71)	; unspill
+	LD	HL,(IX+-77)	; unspill
 	LD	(HL),A
 ;  345							V[x] &= 255;
 .LINE 345
 
-	LD	HL,(IX+-44)
+	LD	HL,(IX+-38)
 	LD	A,(HL)
-	LD	HL,(IX+-44)
+	LD	HL,(IX+-38)
 	LD	(HL),A
 ;  346							break;
 .LINE 346
 
-	JR	L_169
+	JR	L_165
 ;  347						}
 ;  348						case 0x0005: {
 L_75:
@@ -2957,42 +2970,42 @@ L_75:
 	LD	L,A
 	LD	BC,_V
 	ADD	HL,BC
-	LD	(IX+-47),HL
+	LD	(IX+-41),HL
 	LD	A,(IX+-5)
 	UEXT	HL
 	LD	L,A
 	ADD	HL,BC
-	LD	IY,(IX+-47)
+	LD	IY,(IX+-41)
 	LD	A,(IY)
 	CP	A,(HL)
-	JR	C,L__29
+	JR	C,L__30
 	LD	A,1
-	JR	L__30
-L__29:
-	XOR	A,A
+	JR	L__31
 L__30:
+	XOR	A,A
+L__31:
 	LD	HL,_V+15
 	LD	(HL),A
 ;  350							V[x] -= V[y];
 .LINE 350
 
-	LD	IY,(IX+-47)
+	LD	IY,(IX+-41)
 	LD	A,(IX+-5)
 	UEXT	HL
 	LD	L,A
 	ADD	HL,BC
-	LD	(IX+-62),HL	; spill
-	LD	HL,(IX+-47)
 	LD	(IX+-68),HL	; spill
-	LD	HL,(IX+-62)	; unspill
+	LD	HL,(IX+-41)
+	LD	(IX+-74),HL	; spill
+	LD	HL,(IX+-68)	; unspill
 	LD	A,(IY)
 	SUB	A,(HL)
-	LD	HL,(IX+-68)	; unspill
+	LD	HL,(IX+-74)	; unspill
 	LD	(HL),A
 ;  351							break;
 .LINE 351
 
-	JR	L_169
+	JR	L_165
 ;  352						}
 ;  353						case 0x0006: {
 L_76:
@@ -3006,7 +3019,7 @@ L_76:
 	LD	L,A
 	LD	BC,_V
 	ADD	HL,BC
-	LD	(IX+-50),HL
+	LD	(IX+-44),HL
 	LD	A,(HL)
 	AND	A,1
 	LD	HL,_V+15
@@ -3014,18 +3027,18 @@ L_76:
 ;  355							V[x] >>= 1;
 .LINE 355
 
-	LD	HL,(IX+-50)
+	LD	HL,(IX+-44)
 	LD	A,(HL)
 	UEXT	HL
 	LD	L,A
 	LD	A,1
 	CALL	__ishrs_b
-	LD	IY,(IX+-50)
+	LD	IY,(IX+-44)
 	LD	(IY),L
 ;  356							break;
 .LINE 356
 
-	JR	L_169
+	JR	L_165
 ;  357						}
 ;  358						case 0x0007: {
 L_77:
@@ -3039,20 +3052,20 @@ L_77:
 	LD	L,A
 	LD	BC,_V
 	ADD	HL,BC
-	LD	(IX+-53),HL
+	LD	(IX+-47),HL
 	LD	A,(IX+-5)
 	UEXT	HL
 	LD	L,A
 	ADD	HL,BC
-	LD	IY,(IX+-53)
+	LD	IY,(IX+-47)
 	LD	A,(HL)
 	CP	A,(IY)
-	JR	C,L__32
+	JR	C,L__33
 	LD	A,1
-	JR	L__33
-L__32:
-	XOR	A,A
+	JR	L__34
 L__33:
+	XOR	A,A
+L__34:
 	LD	HL,_V+15
 	LD	(HL),A
 ;  360							V[x] = V[y] - V[x];
@@ -3062,19 +3075,19 @@ L__33:
 	UEXT	HL
 	LD	L,A
 	ADD	HL,BC
-	LD	IY,(IX+-53)
-	LD	(IX+-62),HL	; spill
-	LD	HL,(IX+-53)
-	LD	(IX+-65),HL	; spill
-	LD	HL,(IX+-62)	; unspill
+	LD	IY,(IX+-47)
+	LD	(IX+-68),HL	; spill
+	LD	HL,(IX+-47)
+	LD	(IX+-71),HL	; spill
+	LD	HL,(IX+-68)	; unspill
 	LD	A,(HL)
 	SUB	A,(IY)
-	LD	HL,(IX+-65)	; unspill
+	LD	HL,(IX+-71)	; unspill
 	LD	(HL),A
 ;  361							break;
 .LINE 361
 
-	JR	L_169
+	JR	L_165
 ;  362						}
 ;  363						case 0x000E: {
 L_78:
@@ -3088,7 +3101,7 @@ L_78:
 	LD	L,A
 	LD	BC,_V
 	ADD	HL,BC
-	LD	(IX+-56),HL
+	LD	(IX+-50),HL
 	LD	A,(HL)
 	UEXT	HL
 	LD	L,A
@@ -3099,15 +3112,15 @@ L_78:
 ;  365							V[x] <<= 1;
 .LINE 365
 
-	LD	HL,(IX+-56)
+	LD	HL,(IX+-50)
 	LD	A,(HL)
 	ADD	A,A
-	LD	HL,(IX+-56)
+	LD	HL,(IX+-50)
 	LD	(HL),A
 ;  366							break;
 .LINE 366
 
-	JR	L_169
+	JR	L_165
 ;  367						}
 ;  368						break;
 ;  369					}
@@ -3132,7 +3145,7 @@ L_80:
 	ADD	HL,BC
 	LD	A,(IY)
 	CP	A,(HL)
-	JR	Z,L_169
+	JR	Z,L_165
 ;  374						pc += 2;
 .LINE 374
 
@@ -3146,7 +3159,7 @@ L_80:
 ;  375					break;
 .LINE 375
 
-	JR	L_169
+	JR	L_165
 ;  376				}
 ;  377				case 0xa000: {
 L_83:
@@ -3166,7 +3179,7 @@ L_83:
 ;  379					break;
 .LINE 379
 
-	JR	L_169
+	JR	L_165
 ;  380				}
 ;  381				case 0xb000: {
 L_84:
@@ -3193,7 +3206,7 @@ L_84:
 ;  383					break;
 .LINE 383
 
-	JR	L_169
+	JR	L_165
 ;  384				}
 ;  385				case 0xc000: {
 L_85:
@@ -3204,9 +3217,9 @@ L_85:
 
 	LD	A,(_opcode)
 	LD	B,A
-	LD	(IX+-74),BC
+	LD	(IX+-80),BC
 	CALL	_rand
-	LD	BC,(IX+-74)
+	LD	BC,(IX+-80)
 	LD	A,B
 	AND	A,L
 	LD	B,A
@@ -3219,7 +3232,7 @@ L_85:
 ;  387					break;
 .LINE 387
 
-	JR	L_169
+	JR	L_165
 ;  388				}
 ;  389				case 0xd000: {
 L_86:
@@ -3243,7 +3256,7 @@ L_86:
 	LD	L,A
 	ADD	HL,BC
 	LD	A,(HL)
-	LD	(IX+-25),A
+	LD	(IX+-19),A
 ;  392					uint8_t height = (opcode & 0x000f);
 .LINE 392
 
@@ -3262,7 +3275,7 @@ L_86:
 
 	LD	A,(_extendedScreen)
 	OR	A,A
-	JR	Z,L_116
+	JR	Z,L_112
 ;  397						//Extended screen DXY0
 ;  398						uint8_t cols = 1;
 .LINE 398
@@ -3273,7 +3286,7 @@ L_86:
 
 	LD	A,(IX+-6)
 	OR	A,A
-	JR	NZ,L_103
+	JR	NZ,L_101
 ;  400							cols = 2;
 .LINE 400
 
@@ -3283,7 +3296,7 @@ L_86:
 
 	LD	(IX+-6),16
 ;  402						}
-L_103:
+L_101:
 .LINE 402
 
 ;  403						for(_y = 0; _y < height; ++_y) {
@@ -3291,8 +3304,8 @@ L_103:
 
 	XOR	A,A
 	LD	(__y),A
-	JR	L_102
-L_100:
+	JR	L_100
+L_98:
 ;  404							pixel = memory[I + (cols*_y)];
 .LINE 404
 
@@ -3322,7 +3335,7 @@ L_100:
 
 	LD	A,(IX+-7)
 	CP	A,2
-	JR	NZ,L_99
+	JR	NZ,L_97
 ;  406								pixel <<= 8;
 .LINE 406
 
@@ -3359,7 +3372,7 @@ L_100:
 	INC	HL
 	LD	(HL),B
 ;  408							}
-L_99:
+L_97:
 .LINE 408
 
 ;  409							for(_x = 0; _x < (cols << 3); ++_x) {
@@ -3367,8 +3380,8 @@ L_99:
 
 	XOR	A,A
 	LD	(__x),A
-	JR	L_98
-L_96:
+	JR	L_96
+L_94:
 ;  410								if((pixel & (((cols == 2) ? 0x8000 : 0x80) >> _x)) != 0) {
 .LINE 410
 
@@ -3376,22 +3389,22 @@ L_96:
 	CP	A,2
 	JR	NZ,L_91
 	LD	BC,32768
-	LD	(IX+-29),BC
+	LD	(IX+-23),BC
 	JR	L_92
 L_91:
 	LD	BC,128
-	LD	(IX+-29),BC
+	LD	(IX+-23),BC
 L_92:
 	LD	A,(__x)
 	UEXT	HL
 	LD	L,A
 	LD	BC,HL
-	LD	HL,(IX+-29)
+	LD	HL,(IX+-23)
 	CALL	__ishrs
 	LD	BC,(_pixel)
 	CALL	__sand
 	CALL	__scmpzero
-	JR	Z,L_97
+	JR	Z,L_95
 ;  411									index = (((xd + _x) & 0x7f) + (((yd + _y) & 0x3f) << 7)) + 2;
 .LINE 411
 
@@ -3408,7 +3421,7 @@ L_92:
 	LD	A,(__y)
 	LD	C,A
 	LD	HL,BC
-	LD	C,(IX+-25)
+	LD	C,(IX+-19)
 	ADD.SIS	HL,BC
 	LD	A,L
 	AND	A,63
@@ -3431,40 +3444,40 @@ L_92:
 	LD	(HL),C
 	INC	HL
 	LD	(HL),B
-;  412									if(scanvas_data[index] & 1)
+;  412									V[0xf] |= scanvas_data[index] & 1;
 .LINE 412
 
+	LD	IY,_V
+	LEA	IY,IY+15
+	LD	(IX+-56),IY
 	LD	BC,(_index)
 	CALL	__stoiu
 	LD	BC,_scanvas_data
 	ADD	HL,BC
-	LD	(IX+-21),HL
+	LD	(IX+-53),HL
 	LD	A,(HL)
 	AND	A,1
-	JR	Z,L_94
-;  413										V[0xf] = 1;
+	LD	HL,(IX+-56)
+	OR	A,(HL)
+	LD	HL,(IX+-56)
+	LD	(HL),A
+;  413									scanvas_data[index] = ~scanvas_data[index];
 .LINE 413
 
-	LD	HL,_V+15
-	LD	(HL),1
-L_94:
-;  414									scanvas_data[index] = ~scanvas_data[index];
-.LINE 414
-
-	LD	HL,(IX+-21)
+	LD	HL,(IX+-53)
 	LD	A,(HL)
 	CPL	
-	LD	HL,(IX+-21)
+	LD	HL,(IX+-53)
 	LD	(HL),A
-;  415								}
-;  416							}
-L_97:
-.LINE 416
+;  414								}
+;  415							}
+L_95:
+.LINE 415
 
 	LD	A,(__x)
 	INC	A
 	LD	(__x),A
-L_98:
+L_96:
 	LD	A,(IX+-7)
 	UEXT	HL
 	LD	L,A
@@ -3477,40 +3490,40 @@ L_98:
 	LD	L,A
 	OR	A,A
 	SBC	HL,BC
-	JP	M,L_96
+	JP	M,L_94
 	LD	A,(__y)
 	INC	A
 	LD	(__y),A
-;  417						}
-L_102:
-.LINE 417
+;  416						}
+L_100:
+.LINE 416
 
 	LD	A,(__y)
 	CP	A,(IX+-6)
-	JR	C,L_100
-	JR	L_117
-;  418					} else {
-L_116:
-.LINE 418
+	JR	C,L_98
+	JR	L_113
+;  417					} else {
+L_112:
+.LINE 417
 
-;  419						//Normal screen DXYN
-;  420						if(height == 0) height = 16;
-.LINE 420
+;  418						//Normal screen DXYN
+;  419						if(height == 0) height = 16;
+.LINE 419
 
 	LD	A,(IX+-6)
 	OR	A,A
-	JR	NZ,L_114
+	JR	NZ,L_110
 	LD	(IX+-6),16
-L_114:
-;  421						for(_y = 0; _y < height; ++_y) {
-.LINE 421
+L_110:
+;  420						for(_y = 0; _y < height; ++_y) {
+.LINE 420
 
 	XOR	A,A
 	LD	(__y),A
-	JR	L_113
-L_111:
-;  422							pixel = memory[I + _y];
-.LINE 422
+	JR	L_109
+L_107:
+;  421							pixel = memory[I + _y];
+.LINE 421
 
 	LD	BC,(_I)
 	CALL	__stoiu
@@ -3526,15 +3539,15 @@ L_111:
 	LD	(HL),C
 	INC	HL
 	LD	(HL),0
-;  423							for(_x = 0; _x < 8; ++_x) {
-.LINE 423
+;  422							for(_x = 0; _x < 8; ++_x) {
+.LINE 422
 
 	XOR	A,A
 	LD	(__x),A
-	JR	L_110
-L_108:
-;  424								if((pixel & (0x80 >> _x)) != 0) {
-.LINE 424
+	JR	L_106
+L_104:
+;  423								if((pixel & (0x80 >> _x)) != 0) {
+.LINE 423
 
 	LD	A,(__x)
 	UEXT	HL
@@ -3545,9 +3558,9 @@ L_108:
 	LD	BC,(_pixel)
 	CALL	__sand
 	CALL	__scmpzero
-	JR	Z,L_109
-;  425									index = (((xd + _x) & 0x3f) + (((yd + _y) & 0x1f) << 6)) + 2;
-.LINE 425
+	JR	Z,L_105
+;  424									index = (((xd + _x) & 0x3f) + (((yd + _y) & 0x1f) << 6)) + 2;
+.LINE 424
 
 	LD	A,(__x)
 	LD	C,A
@@ -3562,7 +3575,7 @@ L_108:
 	LD	A,(__y)
 	LD	C,A
 	LD	HL,BC
-	LD	C,(IX+-25)
+	LD	C,(IX+-19)
 	ADD.SIS	HL,BC
 	LD	A,L
 	AND	A,31
@@ -3584,75 +3597,75 @@ L_108:
 	LD	(HL),C
 	INC	HL
 	LD	(HL),B
-;  426									if(canvas_data[index] & 1)
-.LINE 426
+;  425									V[0xf] |= canvas_data[index] & 1;
+.LINE 425
 
+	LD	IY,_V
+	LEA	IY,IY+15
+	LD	(IX+-62),IY
 	LD	BC,(_index)
 	CALL	__stoiu
 	LD	BC,_canvas_data
 	ADD	HL,BC
-	LD	(IX+-24),HL
+	LD	(IX+-59),HL
 	LD	A,(HL)
 	AND	A,1
-	JR	Z,L_106
-;  427										V[0xf] = 1;
-.LINE 427
+	LD	HL,(IX+-62)
+	OR	A,(HL)
+	LD	HL,(IX+-62)
+	LD	(HL),A
+;  426									canvas_data[index] = ~canvas_data[index];
+.LINE 426
 
-	LD	HL,_V+15
-	LD	(HL),1
-L_106:
-;  428									canvas_data[index] = ~canvas_data[index];
-.LINE 428
-
-	LD	HL,(IX+-24)
+	LD	HL,(IX+-59)
 	LD	A,(HL)
 	CPL	
-	LD	HL,(IX+-24)
+	LD	HL,(IX+-59)
 	LD	(HL),A
-;  429								}
-;  430							}
-L_109:
-.LINE 430
+;  427								}
+;  428							}
+L_105:
+.LINE 428
 
 	LD	A,(__x)
 	INC	A
 	LD	(__x),A
-L_110:
+L_106:
 	LD	A,(__x)
 	CP	A,8
-	JR	C,L_108
+	JR	C,L_104
 	LD	A,(__y)
 	INC	A
 	LD	(__y),A
-;  431						}
-L_113:
-.LINE 431
+;  429						}
+L_109:
+.LINE 429
 
 	LD	A,(__y)
 	CP	A,(IX+-6)
-	JR	C,L_111
-;  432					}
-L_117:
-.LINE 432
+	JR	C,L_107
+;  430					}
+L_113:
+.LINE 430
 
-;  433					
-;  434					drawFlag = true;
-.LINE 434
+;  431					
+;  432					drawFlag = true;
+.LINE 432
 
 	LD	A,1
 	LD	(_drawFlag),A
-;  435					
-;  436					break;
+;  433					
+;  434					break;
+.LINE 434
+
+	JR	L_165
+;  435				}
+;  436				case 0xe000: {
+L_114:
 .LINE 436
 
-	JR	L_169
-;  437				}
-;  438				case 0xe000: {
-L_118:
-.LINE 438
-
-;  439					switch(opcode & 0x00ff) {
-.LINE 439
+;  437					switch(opcode & 0x00ff) {
+.LINE 437
 
 	LD	BC,(_opcode)
 	CALL	__stoiu
@@ -3661,57 +3674,57 @@ L_118:
 	LD	L,A
 	CALL	__case8D
 	JP	(HL)
-L__48:
+L__47:
 	DW	2
 	DB	158
-	DW24	L_119	
+	DW24	L_115	
 
 	DB	161
-	DW24	L_122	
+	DW24	L_118	
 
-	DW24	L_169	
+	DW24	L_165	
 
-;  440						case 0x009e: {
-L_119:
+;  438						case 0x009e: {
+L_115:
+.LINE 438
+
+;  439							if(keys[V[x]])
+.LINE 439
+
+	LD	A,(IX+-4)
+	UEXT	HL
+	LD	L,A
+	LD	BC,_V
+	ADD	HL,BC
+	LD	A,(HL)
+	UEXT	HL
+	LD	L,A
+	LD	BC,_keys
+	ADD	HL,BC
+	LD	A,(HL)
+	OR	A,A
+	JR	Z,L_165
+;  440								pc += 2;
 .LINE 440
 
-;  441							if(keys[V[x]])
+	LD	BC,(_pc)
+	INC	BC
+	INC	BC
+	LD	HL,_pc
+	LD	(HL),C
+	INC	HL
+	LD	(HL),B
+;  441							break;
 .LINE 441
 
-	LD	A,(IX+-4)
-	UEXT	HL
-	LD	L,A
-	LD	BC,_V
-	ADD	HL,BC
-	LD	A,(HL)
-	UEXT	HL
-	LD	L,A
-	LD	BC,_keys
-	ADD	HL,BC
-	LD	A,(HL)
-	OR	A,A
-	JR	Z,L_169
-;  442								pc += 2;
-.LINE 442
-
-	LD	BC,(_pc)
-	INC	BC
-	INC	BC
-	LD	HL,_pc
-	LD	(HL),C
-	INC	HL
-	LD	(HL),B
-;  443							break;
+	JR	L_165
+;  442						}
+;  443						case 0x00a1: {
+L_118:
 .LINE 443
 
-	JR	L_169
-;  444						}
-;  445						case 0x00a1: {
-L_122:
-.LINE 445
-
-;  446							if(!keys[V[x]])
-.LINE 446
+;  444							if(!keys[V[x]])
+.LINE 444
 
 	LD	A,(IX+-4)
 	UEXT	HL
@@ -3725,9 +3738,9 @@ L_122:
 	ADD	HL,BC
 	LD	A,(HL)
 	OR	A,A
-	JR	NZ,L_169
-;  447								pc += 2;
-.LINE 447
+	JR	NZ,L_165
+;  445								pc += 2;
+.LINE 445
 
 	LD	BC,(_pc)
 	INC	BC
@@ -3736,20 +3749,20 @@ L_122:
 	LD	(HL),C
 	INC	HL
 	LD	(HL),B
-;  448							break;
-.LINE 448
+;  446							break;
+.LINE 446
 
-	JR	L_169
-;  449						}
-;  450					}
-;  451					break;
-;  452				}
-;  453				case 0xf000: {
-L_126:
-.LINE 453
+	JR	L_165
+;  447						}
+;  448					}
+;  449					break;
+;  450				}
+;  451				case 0xf000: {
+L_122:
+.LINE 451
 
-;  454					switch(opcode & 0x00ff) {
-.LINE 454
+;  452					switch(opcode & 0x00ff) {
+.LINE 452
 
 	LD	BC,(_opcode)
 	CALL	__stoiu
@@ -3758,52 +3771,52 @@ L_126:
 	LD	L,A
 	CALL	__case8D
 	JP	(HL)
-L__51:
+L__50:
 	DW	12
 	DB	7
-	DW24	L_127	
+	DW24	L_123	
 
 	DB	10
-	DW24	L_128	
+	DW24	L_124	
 
 	DB	21
-	DW24	L_135	
+	DW24	L_131	
 
 	DB	24
-	DW24	L_137	
+	DW24	L_133	
 
 	DB	30
-	DW24	L_138	
+	DW24	L_134	
 
 	DB	41
-	DW24	L_139	
+	DW24	L_135	
 
 	DB	48
-	DW24	L_140	
+	DW24	L_136	
 
 	DB	51
-	DW24	L_141	
+	DW24	L_137	
 
 	DB	85
-	DW24	L_142	
+	DW24	L_138	
 
 	DB	101
-	DW24	L_147	
+	DW24	L_143	
 
 	DB	117
-	DW24	L_152	
+	DW24	L_148	
 
 	DB	133
-	DW24	L_159	
+	DW24	L_155	
 
-	DW24	L_169	
+	DW24	L_165	
 
-;  455						case 0x0007: {
-L_127:
-.LINE 455
+;  453						case 0x0007: {
+L_123:
+.LINE 453
 
-;  456							V[x] = delay_timer;
-.LINE 456
+;  454							V[x] = delay_timer;
+.LINE 454
 
 	LD	A,(_delay_timer)
 	LD	B,A
@@ -3813,21 +3826,21 @@ L_127:
 	LD	DE,_V
 	ADD	HL,DE
 	LD	(HL),B
-;  457							break;
+;  455							break;
+.LINE 455
+
+	JR	L_165
+;  456						}
+;  457						case 0x000A: {
+L_124:
 .LINE 457
 
-	JR	L_169
-;  458						}
-;  459						case 0x000A: {
-L_128:
-.LINE 459
-
-;  460							bool key_pressed = false;
-.LINE 460
+;  458							bool key_pressed = false;
+.LINE 458
 
 	LD	(IX+-18),0
-;  461							pc -= 2;
-.LINE 461
+;  459							pc -= 2;
+.LINE 459
 
 	LD	IY,(_pc)
 	LEA	BC,IY+-2
@@ -3835,25 +3848,25 @@ L_128:
 	LD	(HL),C
 	INC	HL
 	LD	(HL),B
-;  462							
-;  463							for(i = 0; i < 16; ++i) {
-.LINE 463
+;  460							
+;  461							for(i = 0; i < 16; ++i) {
+.LINE 461
 
 	LD	BC,0
 	LD	(IX+-3),BC
-	JR	L_132
-L_130:
-;  464								if(keys[i]) {
-.LINE 464
+	JR	L_128
+L_126:
+;  462								if(keys[i]) {
+.LINE 462
 
 	LD	BC,_keys
 	LD	HL,(IX+-3)
 	ADD	HL,BC
 	LD	A,(HL)
 	OR	A,A
-	JR	Z,L_131
-;  465									V[x] = i;
-.LINE 465
+	JR	Z,L_127
+;  463									V[x] = i;
+.LINE 463
 
 	LD	B,(IX+-3)
 	LD	A,(IX+-4)
@@ -3862,8 +3875,8 @@ L_130:
 	LD	DE,_V
 	ADD	HL,DE
 	LD	(HL),B
-;  466									pc += 2;
-.LINE 466
+;  464									pc += 2;
+.LINE 464
 
 	LD	BC,(_pc)
 	INC	BC
@@ -3872,48 +3885,48 @@ L_130:
 	LD	(HL),C
 	INC	HL
 	LD	(HL),B
-;  467									key_pressed = true;
-.LINE 467
+;  465									key_pressed = true;
+.LINE 465
 
 	LD	(IX+-18),1
-;  468									break;
-.LINE 468
+;  466									break;
+.LINE 466
 
-	JR	L_134
-;  469								}
-;  470							}
-L_131:
-.LINE 470
+	JR	L_130
+;  467								}
+;  468							}
+L_127:
+.LINE 468
 
 	LD	BC,(IX+-3)
 	INC	BC
 	LD	(IX+-3),BC
-L_132:
+L_128:
 	LD	BC,16
 	LD	HL,(IX+-3)
 	OR	A,A
 	SBC	HL,BC
-	JP	M,L_130
-L_134:
-;  471							
-;  472							if(!key_pressed)
-.LINE 472
+	JP	M,L_126
+L_130:
+;  469							
+;  470							if(!key_pressed)
+.LINE 470
 
 	LD	A,(IX+-18)
 	OR	A,A
-	JR	Z,L_175
-;  473								return;
+	JR	Z,L_171
+;  471								return;
+.LINE 471
+
+;  472						}
+.LINE 472
+
+;  473						case 0x0015: {
+L_131:
 .LINE 473
 
-;  474						}
+;  474							delay_timer = V[x];
 .LINE 474
-
-;  475						case 0x0015: {
-L_135:
-.LINE 475
-
-;  476							delay_timer = V[x];
-.LINE 476
 
 	LD	A,(IX+-4)
 	UEXT	HL
@@ -3925,17 +3938,17 @@ L_135:
 	LD	(HL),C
 	INC	HL
 	LD	(HL),0
-;  477							break;
+;  475							break;
+.LINE 475
+
+	JR	L_165
+;  476						}
+;  477						case 0x0018: {
+L_133:
 .LINE 477
 
-	JR	L_169
-;  478						}
-;  479						case 0x0018: {
-L_137:
-.LINE 479
-
-;  480							sound_timer = V[x];
-.LINE 480
+;  478							sound_timer = V[x];
+.LINE 478
 
 	LD	A,(IX+-4)
 	UEXT	HL
@@ -3947,17 +3960,17 @@ L_137:
 	LD	(HL),C
 	INC	HL
 	LD	(HL),0
-;  481							break;
+;  479							break;
+.LINE 479
+
+	JR	L_165
+;  480						}
+;  481						case 0x001E: {
+L_134:
 .LINE 481
 
-	JR	L_169
-;  482						}
-;  483						case 0x001E: {
-L_138:
-.LINE 483
-
-;  484							I = (I + V[x]) & 0xffff;
-.LINE 484
+;  482							I = (I + V[x]) & 0xffff;
+.LINE 482
 
 	LD	A,(IX+-4)
 	UEXT	HL
@@ -3974,17 +3987,17 @@ L_138:
 	LD	(HL),C
 	INC	HL
 	LD	(HL),B
-;  485							break;
+;  483							break;
+.LINE 483
+
+	JR	L_165
+;  484						}
+;  485						case 0x0029: {
+L_135:
 .LINE 485
 
-	JR	L_169
-;  486						}
-;  487						case 0x0029: {
-L_139:
-.LINE 487
-
-;  488							I = (V[x] & 0xf) * 5;
-.LINE 488
+;  486							I = (V[x] & 0xf) * 5;
+.LINE 486
 
 	LD	A,(IX+-4)
 	UEXT	HL
@@ -4002,17 +4015,17 @@ L_139:
 	LD	(HL),C
 	INC	HL
 	LD	(HL),B
-;  489							break;
+;  487							break;
+.LINE 487
+
+	JR	L_165
+;  488						}
+;  489						case 0x0030: {
+L_136:
 .LINE 489
 
-	JR	L_169
-;  490						}
-;  491						case 0x0030: {
-L_140:
-.LINE 491
-
-;  492							I = (V[x] & 0xf) * 10 + 80;
-.LINE 492
+;  490							I = (V[x] & 0xf) * 10 + 80;
+.LINE 490
 
 	LD	A,(IX+-4)
 	UEXT	HL
@@ -4031,24 +4044,24 @@ L_140:
 	LD	(HL),C
 	INC	HL
 	LD	(HL),B
-;  493							break;
+;  491							break;
+.LINE 491
+
+	JR	L_165
+;  492						}
+;  493						case 0x0033: {
+L_137:
 .LINE 493
 
-	JR	L_169
-;  494						}
-;  495						case 0x0033: {
-L_141:
-.LINE 495
-
-;  496							memory[ I ] = V[x] / 100;
-.LINE 496
+;  494							memory[ I ] = V[x] / 100;
+.LINE 494
 
 	LD	A,(IX+-4)
 	UEXT	HL
 	LD	L,A
 	LD	BC,_V
 	ADD	HL,BC
-	LD	(IX+-59),HL
+	LD	(IX+-65),HL
 	LD	A,(HL)
 	UEXT	HL
 	LD	L,A
@@ -4060,10 +4073,10 @@ L_141:
 	LD	BC,_memory
 	ADD	HL,BC
 	LD	(HL),A
-;  497							memory[I+1] = (V[x] / 10) % 10;
-.LINE 497
+;  495							memory[I+1] = (V[x] / 10) % 10;
+.LINE 495
 
-	LD	HL,(IX+-59)
+	LD	HL,(IX+-65)
 	LD	A,(HL)
 	UEXT	HL
 	LD	L,A
@@ -4078,10 +4091,10 @@ L_141:
 	LD	BC,_memory
 	ADD	HL,BC
 	LD	(HL),A
-;  498							memory[I+2] = V[x] % 10;
-.LINE 498
+;  496							memory[I+2] = V[x] % 10;
+.LINE 496
 
-	LD	HL,(IX+-59)
+	LD	HL,(IX+-65)
 	LD	A,(HL)
 	UEXT	HL
 	LD	L,A
@@ -4095,69 +4108,69 @@ L_141:
 	LD	BC,_memory
 	ADD	HL,BC
 	LD	(HL),A
-;  499							break;
+;  497							break;
+.LINE 497
+
+	JR	L_165
+;  498						}
+;  499						case 0x0055: {
+L_138:
 .LINE 499
 
-	JR	L_169
-;  500						}
-;  501						case 0x0055: {
-L_142:
+;  500							for(i = 0; i <= x; ++i) {
+.LINE 500
+
+	LD	BC,0
+	LD	(IX+-3),BC
+	JR	L_141
+L_139:
+;  501								memory[I + i] = V[i];
 .LINE 501
 
-;  502							for(i = 0; i <= x; ++i) {
+	LD	BC,_V
+	LD	HL,(IX+-3)
+	ADD	HL,BC
+	LD	IY,HL
+	LD	BC,(_I)
+	CALL	__stoiu
+	LD	BC,(IX+-3)
+	ADD	HL,BC
+	LD	BC,_memory
+	ADD	HL,BC
+	LD	A,(IY)
+	LD	(HL),A
+	LD	BC,(IX+-3)
+	INC	BC
+	LD	(IX+-3),BC
+;  502							}
+L_141:
 .LINE 502
 
-	LD	BC,0
-	LD	(IX+-3),BC
-	JR	L_145
-L_143:
-;  503								memory[I + i] = V[i];
+	LD	A,(IX+-4)
+	UEXT	HL
+	LD	L,A
+	LD	BC,(IX+-3)
+	OR	A,A
+	SBC	HL,BC
+	JP	P,L_139
+;  503							break;
 .LINE 503
 
-	LD	BC,_V
-	LD	HL,(IX+-3)
-	ADD	HL,BC
-	LD	IY,HL
-	LD	BC,(_I)
-	CALL	__stoiu
-	LD	BC,(IX+-3)
-	ADD	HL,BC
-	LD	BC,_memory
-	ADD	HL,BC
-	LD	A,(IY)
-	LD	(HL),A
-	LD	BC,(IX+-3)
-	INC	BC
-	LD	(IX+-3),BC
-;  504							}
-L_145:
-.LINE 504
-
-	LD	A,(IX+-4)
-	UEXT	HL
-	LD	L,A
-	LD	BC,(IX+-3)
-	OR	A,A
-	SBC	HL,BC
-	JP	P,L_143
-;  505							break;
+	JR	L_165
+;  504						}
+;  505						case 0x0065: {
+L_143:
 .LINE 505
 
-	JR	L_169
-;  506						}
-;  507						case 0x0065: {
-L_147:
-.LINE 507
-
-;  508							for(i = 0; i <= x; ++i) {
-.LINE 508
+;  506							for(i = 0; i <= x; ++i) {
+.LINE 506
 
 	LD	BC,0
 	LD	(IX+-3),BC
-	JR	L_150
-L_148:
-;  509								V[i] = memory[I + i];
-.LINE 509
+	JR	L_146
+L_144:
+;  507								V[i] = memory[I + i];
+.LINE 507
 
 	LD	BC,(_I)
 	CALL	__stoiu
@@ -4174,9 +4187,9 @@ L_148:
 	LD	BC,(IX+-3)
 	INC	BC
 	LD	(IX+-3),BC
-;  510							}
-L_150:
-.LINE 510
+;  508							}
+L_146:
+.LINE 508
 
 	LD	A,(IX+-4)
 	UEXT	HL
@@ -4185,50 +4198,50 @@ L_150:
 	OR	A,A
 	SBC	HL,BC
 	CALL	__setflag
-	JP	P,L_148
-;  511							break;
+	JP	P,L_144
+;  509							break;
+.LINE 509
+
+	JR	L_165
+;  510						}
+;  511						case 0x0075: {
+L_148:
 .LINE 511
 
-	JR	L_169
-;  512						}
-;  513						case 0x0075: {
-L_152:
+;  512							if (x > 7) x = 7;
+.LINE 512
+
+	LD	A,7
+	CP	A,(IX+-4)
+	JR	NC,L_153
+	LD	(IX+-4),7
+L_153:
+;  513							for(i = 0; i <= x; ++i) {
 .LINE 513
 
-;  514							if (x > 7) x = 7;
+	LD	BC,0
+	LD	(IX+-3),BC
+	JR	L_152
+L_150:
+;  514								SV[i] = V[i];
 .LINE 514
 
-	LD	A,7
-	CP	A,(IX+-4)
-	JR	NC,L_157
-	LD	(IX+-4),7
-L_157:
-;  515							for(i = 0; i <= x; ++i) {
+	LD	BC,_V
+	LD	HL,(IX+-3)
+	ADD	HL,BC
+	LD	IY,HL
+	LD	BC,_SV
+	LD	HL,(IX+-3)
+	ADD	HL,BC
+	LD	A,(IY)
+	LD	(HL),A
+	LD	BC,(IX+-3)
+	INC	BC
+	LD	(IX+-3),BC
+;  515							}
+L_152:
 .LINE 515
 
-	LD	BC,0
-	LD	(IX+-3),BC
-	JR	L_156
-L_154:
-;  516								SV[i] = V[i];
-.LINE 516
-
-	LD	BC,_V
-	LD	HL,(IX+-3)
-	ADD	HL,BC
-	LD	IY,HL
-	LD	BC,_SV
-	LD	HL,(IX+-3)
-	ADD	HL,BC
-	LD	A,(IY)
-	LD	(HL),A
-	LD	BC,(IX+-3)
-	INC	BC
-	LD	(IX+-3),BC
-;  517							}
-L_156:
-.LINE 517
-
 	LD	A,(IX+-4)
 	UEXT	HL
 	LD	L,A
@@ -4236,33 +4249,33 @@ L_156:
 	OR	A,A
 	SBC	HL,BC
 	CALL	__setflag
-	JP	P,L_154
-;  518							break;
+	JP	P,L_150
+;  516							break;
+.LINE 516
+
+	JR	L_165
+;  517						}
+;  518						case 0x0085: {
+L_155:
 .LINE 518
 
-	JR	L_169
-;  519						}
-;  520						case 0x0085: {
-L_159:
-.LINE 520
-
-;  521							if (x > 7) x = 7;
-.LINE 521
+;  519							if (x > 7) x = 7;
+.LINE 519
 
 	LD	A,7
 	CP	A,(IX+-4)
-	JR	NC,L_164
+	JR	NC,L_160
 	LD	(IX+-4),7
-L_164:
-;  522							for(i = 0; i <= x; ++i) {
-.LINE 522
+L_160:
+;  520							for(i = 0; i <= x; ++i) {
+.LINE 520
 
 	LD	BC,0
 	LD	(IX+-3),BC
-	JR	L_163
-L_161:
-;  523								V[i] = SV[i];
-.LINE 523
+	JR	L_159
+L_157:
+;  521								V[i] = SV[i];
+.LINE 521
 
 	LD	BC,_SV
 	LD	HL,(IX+-3)
@@ -4276,9 +4289,9 @@ L_161:
 	LD	BC,(IX+-3)
 	INC	BC
 	LD	(IX+-3),BC
-;  524							}
-L_163:
-.LINE 524
+;  522							}
+L_159:
+.LINE 522
 
 	LD	A,(IX+-4)
 	UEXT	HL
@@ -4287,28 +4300,28 @@ L_163:
 	OR	A,A
 	SBC	HL,BC
 	CALL	__setflag
-	JP	P,L_161
-;  525							break;
-;  526						}
-;  527					}
-;  528					break;
-;  529				}
-;  530				default:
-;  531					break;
-;  532			}
-;  533		}
-L_169:
-.LINE 533
+	JP	P,L_157
+;  523							break;
+;  524						}
+;  525					}
+;  526					break;
+;  527				}
+;  528				default:
+;  529					break;
+;  530			}
+;  531		}
+L_165:
+.LINE 531
 
 	LD	A,(_step)
 	INC	A
 	LD	(_step),A
-L_170:
+L_166:
 	LD	A,(_step)
 	CP	A,(IX+6)
-	JR	C,L_168
-;  534		if(sound_timer > 0) {
-.LINE 534
+	JR	C,L_164
+;  532		if(sound_timer > 0) {
+.LINE 532
 
 	LD	BC,(_sound_timer)
 	OR	A,A
@@ -4316,9 +4329,9 @@ L_170:
 	OR	A,A
 	SBC.SIS	HL,BC
 	CALL	__setflag
-	JP	P,L_174
-;  535			--sound_timer;
-.LINE 535
+	JP	P,L_170
+;  533			--sound_timer;
+.LINE 533
 
 	LD	BC,(_sound_timer)
 	DEC	BC
@@ -4326,12 +4339,12 @@ L_170:
 	LD	(HL),C
 	INC	HL
 	LD	(HL),B
-;  536		}
-L_174:
-.LINE 536
+;  534		}
+L_170:
+.LINE 534
 
-;  537		if(delay_timer > 0) {
-.LINE 537
+;  535		if(delay_timer > 0) {
+.LINE 535
 
 	LD	BC,(_delay_timer)
 	OR	A,A
@@ -4339,21 +4352,20 @@ L_174:
 	OR	A,A
 	SBC.SIS	HL,BC
 	CALL	__setflag
-	JP	P,L_175
-;  538			delay_timer -= 2;
-.LINE 538
+	JP	P,L_171
+;  536			--delay_timer;
+.LINE 536
 
 	LD	BC,(_delay_timer)
-	DEC	BC
 	DEC	BC
 	LD	HL,_delay_timer
 	LD	(HL),C
 	INC	HL
 	LD	(HL),B
-;  539		}
-;  540	}
-L_175:
-.LINE 540
+;  537		}
+;  538	}
+L_171:
+.LINE 538
 
 	LD	SP,IX
 	POP	IX
@@ -4373,7 +4385,6 @@ L_175:
 ;_rand                               IMPORT  -----   function
 ;_I                                  STATIC      2   variable
 ;_V                                  STATIC     16   variable
-;_sprintf                            IMPORT  -----   function
 ;_playing                            STATIC      1   variable
 ;_memmove                            IMPORT  -----   function
 ;_stack                              STATIC     32   variable
@@ -4386,17 +4397,16 @@ L_175:
 ;_canvas_data                        IMPORT   2050   variable
 ;_scanvas_data                       IMPORT   8194   variable
 ;_extendedScreen                     STATIC      1   variable
+;_sprintf                            IMPORT  -----   function
 ;_opcode                             STATIC      2   variable
 ;_pc                                 STATIC      2   variable
 ;_memory                             STATIC   4096   variable
 ;_step                               STATIC      1   variable
 ;_setKeys                            IMPORT  -----   function
 ;_kb_Scan                            IMPORT  -----   function
-;temp89                               IX-29      3   variable
-;n                                    IX-26      1   variable
-;yd                                   IX-25      1   variable
-;G_1                                  IX-24      3   variable
-;G_0                                  IX-21      3   variable
+;temp89                               IX-23      3   variable
+;n                                    IX-20      1   variable
+;yd                                   IX-19      1   variable
 ;key_pressed                          IX-18      1   variable
 ;xd                                   IX-17      1   variable
 ;disp                                 IX-16      3   variable
@@ -4410,16 +4420,19 @@ L_175:
 ;steps                                 IX+6      1   parameter
 
 
-; Stack Frame Size: 83 (bytes)
+; Stack Frame Size: 89 (bytes)
 ;       Spill Code: 0 (instruction)
 
 
-.ENDFUNC "emulateCycle",540,"_emulateCycle"
+.ENDFUNC "emulateCycle",538,"_emulateCycle"
 	SEGMENT STRSECT
-L__19:
-	DB	"Extended mode off"
+L__10:
+	DB	"%x "
 	DB	10,0
 L__20:
+	DB	"Extended mode off"
+	DB	10,0
+L__21:
 	DB	"Extended mode on"
 	DB	10,0
 	XREF _scanvas_data:ROM

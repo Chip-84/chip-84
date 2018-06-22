@@ -76,7 +76,7 @@ void main(void) {
 	gfx_PrintStringXY("Chip-84", 103, 95);
 	gfx_SetTextScale(1, 1);
 	gfx_PrintStringXY("2018 Christian Kosman", 80, 120);
-	gfx_PrintStringXY("version 2.2.0", LCD_WIDTH-100, LCD_HEIGHT-30);
+	gfx_PrintStringXY("version 2.2.1", LCD_WIDTH-100, LCD_HEIGHT-30);
 	gfx_BlitBuffer();
 	
 	delay(1000);
