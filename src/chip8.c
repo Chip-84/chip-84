@@ -126,7 +126,6 @@ void loadProgram(char *fileName) {
 	ti_Read(&game_data, ti_GetSize(file), 1, file);
 	
 	romSize = ti_GetSize(file)-(16+6);
-	dbg_sprintf(dbgout, "%d ", romSize);
 	
 	initialize();
 	
@@ -200,7 +199,7 @@ void emulateCycle(uint8_t steps) {
 		y = (opcode & 0x00f0) >> 4;
 		
 		pc += 2;
-		dbg_sprintf(dbgout, "%x \n", opcode);
+		
 		switch(opcode & 0xf000) {
 			case 0x0000: {
 				switch(opcode & 0x00f0) {
@@ -410,7 +409,10 @@ void emulateCycle(uint8_t steps) {
 							if((pixel & (((cols == 2) ? 0x8000 : 0x80) >> _x)) != 0) {
 								index = (((xd + _x) & 0x7f) + (((yd + _y) & 0x3f) << 7)) + 2;
 								V[0xf] |= scanvas_data[index] & 1;
-								scanvas_data[index] = ~scanvas_data[index];
+								if (scanvas_data[index])
+									scanvas_data[index] = 0;
+								else
+									scanvas_data[index] = 1;
 							}
 						}
 					}
@@ -423,7 +425,10 @@ void emulateCycle(uint8_t steps) {
 							if((pixel & (0x80 >> _x)) != 0) {
 								index = (((xd + _x) & 0x3f) + (((yd + _y) & 0x1f) << 6)) + 2;
 								V[0xf] |= canvas_data[index] & 1;
-								canvas_data[index] = ~canvas_data[index];
+								if (canvas_data[index])
+									canvas_data[index] = 0;
+								else
+									canvas_data[index] = 1;
 							}
 						}
 					}

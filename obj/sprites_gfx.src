@@ -8,10 +8,10 @@
 _sprites_gfx_pal:
 	DW	0
 	DW	65535
+	DW	0
+	DW	65535
 	DW	54025
 	DW	7429
-	DW	52608
-	DW	32544
 .DEFINE "sprites_gfx_pal"
 .ALIAS "_sprites_gfx_pal"
 .CLASS 69
