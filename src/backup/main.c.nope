@@ -2,6 +2,7 @@
 #include <stddef.h>
 #include <stdint.h>
 #include <tice.h>
+#include <debug.h>
 
 #include <math.h>
 #include <stdio.h>
@@ -98,6 +99,7 @@ void main(void) {
 	
 	ti_CloseAll();
 	settings = ti_Open("C84SET", "r");
+	dbg_sprintf(dbgout, "%d", ti_GetSize(settings));
 	if(settings == 0) {
 		ti_CloseAll();
 		settings = ti_Open("C84SET", "w");
@@ -127,7 +129,7 @@ void main(void) {
 	gfx_PrintStringXY("Chip-84", 103, 95);
 	gfx_SetTextScale(1, 1);
 	gfx_PrintStringXY("2018 Christian Kosman", 80, 120);
-	gfx_PrintStringXY("version 2.3.1", LCD_WIDTH-100, LCD_HEIGHT-30);
+	gfx_PrintStringXY("version 2.3.0", LCD_WIDTH-100, LCD_HEIGHT-30);
 	gfx_BlitBuffer();
 	
 	delay(1000);
@@ -206,7 +208,7 @@ void startEmulation(char *fileName) {
 	loadProgram(fileName);
 	
 	gfx_FillScreen(bgColor);
-	gfx_SetTextFGColor(254);
+	gfx_SetTextFGColor(0x03);
 	gfx_PrintStringXY(pauseText, 10, LCD_HEIGHT-20);
 	
 	do {
@@ -439,7 +441,7 @@ void drawGraphics() {
 	drawFlag = 0;
 	
 	if(extendedScreen)
-		gfx_ScaledSprite_NoClip(canvas, 30, 55, 2, 2);
+		gfx_ScaledSprite_NoClip(scanvas, 30, 55, 2, 2);
 	else
 		gfx_ScaledSprite_NoClip(canvas, 30, 55, 4, 4);
 }
@@ -448,7 +450,7 @@ void drawPreview(uint8_t x, uint8_t y) {
 	drawFlag = 0;
 	
 	if(extendedScreen)
-		gfx_Sprite_NoClip(canvas, x, y);
+		gfx_Sprite_NoClip(scanvas, x, y);
 	else
 		gfx_ScaledSprite_NoClip(canvas, x, y, 2, 2);
 }

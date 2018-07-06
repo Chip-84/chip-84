@@ -2,11 +2,9 @@
 #include <stdint.h>
 #include "sprites_gfx.h"
 
-uint16_t sprites_gfx_pal[6] = {
+uint16_t sprites_gfx_pal[4] = {
  0x0000,  // 00 :: rgb(0,0,1) black
- 0xFFFF,  // 04 :: rgb(255,255,255) white
- 0x0000,  // Static black
- 0xFFFF,  // Static white
- 0xD309,  // 01 :: rgb(168,198,78) lcd_bg
- 0x1D05,  // 05 :: rgb(60,65,44) lcd_fg
+ 0xFFFF,  // 01 :: rgb(255,255,255) white
+ 0x0000,  // 02 Static black
+ 0xFFFF,  // 03 Static white
 };

@@ -1,8 +1,6 @@
 #include <stdbool.h>
 #include <stddef.h>
 #include <stdint.h>
-#include <tice.h>
-#include <debug.h>
 
 #include <math.h>
 #include <stdio.h>
@@ -10,7 +8,7 @@
 #include <string.h>
 
 extern uint16_t opcode;
-extern uint8_t memory[4096];
+extern uint8_t memory[0x1000];
 extern uint8_t SV[8];
 extern uint8_t V[16];
 extern uint16_t I;
@@ -25,6 +23,11 @@ extern bool drawFlag;
 extern bool paused;
 extern bool playing;
 extern bool extendedScreen;
+extern uint8_t plane;
+
+extern uint8_t screen_width;
+extern uint8_t screen_height;
+extern uint8_t pixel_number;
 
 extern ti_var_t file;
 

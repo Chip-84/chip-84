@@ -10,13 +10,11 @@ _sprites_gfx_pal:
 	DW	65535
 	DW	0
 	DW	65535
-	DW	54025
-	DW	7429
 .DEFINE "sprites_gfx_pal"
 .ALIAS "_sprites_gfx_pal"
 .CLASS 69
 .VALUE _sprites_gfx_pal
-.DIM 6
+.DIM 4
 .TYPE 109
 .ENDEF
 	XDEF _sprites_gfx_pal
@@ -24,5 +22,5 @@ _sprites_gfx_pal:
 ;    2	#include <stdint.h>
 ;    3	#include "sprites_gfx.h"
 ;    4	
-;    5	uint16_t sprites_gfx_pal[6] = {
+;    5	uint16_t sprites_gfx_pal[4] = {
 	END

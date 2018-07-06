@@ -2,6 +2,7 @@
 #include <stddef.h>
 #include <stdint.h>
 #include <tice.h>
+#include <debug.h>
 
 #include <math.h>
 #include <stdio.h>
@@ -15,7 +16,7 @@
 #include "sprites_gfx.h"
 
 uint16_t opcode = 0;
-uint8_t memory[0x1000];
+uint8_t memory[4096];
 uint8_t SV[8];
 uint8_t V[16];
 uint16_t I = 0;
@@ -30,10 +31,8 @@ bool drawFlag = false;
 bool paused = false;
 bool playing = false;
 bool extendedScreen = 0;
-uint8_t plane = 1;
 
 uint8_t game_data[3584];
-uint8_t canvas_data[8194];
 uint8_t keypad[16];
 uint8_t controlMap[16];
 
@@ -85,7 +84,6 @@ uint8_t _x;
 
 uint8_t screen_width;
 uint8_t screen_height;
-uint8_t pixel_number;
 
 void initialize() {
 	
@@ -95,10 +93,14 @@ void initialize() {
 	extendedScreen = 0;
 	screen_width = 64;
 	screen_height = 32;
+	
+	scanvas_data[0] = 128;
+	scanvas_data[1] = 64;
+	memset(scanvas_data + 2, 0, 8192);
 
 	canvas_data[0] = 64;
 	canvas_data[1] = 32;
-	memset(canvas_data + 2, 0, 8192);
+	memset(canvas_data + 2, 0, 2048);
 		
 	memset(keys, 0, 16);
 	memset(stack, 0, 16);
@@ -123,13 +125,13 @@ void loadProgram(char *fileName) {
 	file = ti_Open(fileName, "r");
 	ti_Read(&game_data, ti_GetSize(file), 1, file);
 	
-	romSize = ti_GetSize(file)-22;
+	romSize = ti_GetSize(file)-(16+6);
 	
 	initialize();
 	
 	if((4096-512) > romSize) {
 		for(i = 0; i < romSize; ++i) {
-			memory[i + 512] = (uint8_t)game_data[i+22];
+			memory[i + 512] = (uint8_t)game_data[i+16+6];
 		}
 	}
 	for(i = 0; i < 16; i++) {
@@ -138,8 +140,6 @@ void loadProgram(char *fileName) {
 }
 
 void setKeys() {
-	uint8_t i;
-	
 	keypad[0x0] = kb_Data[4] & kb_DecPnt;
 	keypad[0x1] = kb_Data[3] & kb_7;
 	keypad[0x2] = kb_Data[4] & kb_8;
@@ -157,9 +157,25 @@ void setKeys() {
 	keypad[0xE] = kb_Data[6] & kb_Add;
 	keypad[0xF] = kb_Data[6] & kb_Enter;
 	
-	for(i = 0; i < 15; i++) {
-		keys[i] = keypad[controlMap[i]];
-	}
+	keys[0x0] = keypad[controlMap[0x0]];
+	keys[0x1] = keypad[controlMap[0x1]];
+	keys[0x2] = keypad[controlMap[0x2]];
+	keys[0x3] = keypad[controlMap[0x3]];
+	                              
+	keys[0x4] = keypad[controlMap[0x4]];
+	keys[0x5] = keypad[controlMap[0x5]];
+	keys[0x6] = keypad[controlMap[0x6]];
+	keys[0x7] = keypad[controlMap[0x7]];
+	                              
+	keys[0x8] = keypad[controlMap[0x8]];
+	keys[0x9] = keypad[controlMap[0x9]];
+	keys[0xA] = keypad[controlMap[0xA]];
+	keys[0xB] = keypad[controlMap[0xB]];
+	                              
+	keys[0xC] = keypad[controlMap[0xC]];
+	keys[0xD] = keypad[controlMap[0xD]];
+	keys[0xE] = keypad[controlMap[0xE]];
+	keys[0xF] = keypad[controlMap[0xF]];
 	
 	if(kb_Data[1] & kb_2nd) {
 		while(kb_Data[1] & kb_2nd) {
@@ -189,8 +205,13 @@ void emulateCycle(uint8_t steps) {
 				switch(opcode & 0x00f0) {
 					case 0x00c0: { //SCD
 						uint8_t n = (opcode & 0x000f);
-						uint8_t *disp = &canvas_data[2];
+						uint8_t *disp;
 						
+						if(extendedScreen) {
+							disp = &scanvas_data[2];
+						} else {
+							disp = &canvas_data[2];
+						}
 						for(i = screen_height-2; i >= 0; i--) {
 							memcpy(disp + (i+n)*screen_width, disp + i*screen_width, screen_width);
 							memset(disp + i*screen_width, 0, screen_width);
@@ -204,15 +225,23 @@ void emulateCycle(uint8_t steps) {
 				}
 				switch(opcode & 0x00ff) {
 					case 0x00e0:
-						memset(canvas_data + 2, 0, pixel_number);
+						if(extendedScreen)
+							memset(scanvas_data + 2, 0, 8192);
+						else
+							memset(canvas_data + 2, 0, 2048);
 						drawFlag = true;
 						break;
 					case 0x00ee:
 						pc = stack[(--sp)&0xf];
 						break;
 					case 0x00fb: { //SCR
-						uint8_t *disp = &canvas_data[2];
+						uint8_t *disp;
 						
+						if(extendedScreen) {
+							disp = &scanvas_data[2];
+						} else {
+							disp = &canvas_data[2];
+						}
 						for(i = 0; i < screen_height; i++) {
 							memmove(disp + 4, disp, screen_width - 4);
 							memset(disp, 0, 4);
@@ -221,8 +250,13 @@ void emulateCycle(uint8_t steps) {
 						break;
 					}
 					case 0x00fc: { //SCL
-						uint8_t *disp = &canvas_data[2];
+						uint8_t *disp;
 						
+						if(extendedScreen) {
+							disp = &scanvas_data[2];
+						} else {
+							disp = &canvas_data[2];
+						}
 						for(i = 0; i < screen_height; i++) {
 							memmove(disp, disp + 4, screen_width - 4);
 							memset(disp + screen_width - 4, 0, 4);
@@ -238,17 +272,15 @@ void emulateCycle(uint8_t steps) {
 						extendedScreen = 0;
 						screen_width = 64;
 						screen_height = 32;
-						canvas_data[0] = 64;
-						canvas_data[1] = 32;
-						pixel_number = 2048;
+						memcpy(canvas_data + 2, scanvas_data + 2, 2048);
+						dbg_sprintf(dbgout, "Extended mode off\n");
 						break;
 					case 0x00ff:
 						extendedScreen = 1;
 						screen_width = 128;
 						screen_height = 64;
-						canvas_data[0] = 128;
-						canvas_data[1] = 64;
-						pixel_number = 8192;
+						memcpy(scanvas_data + 2, canvas_data + 2, 2048);
+						dbg_sprintf(dbgout, "Extended mode on\n");
 						break;
 					default:
 						pc = (pc & 0x0fff);
@@ -376,11 +408,11 @@ void emulateCycle(uint8_t steps) {
 						for(_x = 0; _x < (cols << 3); ++_x) {
 							if((pixel & (((cols == 2) ? 0x8000 : 0x80) >> _x)) != 0) {
 								index = (((xd + _x) & 0x7f) + (((yd + _y) & 0x3f) << 7)) + 2;
-								V[0xf] |= canvas_data[index] & 1;
-								if (canvas_data[index])
-									canvas_data[index] = 0;
+								V[0xf] |= scanvas_data[index] & 1;
+								if (scanvas_data[index])
+									scanvas_data[index] = 0;
 								else
-									canvas_data[index] = 1;
+									scanvas_data[index] = 1;
 							}
 						}
 					}
