@@ -27,7 +27,7 @@ extern uint8_t plane;
 
 extern uint8_t screen_width;
 extern uint8_t screen_height;
-extern uint8_t pixel_number;
+extern uint16_t pixel_number;
 
 extern ti_var_t file;
 

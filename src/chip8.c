@@ -85,7 +85,7 @@ uint8_t _x;
 
 uint8_t screen_width;
 uint8_t screen_height;
-uint8_t pixel_number;
+uint16_t pixel_number;
 
 void initialize() {
 	
@@ -95,6 +95,8 @@ void initialize() {
 	extendedScreen = 0;
 	screen_width = 64;
 	screen_height = 32;
+	
+	pixel_number = 2048;
 
 	canvas_data[0] = 64;
 	canvas_data[1] = 32;
@@ -452,8 +454,7 @@ void emulateCycle(uint8_t steps) {
 						break;
 					}
 					case 0x001E: {
-						if(I + V[x] > 0xff) V[0xf] = 1;
-						else V[0xf] = 0;
+						V[0xf] = (I + V[x] > 0xff);
 						I = (I + V[x]) & 0xffff;
 						break;
 					}
