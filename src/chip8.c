@@ -452,6 +452,8 @@ void emulateCycle(uint8_t steps) {
 						break;
 					}
 					case 0x001E: {
+						if(I + V[x] > 0xff) V[0xf] = 1;
+						else V[0xf] = 0;
 						I = (I + V[x]) & 0xffff;
 						break;
 					}
