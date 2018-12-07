@@ -1040,7 +1040,7 @@ L_2:
 	POP	BC
 	POP	BC
 	POP	BC
-;  130		gfx_PrintStringXY("version 2.3.1", LCD_WIDTH-100, LCD_HEIGHT-30);
+;  130		gfx_PrintStringXY("version 2.3.3", LCD_WIDTH-100, LCD_HEIGHT-30);
 .LINE 130
 
 	LD	BC,210
@@ -1451,7 +1451,7 @@ L__23:
 	DB	"2018 Christian Kosman"
 	DB	0
 L__24:
-	DB	"version 2.3.1"
+	DB	"version 2.3.3"
 	DB	0
 L__25:
 	DB	"Chip84"

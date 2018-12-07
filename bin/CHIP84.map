@@ -1,100 +1,112 @@
 Segment  Base   Top    High   Length
 -------- ------ ------ ------ -------
-bss      D031F6 D06148 D13FD6   2F52h
+bss      D031F6 D07959 D13FD6   4763h
 header   D1A87F D1A882             3h
 icon     D1A882 D1A993           111h
-launcher D1A993 D1A9E3            50h
-libs     D1A9E3 D1AA58            75h
-startup  D1AA58 D1AA93            3Bh
-cleanup  D1AA93 D1AAA7            14h
-exit     D1AAA7 D1AAAD             6h
-code     D1AAAD D1C605          1B58h
-data     D1C605 D1C6DE            D9h
-strsect  D1C6DE D1C8ED           20Fh
-text     D1C8ED D1C8FD            10h
+launcher D1A993 D1A9EB            58h
+libs     D1A9EB D1AA6C            81h
+startup  D1AA6C D1AAA7            3Bh
+cleanup  D1AAA7 D1AABB            14h
+exit     D1AABB D1AAC1             6h
+code     D1AAC1 D1CB58          2097h
+data     D1CB58 D1CCDA           182h
+strsect  D1CCDA D1CE6E           194h
+text     D1CE6E D1CEA6            38h
 
 Label                      Value
 ------------------------   ------
 __findlibload            = D1A993
 __program_icon           = D1A887
 __program_description    = D1A989
-__ccleanup               = D1AA93
+__ccleanup               = D1AAA7
 _errno                   = D008DC
 _init                    = D1A882
-_exit                    = D1AAA9
-__exit                   = D1AA85
-__exitsp                 = D1AA85
-__errsp                  = D1AA85
-_canvas_data             = D031F6
-_emulateCycle            = D1AE6C
-_setKeys                 = D1ACB0
-_loadProgram             = D1AB89
-_initialize              = D1AAAD
-__x                      = D0584E
-__y                      = D0584D
-_index                   = D0584B
-_pixel                   = D0584A
-_step                    = D05849
-_fontset                 = D1C645
-_file                    = D05848
-_controlMap              = D05838
-_keypad                  = D05828
-_game_data               = D04A28
-_playing                 = D1C644
-_paused                  = D1C643
-_drawFlag                = D1C642
-_keys                    = D1C632
-_sp                      = D1C631
-_stack                   = D04A08
-_sound_timer             = D1C62F
-_delay_timer             = D1C62D
-_pc                      = D1C62B
-_I                       = D1C629
-_V                       = D049F8
-_memory                  = D039F8
-_opcode                  = D1C627
-_drawGraphics            = D1C4EC
-_drawKeymappingMenu      = D1C37D
-_beginKeymapper          = D1C148
-_beginSetClock           = D1BFD2
-_startEmulation          = D1BE1E
-_drawMenu                = D1BCD1
-_main                    = D1BAFA
-_concatenate             = D1BAC7
-_keyNames                = D1C69A
-_pauseText               = D1C697
-_cpf                     = D1C696
-_bgColor                 = D1C695
-_count                   = D06147
-_files                   = D05850
-_curFile                 = D0584F
-_sprites_gfx_pal         = D1C6CA
+_exit                    = D1AABD
+__exit                   = D1AA99
+__exitsp                 = D1AA99
+__errsp                  = D1AA99
+_emulateCycle            = D1ADFC
+_setKeys                 = D1ACF1
+_loadProgram             = D1ABE3
+_initialize              = D1AAC1
+_pixel_number            = D0705A
+_screen_height           = D07059
+_screen_width            = D07058
+__x                      = D07057
+__y                      = D07056
+_index                   = D07054
+_pixel                   = D07052
+_step                    = D07051
+_fontset_ten             = D1CBEA
+_fontset                 = D1CB9A
+_file                    = D07050
+_controlMap              = D07040
+_keypad                  = D07030
+_canvas_data             = D0502E
+_game_data               = D0422E
+_plane                   = D1CB99
+_extendedScreen          = D1CB98
+_playing                 = D1CB97
+_paused                  = D1CB96
+_drawFlag                = D1CB95
+_keys                    = D1CB85
+_sp                      = D1CB84
+_stack                   = D0420E
+_sound_timer             = D1CB82
+_delay_timer             = D1CB80
+_pc                      = D1CB7E
+_I                       = D1CB7C
+_V                       = D041FE
+_SV                      = D041F6
+_memory                  = D031F6
+_opcode                  = D1CB7A
+_drawPreview             = D1CA18
+_drawGraphics            = D1C9C0
+_drawKeymappingMenu      = D1C851
+_beginKeymapper          = D1C608
+_startEmulation          = D1C116
+_drawMenu                = D1C02D
+_main                    = D1BCE2
+_data                    = D07956
+_settings                = D07955
+_palette_colors          = D1CE6E
+_keyNames                = D1CC92
+_pauseText               = D1CC8F
+_bgIndex                 = D1CC8E
+_fgIndex                 = D1CC8D
+_frameCount              = D1CC8C
+_cpf                     = D1CC8B
+_bgColor                 = D1CC8A
+_count                   = D07954
+_files                   = D0705D
+_curFile                 = D0705C
+_sprites_gfx_pal         = D1CCC2
 __case16D                = 000118
 __case8D                 = 000128
-_delay                   = D1C51D
+_delay                   = D1CA70
 __iand                   = 000134
-__icmpzero               = D1C566
+__icmpzero               = D1CAB9
 __idivs                  = 00013C
+__imuls                  = 000154
 __imul_b                 = 000158
 __imul_b                 = 000150
 __irems                  = 00016C
 __ishrs_b                = 00017C
 __ishrs_b                = 000180
 _memcpy                  = 0000A4
-_memset                  = D1C56B
-_rand                    = D1C582
-_random                  = D1C58F
-__state                  = D1C6CE
+_memmove                 = 0000A8
+_memset                  = D1CABE
+_rand                    = D1CAD5
+_random                  = D1CAE2
+__state                  = D1CCCA
 __sand                   = 000200
 __scmpzero               = 000204
 __setflag                = 000218
-__smuls                  = 000228
-__smuls                  = 000224
+__smulu                  = 000228
 __sor                    = 000234
-_sprintf                 = 0000BC
-_srand                   = D1C5E6
-_srandom                 = D1C5EE
-__setstate               = D1C5F5
+_srand                   = D1CB39
+_srandom                 = D1CB41
+__setstate               = D1CB48
 __sshru_b                = 000250
 __sshru_b                = 000254
 __stoiu                  = 000264
@@ -211,25 +223,28 @@ _asm_DisableAPD          = 021134
 _asm_EnableAPD           = 021138
 _asm_DrawStatusBar       = 021A3C
 _asm_ArcChk              = 022040
-_ti_CloseAll             = D1A9ED
-_ti_Open                 = D1A9F1
-_ti_Write                = D1A9F5
-_ti_Read                 = D1A9F9
-_ti_GetSize              = D1A9FD
-_ti_Detect               = D1AA01
-_gfx_Begin               = D1AA0E
-_gfx_End                 = D1AA12
-_gfx_SetColor            = D1AA16
-_gfx_SetPalette          = D1AA1A
-_gfx_FillScreen          = D1AA1E
-_gfx_SetDraw             = D1AA22
-_gfx_Blit                = D1AA26
-_gfx_PrintUInt           = D1AA2A
-_gfx_PrintStringXY       = D1AA2E
-_gfx_SetTextXY           = D1AA32
-_gfx_SetTextFGColor      = D1AA36
-_gfx_Circle              = D1AA3A
-_gfx_FillRectangle       = D1AA3E
-_gfx_ScaledSprite_NoClip = D1AA42
-_kb_Scan                 = D1AA50
-_kb_ScanGroup            = D1AA54
+_ti_CloseAll             = D1A9F5
+_ti_Open                 = D1A9F9
+_ti_Write                = D1A9FD
+_ti_Read                 = D1AA01
+_ti_Rewind               = D1AA05
+_ti_GetSize              = D1AA09
+_ti_Detect               = D1AA0D
+_gfx_Begin               = D1AA1A
+_gfx_End                 = D1AA1E
+_gfx_SetColor            = D1AA22
+_gfx_SetPalette          = D1AA26
+_gfx_FillScreen          = D1AA2A
+_gfx_SetDraw             = D1AA2E
+_gfx_Blit                = D1AA32
+_gfx_PrintUInt           = D1AA36
+_gfx_PrintStringXY       = D1AA3A
+_gfx_SetTextXY           = D1AA3E
+_gfx_SetTextFGColor      = D1AA42
+_gfx_Circle              = D1AA46
+_gfx_FillRectangle       = D1AA4A
+_gfx_Sprite_NoClip       = D1AA4E
+_gfx_ScaledSprite_NoClip = D1AA52
+_gfx_SetTextScale        = D1AA56
+_kb_Scan                 = D1AA64
+_kb_ScanGroup            = D1AA68

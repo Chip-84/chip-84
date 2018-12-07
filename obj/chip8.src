@@ -276,12 +276,12 @@ _opcode:
 .ENDEF
 	SEGMENT BSS
 _memory:
-	DS	4096
+	DS	65536
 .DEFINE "memory"
 .ALIAS "_memory"
 .CLASS 83
 .VALUE _memory
-.DIM 4096
+.DIM 65536
 .TYPE 108
 .ENDEF
 _SV:
@@ -722,7 +722,7 @@ _pixel_number:
 ;   15	#include "sprites_gfx.h"
 ;   16	
 ;   17	uint16_t opcode = 0;
-;   18	uint8_t memory[0x1000];
+;   18	uint8_t memory[0x10000];
 ;   19	uint8_t SV[8];
 ;   20	uint8_t V[16];
 ;   21	uint16_t I = 0;
@@ -1005,7 +1005,7 @@ _initialize:
 ;_fontset_ten                        STATIC    160   variable
 ;_fontset                            STATIC     80   variable
 ;_memcpy                             IMPORT  -----   function
-;_memory                             STATIC   4096   variable
+;_memory                             STATIC  65536   variable
 ;_SV                                 STATIC      8   variable
 ;_V                                  STATIC     16   variable
 ;_stack                              STATIC     32   variable
@@ -1249,7 +1249,7 @@ L_8:
 ;**************************** _loadProgram ***************************
 ;Name                         Addr/Register   Size   Type
 ;_controlMap                         STATIC     16   variable
-;_memory                             STATIC   4096   variable
+;_memory                             STATIC  65536   variable
 ;_initialize                         IMPORT  -----   function
 ;_game_data                          STATIC   3584   variable
 ;_ti_GetSize                         IMPORT  -----   function
@@ -4237,7 +4237,7 @@ L_168:
 ;_canvas_data                        STATIC   8194   variable
 ;_opcode                             STATIC      2   variable
 ;_pc                                 STATIC      2   variable
-;_memory                             STATIC   4096   variable
+;_memory                             STATIC  65536   variable
 ;_step                               STATIC      1   variable
 ;_setKeys                            IMPORT  -----   function
 ;_kb_Scan                            IMPORT  -----   function

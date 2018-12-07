@@ -127,6 +127,7 @@ void loadProgram(char *fileName) {
 	
 	romSize = ti_GetSize(file)-22;
 	
+	ti_Close(file);
 	initialize();
 	
 	if((4096-512) > romSize) {
