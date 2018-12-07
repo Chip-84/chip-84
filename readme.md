@@ -6,3 +6,6 @@ The first CHIP-8 emulator/interpreter written in C using the CE C Programming To
 - A converter to convert ROM files to AppVars which you can then transfer to your calculator
 
 You will need to have the CE C Libraries (https://github.com/CE-Programming/libraries) to run this.
+
+## Converting ROMs
+To convert your CHIP-8 or SCHIP-8 ROMs, use the included ROM converter program for Windows, or use [the online ROM converter](https://christiankosman.com/rom-converter).
