@@ -1,7 +1,0 @@
-; Zilog eZ80 ANSI C Compiler Release 3.4
-; -debug -optsize -noreduceopt -nomodsect -peephole -globalopt
-; -localcse -const=ROM 
-	FILE	"..\SRC\CANVAS.C"
-	.assume ADL=1
-.DEBUG "C"
-	END

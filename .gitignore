@@ -1,0 +1,11 @@
+bin
+obj
+converted
+src/backup
+src/rom
+src/convpng.ini
+src/convpng.log
+src/windows_convpng.exe
+Chip84ROMConverter/.vs
+Chip84ROMConverter/Chip84ROMConverter/bin
+Chip84ROMConverter/Chip84ROMConverter/obj

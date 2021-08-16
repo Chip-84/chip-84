@@ -1,16 +1,15 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Chip8ROMConverter
+namespace Chip84ROMConverter
 {
 	class Program
 	{
-		static void Main(string[] args)
-		{
+		static void Main(string[] args) {
 			if (args.Length > 0) {
 				byte[] romData_Raw = File.ReadAllBytes(args[0]);
 				byte[] romData = new byte[romData_Raw.Length + 6 + 16];
@@ -22,9 +21,8 @@ namespace Chip8ROMConverter
 				romData[4] = 0x38;
 				romData[5] = 0x34;
 				//Control map
-				for (int i = 0; i < 16; i++) {
+				for (int i = 0; i < 16; i++)
 					romData[6 + i] = (byte)i;
-				}
 
 				Array.Copy(romData_Raw, 0, romData, 6 + 16, romData_Raw.Length);
 				string fileName = Path.GetFileNameWithoutExtension(args[0]);
@@ -60,14 +58,13 @@ namespace Chip8ROMConverter
 
 				fileSize = romData.Length;
 
-				if (fileSize > 0xFFEC) {
+				if (fileSize > 0xFFEC)
 					System.Environment.Exit(1);
-				}
 
 				header[53] = (byte)((fileSize + varheader.Length) & 0xff);
-				header[54] = (byte)(((fileSize + varheader.Length)>>8) & 0xff);
+				header[54] = (byte)(((fileSize + varheader.Length) >> 8) & 0xff);
 				varheader[2] = (byte)((fileSize + 2) & 0xff);
-				varheader[3] = (byte)(((fileSize + 2)>>8) & 0xff);
+				varheader[3] = (byte)(((fileSize + 2) >> 8) & 0xff);
 				for (int i = 0; i < 8; i++) {
 					if (i >= fileName.Length)
 						varheader[5 + i] = (byte)0x00;
@@ -75,7 +72,7 @@ namespace Chip8ROMConverter
 						varheader[5 + i] = (byte)fileName[i];
 				}
 				varheader[15] = (byte)((fileSize + 2) & 0xff);
-				varheader[16] = (byte)(((fileSize + 2)>>8) & 0xff);
+				varheader[16] = (byte)(((fileSize + 2) >> 8) & 0xff);
 				varheader[17] = (byte)(fileSize & 0xff);
 				varheader[18] = (byte)((fileSize >> 8) & 0xff);
 
@@ -84,7 +81,7 @@ namespace Chip8ROMConverter
 				for (int i = 0; i < varheader.Length; i++)
 					sum += varheader[i];
 				checksum[0] = (byte)((sum) & 0xff);
-				checksum[1] = (byte)((sum>>8) & 0xff);
+				checksum[1] = (byte)((sum >> 8) & 0xff);
 
 				fileSize = header.Length + varheader.Length + romData.Length + checksum.Length;
 
@@ -94,10 +91,8 @@ namespace Chip8ROMConverter
 				Buffer.BlockCopy(romData, 0, allData, header.Length + varheader.Length, romData.Length);
 				Buffer.BlockCopy(checksum, 0, allData, header.Length + varheader.Length + romData.Length, checksum.Length);
 
-				using (var fs = new FileStream(fileName + ".8xv", FileMode.Create, FileAccess.Write)) {
+				using (var fs = new FileStream(fileName + ".8xv", FileMode.Create, FileAccess.Write))
 					fs.Write(allData, 0, allData.Length);
-					
-				}
 			}
 		}
 	}
