@@ -12,4 +12,4 @@ DESCRIPTION ?= "CHIP8 Emu"
 
 # ----------------------------
 
-include $(CEDEV)/include/.makefile
+include $(shell cedev-config --makefile)

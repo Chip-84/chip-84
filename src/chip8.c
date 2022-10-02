@@ -78,7 +78,7 @@ uint16_t  fontset_ten[80] = {
 
 uint8_t step;
 uint16_t pixel;
-uint16_t index;
+uint16_t cindex;
 
 uint8_t _y;
 uint8_t _x;
@@ -378,12 +378,12 @@ void emulateCycle(uint8_t steps) {
 						}
 						for(_x = 0; _x < (cols << 3); ++_x) {
 							if((pixel & (((cols == 2) ? 0x8000 : 0x80) >> _x)) != 0) {
-								index = (((xd + _x) & 0x7f) + (((yd + _y) & 0x3f) << 7)) + 2;
-								V[0xf] |= canvas_data[index] & 1;
-								if (canvas_data[index])
-									canvas_data[index] = 0;
+								cindex = (((xd + _x) & 0x7f) + (((yd + _y) & 0x3f) << 7)) + 2;
+								V[0xf] |= canvas_data[cindex] & 1;
+								if (canvas_data[cindex])
+									canvas_data[cindex] = 0;
 								else
-									canvas_data[index] = 1;
+									canvas_data[cindex] = 1;
 							}
 						}
 					}
@@ -394,12 +394,12 @@ void emulateCycle(uint8_t steps) {
 						pixel = memory[I + _y];
 						for(_x = 0; _x < 8; ++_x) {
 							if((pixel & (0x80 >> _x)) != 0) {
-								index = (((xd + _x) & 0x3f) + (((yd + _y) & 0x1f) << 6)) + 2;
-								V[0xf] |= canvas_data[index] & 1;
-								if (canvas_data[index])
-									canvas_data[index] = 0;
+								cindex = (((xd + _x) & 0x3f) + (((yd + _y) & 0x1f) << 6)) + 2;
+								V[0xf] |= canvas_data[cindex] & 1;
+								if (canvas_data[cindex])
+									canvas_data[cindex] = 0;
 								else
-									canvas_data[index] = 1;
+									canvas_data[cindex] = 1;
 							}
 						}
 					}
