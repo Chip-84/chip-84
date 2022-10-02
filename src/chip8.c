@@ -160,7 +160,7 @@ void setKeys() {
 	keypad[0xE] = kb_Data[6] & kb_Add;
 	keypad[0xF] = kb_Data[6] & kb_Enter;
 	
-	for(i = 0; i < 15; i++) {
+	for(i = 0; i < 16; i++) {
 		keys[i] = keypad[controlMap[i]];
 	}
 	
