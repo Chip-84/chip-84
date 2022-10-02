@@ -323,8 +323,9 @@ void emulateCycle(uint8_t steps) {
 						break;
 					}
 					case 0x0006: {
-						V[0xf] = V[x] & 1;
+						i = V[x] & 1;
 						V[x] >>= 1;
+						V[0xf] = i;
 						break;
 					}
 					case 0x0007: {
@@ -334,8 +335,9 @@ void emulateCycle(uint8_t steps) {
 						break;
 					}
 					case 0x000E: {
-						V[0xf] = V[x] >> 7;
+						i = V[x] >> 7;
 						V[x] <<= 1;
+						V[0xf] = i;
 						break;
 					}
 					break;
