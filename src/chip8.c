@@ -310,14 +310,16 @@ void emulateCycle(uint8_t steps) {
 						break;
 					}
 					case 0x0004: {
-						V[0xf] = (V[x] + V[y] > 0xff);
+						i = (V[x] + V[y] > 0xff); //vF set after operation
 						V[x] += V[y];
 						V[x] &= 255;
+						V[0xf] = i;
 						break;
 					}
 					case 0x0005: {
-						V[0xf] = V[x] >= V[y];
+						i = V[x] >= V[y];
 						V[x] -= V[y];
+						V[0xf] = i;
 						break;
 					}
 					case 0x0006: {
@@ -326,8 +328,9 @@ void emulateCycle(uint8_t steps) {
 						break;
 					}
 					case 0x0007: {
-						V[0xf] = V[y] >= V[x];
+						i = V[y] >= V[x]; //vF needs to be set after the subtraction hence the temp variable
 						V[x] = V[y] - V[x];
+						V[0xF] = i;
 						break;
 					}
 					case 0x000E: {
